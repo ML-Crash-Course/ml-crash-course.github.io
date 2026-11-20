@@ -271,7 +271,7 @@
      M4.practice(el, ctx, {gen, n}): gen() -> {q, answer, tol?, hint?, explain?, options?}
      q is HTML (may contain $...$). With options (array of strings), the answer is the index
      of the correct option; otherwise it is a number typed into a field. The step counts as
-     solved after n correct answers in a row. */
+     solved after n correct answers. */
   M4.rand = function (a, b) { return a + Math.floor(Math.random() * (b - a + 1)); };
   M4.randNZ = function (a, b) { var v = 0; while (v === 0) v = M4.rand(a, b); return v; };
   M4.pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
@@ -292,7 +292,7 @@
   M4.practice = function (parent, ctx, o) {
     var need = o.n || 3, streak = 0, total = 0, prob = null, locked = false, finished = false;
     var wrap = M4.el('div', { class: 'm4-gen' }, parent);
-    var dots = M4.el('div', { class: 'm4-gen-dots', title: need + ' correct in a row' }, wrap);
+    var dots = M4.el('div', { class: 'm4-gen-dots', title: need + ' correct answers' }, wrap);
     for (var i = 0; i < need; i++) M4.el('i', null, dots);
     var q = M4.el('div', { class: 'm4-gen-q' }, wrap);
     var area = M4.el('div', { class: 'm4-row', style: 'justify-content:center' }, wrap);
@@ -309,13 +309,13 @@
       locked = true; total++;
       if (ok) { streak++; fb.className = 'm4-gen-fb ok'; fb.innerHTML = 'Correct.' + (prob.explain ? ' ' + prob.explain : ''); }
       else {
-        streak = 0; fb.className = 'm4-gen-fb bad';
+        fb.className = 'm4-gen-fb bad';
         fb.innerHTML = 'Not quite. The answer is ' + (prob.options ? prob.options[prob.answer] : '\\(' + M4.fmt(prob.answer).replace('−', '-') + '\\)') + '.' + (prob.explain ? ' ' + prob.explain : '');
         M4.shake && M4.shake(wrap);
       }
       M4.typeset(fb); paintDots();
       nextBtn.textContent = 'Next problem'; nextBtn.classList.add('primary');
-      if (streak >= need && !finished) { finished = true; ctx.solved(need + ' in a row. Further problems are optional.'); }
+      if (streak >= need && !finished) { finished = true; ctx.solved(need + ' correct. Further problems are optional.'); }
     }
     function fresh() {
       prob = o.gen(); locked = false;
@@ -1083,7 +1083,8 @@
         var nEx = L.steps.filter(function (s) { return s.kind === 'exercise'; }).length;
         M4.el('span', { class: 'm4-chip', text: (L.minutes || Math.max(5, L.steps.length)) + ' min' }, meta);
         M4.el('span', { class: 'm4-chip', text: L.steps.length + ' steps' }, meta);
-        if (nEx) M4.el('span', { class: 'm4-chip', text: nEx + ' exercises' }, meta);
+        if (L.drill) M4.el('span', { class: 'm4-chip', text: 'Endless practice', style: 'border-color:' + c + ';color:' + c }, meta);
+        else if (nEx) M4.el('span', { class: 'm4-chip', text: nEx + ' exercises' }, meta);
         if (state === 'done') M4.el('span', { class: 'm4-chip', text: 'Complete', style: 'border-color:' + c + ';color:' + c }, meta);
         if (state === 'next') M4.el('span', { class: 'm4-chip', text: 'Up next', style: 'border-color:' + c + ';color:' + c }, meta);
       }
@@ -1124,7 +1125,7 @@
     contBtn.classList.add('cont');
 
     var n = L.steps.length;
-    var reached = 0, cur = 0, cleanups = [], stepSolved = {}, sessionXp = 0, sessionSolved = 0, finished = false;
+    var reached = L.free ? n - 1 : 0, cur = 0, cleanups = [], stepSolved = {}, sessionXp = 0, sessionSolved = 0, finished = false;
     var segEls = L.steps.map(function (s, i) {
       var b = M4.el('button', { class: 'm4-seg', type: 'button', title: s.title || 'Step ' + (i + 1) }, segs);
       M4.el('i', {}, b);
@@ -1147,7 +1148,7 @@
     }
     function canContinue() {
       var s = L.steps[cur];
-      return !s || s.kind !== 'exercise' || !!stepSolved[cur] || !!S.solved[id + ':' + cur];
+      return !s || L.free || s.kind !== 'exercise' || !!stepSolved[cur] || !!S.solved[id + ':' + cur];
     }
     function updateBar() {
       backBtn.style.visibility = cur > 0 && !finished ? 'visible' : 'hidden';

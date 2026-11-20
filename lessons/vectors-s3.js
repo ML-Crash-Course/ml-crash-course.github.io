@@ -433,15 +433,15 @@
         kind: 'text',
         title: 'Distances in machine learning',
         html:
-          '<p>Machine learning models represent words, images and documents as vectors called embeddings, and decide which items are related by measuring how close those vectors are. Nearest-neighbour search and retrieval systems rank candidates by Euclidean distance or by cosine similarity. Cosine similarity is preferred when the length of an embedding carries no meaning.</p>' +
-          '<p>Norms also appear in training. A model with parameter vector \\(\\mathbf{w}\\) is often penalised by adding \\(\\lVert \\mathbf{w} \\rVert_2^2\\) or \\(\\lVert \\mathbf{w} \\rVert_1\\) to its loss, which is called \\(L_2\\) or \\(L_1\\) regularisation, and a squared-error loss is the squared \\(L_2\\) distance between predictions and targets.</p>'
+          '<p>Words, images and documents can be described by vectors of numbers, chosen so that related items get vectors that lie close together. Later in the course these vectors are called embeddings. To find the items most related to a query, a search system ranks the stored vectors by their Euclidean distance or their cosine similarity to the query vector. Cosine similarity is the better choice when only the direction of a vector carries meaning.</p>' +
+          '<p>Norms also measure errors. Write a list of guesses and the list of true values as two vectors, and the length of their difference says how far off the guesses are as a whole. This way of measuring error comes back from the first model of the course onwards.</p>'
       },
       // 11
       {
         kind: 'exercise',
         title: 'Nearest neighbours under two measures',
         html:
-          '<p>A query embedding \\(\\mathbf{q} = (2, 1)\\) is compared with three stored embeddings \\(\\mathbf{a} = (4, 2)\\), \\(\\mathbf{b} = (1, 2)\\) and \\(\\mathbf{c} = (-1, 1)\\). Drag the embedding with the smallest Euclidean distance to \\(\\mathbf{q}\\) into the first slot, and the embedding with the largest cosine similarity to \\(\\mathbf{q}\\) into the second slot.</p>',
+          '<p>A query vector \\(\\mathbf{q} = (2, 1)\\) is compared with three stored vectors \\(\\mathbf{a} = (4, 2)\\), \\(\\mathbf{b} = (1, 2)\\) and \\(\\mathbf{c} = (-1, 1)\\). Drag the vector with the smallest Euclidean distance to \\(\\mathbf{q}\\) into the first slot, and the vector with the largest cosine similarity to \\(\\mathbf{q}\\) into the second slot.</p>',
         hint: 'The differences from \\(\\mathbf{q}\\) are \\((2, 1)\\), \\((-1, 1)\\) and \\((-3, 0)\\). Compare their lengths. For cosine similarity, look for the vector that points in the same direction as \\(\\mathbf{q}\\).',
         mount: function (el, ctx) {
           injectCss();
@@ -449,10 +449,12 @@
           var dA = p.line(2, 1, 4, 2, { stroke: GREEN, width: 3, dash: '6 6' });
           var dB = p.line(2, 1, 1, 2, { stroke: GREEN, width: 3, dash: '6 6' });
           dA.el.setAttribute('opacity', 0); dB.el.setAttribute('opacity', 0);
-          p.arrow(0, 0, 4, 2, { stroke: ORANGE, width: 3 });
+          // a = 2q lies on top of q, so a is drawn as a wide translucent band underneath q to stay visible from the origin
+          var aArr = p.arrow(0, 0, 4, 2, { stroke: ORANGE, width: 12 });
+          aArr.el.setAttribute('opacity', 0.4);
           p.arrow(0, 0, 1, 2, { stroke: PURPLE, width: 3 });
           p.arrow(0, 0, -1, 1, { stroke: C.pink, width: 3 });
-          p.arrow(0, 0, 2, 1, { stroke: BLUE, width: 6 });
+          p.arrow(0, 0, 2, 1, { stroke: BLUE, width: 4 });
           p.text(4.4, 2.3, 'a', { fill: ORANGE, size: 19, weight: 700 });
           p.text(0.8, 2.4, 'b', { fill: PURPLE, size: 19, weight: 700 });
           p.text(-1.35, 1.3, 'c', { fill: C.pink, size: 19, weight: 700 });
@@ -475,7 +477,7 @@
             return 'c makes an angle of more than 90° with q, so its cosine similarity is negative.';
           }, function () {
             dB.el.setAttribute('opacity', 1);
-            ctx.note('Distances: \\(\\sqrt5 \\approx 2.24\\) to \\(\\mathbf{a}\\), \\(\\sqrt2 \\approx 1.41\\) to \\(\\mathbf{b}\\), \\(3\\) to \\(\\mathbf{c}\\). Cosine similarities: \\(1\\), \\(0.8\\) and \\(-0.32\\). Since \\(\\mathbf{a} = 2\\mathbf{q}\\), it has the same direction as \\(\\mathbf{q}\\) although it is not the closest point.');
+            ctx.note('Distances: \\(\\sqrt5 \\approx 2.24\\) to \\(\\mathbf{a}\\), \\(\\sqrt2 \\approx 1.41\\) to \\(\\mathbf{b}\\), \\(3\\) to \\(\\mathbf{c}\\). Cosine similarities: \\(1\\), \\(0.8\\) and \\(-0.32\\). Since \\(\\mathbf{a} = 2\\mathbf{q}\\), both arrows start at the origin and point the same way. The angle between them is \\(0^\\circ\\), so \\(\\cos\\theta = 1\\), although \\(\\mathbf{a}\\) is not the closest point.');
           });
         }
       },

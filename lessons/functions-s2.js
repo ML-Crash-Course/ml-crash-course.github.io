@@ -364,7 +364,7 @@
     var root = wrap(el);
     var W = 640, H = 250, x0 = 150, bw = 400;
     var svg = S('svg', { viewBox: '0 0 ' + W + ' ' + H, class: 'functions-s2-svg' }, root);
-    var names = ['class A', 'class B', 'class C'], cols = [ORANGE, BLUE, PURPLE];
+    var names = ['answer A', 'answer B', 'answer C'], cols = [ORANGE, BLUE, PURPLE];
     var bars = [], vals = [], i;
     for (i = 0; i < 3; i++) {
       var y = 40 + i * 66;
@@ -402,7 +402,7 @@
     }
     var box = M4.el('div', { class: 'm4-col', style: 'width:100%;max-width:520px' }, root);
     M4.slider(box, {
-      min: 0, max: 4, step: 0.1, value: 0, label: 'score of class A',
+      min: 0, max: 4, step: 0.1, value: 0, label: 'score of answer A',
       format: function (v) { return Number(v).toFixed(1); },
       onInput: function (v) { z = Math.round(Number(v) * 10) / 10; draw(); }
     });
@@ -419,7 +419,7 @@
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>An exponential function describes a quantity that is multiplied by the same factor in every step.</p><p>In this lesson you will read \\(b^x\\) as repeated multiplication, distinguish growth from decay, explain where the number \\(e \\approx 2.718\\) comes from, and use the rule \\(e^{a+b} = e^{a} e^{b}\\).</p><p>These functions appear in machine learning wherever scores are turned into probabilities, for example in the softmax function.</p>'
+        html: '<p>An exponential function describes a quantity that is multiplied by the same factor in every step.</p><p>In this lesson you will read \\(b^x\\) as repeated multiplication, distinguish growth from decay, explain where the number \\(e \\approx 2.718\\) comes from, and use the rule \\(e^{a+b} = e^{a} e^{b}\\).</p><p>In machine learning they turn raw scores into chances that add up to 1, for example in the softmax function at the end of this lesson.</p>'
       },
       {
         kind: 'explore',
@@ -492,7 +492,7 @@
       {
         kind: 'exercise',
         title: 'Softmax',
-        html: '<p>A classifier produces one real-valued score per class. The softmax function turns the scores \\(z_A, z_B, z_C\\) into probabilities by exponentiating and normalising: \\[ p_A = \\frac{e^{z_A}}{e^{z_A} + e^{z_B} + e^{z_C}}. \\] Exponentials are used because they are always positive and because adding a constant to a score multiplies its weight by a fixed factor.</p><p>Here \\(z_B = z_C = 0\\). Raise the score \\(z_A\\) until class A has probability \\(0.75\\) (within 0.01).</p>',
+        html: '<p>Suppose a program has to choose one of three answers A, B and C, and gives each answer a score, where a larger score means more confidence. The softmax function turns the scores \\(z_A, z_B, z_C\\) into three chances that are positive and add up to 1. It exponentiates every score and divides by the total: \\[ p_A = \\frac{e^{z_A}}{e^{z_A} + e^{z_B} + e^{z_C}}. \\] Exponentials are used because they are always positive and because adding a constant to a score multiplies its weight by a fixed factor.</p><p>Here \\(z_B = z_C = 0\\). Raise the score \\(z_A\\) until answer A gets the chance \\(0.75\\) (within 0.01).</p>',
         hint: 'With \\(e^{z_B} = e^{z_C} = 1\\), the condition is \\(e^{z_A} / (e^{z_A} + 2) = 0.75\\), which holds when \\(e^{z_A} = 6\\). The displayed value of \\(e^{z_A}\\) helps.',
         mount: mountSoftmax
       },
@@ -528,7 +528,7 @@
       {
         kind: 'text',
         title: 'Recap',
-        html: '<ul><li>\\(b^x\\) describes repeated multiplication by the base \\(b\\): it grows for \\(b > 1\\), decays for \\(0 < b < 1\\), is always positive and equals 1 at \\(x = 0\\).</li><li>The number \\(e \\approx 2.718\\) is the limit of \\(\\left(1 + \\tfrac{1}{n}\\right)^{n}\\) as \\(n\\) grows, and \\(e^{x}\\) is the exponential whose slope equals its height.</li><li>Sums in the exponent become products of values, \\(e^{a+b} = e^{a} e^{b}\\), with \\(e^{a-b} = e^{a}/e^{b}\\) and \\((e^{a})^{b} = e^{ab}\\). Softmax relies on this to turn scores into probabilities.</li></ul><p>The next session introduces the logarithm, the function that undoes the exponential.</p>'
+        html: '<ul><li>\\(b^x\\) describes repeated multiplication by the base \\(b\\): it grows for \\(b > 1\\), decays for \\(0 < b < 1\\), is always positive and equals 1 at \\(x = 0\\).</li><li>The number \\(e \\approx 2.718\\) is the limit of \\(\\left(1 + \\tfrac{1}{n}\\right)^{n}\\) as \\(n\\) grows, and \\(e^{x}\\) is the exponential whose slope equals its height.</li><li>Sums in the exponent become products of values, \\(e^{a+b} = e^{a} e^{b}\\), with \\(e^{a-b} = e^{a}/e^{b}\\) and \\((e^{a})^{b} = e^{ab}\\). Softmax relies on this to turn scores into chances.</li></ul><p>The next session introduces the logarithm, the function that undoes the exponential.</p>'
       }
     ]
   });

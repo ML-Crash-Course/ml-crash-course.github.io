@@ -1,17 +1,51 @@
-# math4.ai
+# Machine Learning Crash Course
 
-Interactive, Brilliant-style lessons on the mathematics behind machine learning. Static site, no build step.
+Interactive lessons on the mathematics behind machine learning, from vectors to language models. Every idea comes with something to drag, a picture that moves with it, and exercises that check your answer on the spot.
 
-## Open it
+**Live site:** https://thiggel.github.io/ML-CrashCourse/
 
-- Double-click `index.html` (works from `file://`), or
-- serve the folder: `python3 -m http.server 8000` and open http://localhost:8000
+## What is inside
 
-An internet connection is needed once for KaTeX and the Inter font (cdnjs / Google Fonts); without it formulas show as raw text.
+The course has 18 modules, meant to be taken in order. Each module builds on the ones before it.
 
-## Layout
+| | Module | What you learn |
+|---|---|---|
+| 1 | Vectors | arrows, linear combinations, length, dot product |
+| 2 | Matrices and linear maps | matrices as transformations, products, determinants, inverses |
+| 3 | Bases and eigenvectors | change of basis, eigenvectors, diagonalisation |
+| 4 | Exponentials and logarithms | exp, log, sigmoid, softmax |
+| 5 | Derivatives | slopes, rules of differentiation, contour maps |
+| 6 | Gradients and Hessians | partial derivatives, gradients, curvature, the chain rule for vectors |
+| 7 | Probability | distributions, expectation, variance, the Gaussian |
+| 8 | Models and predictions | models, parameters, losses |
+| 9 | Maximum likelihood | where the common loss functions come from |
+| 10 | Information theory | entropy, cross entropy, KL divergence |
+| 11 | Gradient descent | learning rates, ravines, convergence |
+| 12 | Advanced optimizers | momentum, RMSProp, Adam, minibatches |
+| 13 | Generalization | overfitting and regularisation |
+| 14 | Neural networks | neurons, layers, activations |
+| 15 | Backpropagation | computation graphs and how gradients flow backwards |
+| 16 | Normalization and residuals | initialisation, LayerNorm, skip connections |
+| 17 | Training a network | putting the pieces together |
+| 18 | Language models | tokens, embeddings, attention |
 
-- `index.html` loads KaTeX, `assets/app.css`, `assets/app.js` (framework, global `M4`), `assets/modules.js` (manifest), then `lessons/<id>.js`.
-- Each lesson file calls `M4.lesson({...})` once. A missing lesson file shows as "coming soon".
-- Routes: `#/` home, `#/m/<moduleId>` module, `#/l/<lessonId>` lesson player.
-- Progress, XP and streak are stored in `localStorage` (key `m4-progress-v1`); "Reset progress" is in the footer.
+Several modules end with an endless practice drill. Each drill generates fresh problems, and you finish a level by solving a few of them correctly. A wrong answer never wipes your progress.
+
+## Run it locally
+
+The site is plain HTML, CSS and JavaScript with no build step.
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000. Opening `index.html` directly from disk also works. Formulas need an internet connection once, to load KaTeX.
+
+Progress, XP and your daily streak are saved in your browser. "Reset progress" is in the footer.
+
+## How the code is organised
+
+- `index.html` loads KaTeX, `assets/app.css`, `assets/app.js` (the lesson framework, global `M4`), `assets/drill.js` (generated practice), `assets/modules.js` (the list of modules), and then one file per lesson.
+- `lessons/<id>.js` defines a lesson with a single `M4.lesson({...})` call. A lesson file that is missing shows as "coming soon".
+- Routes: `#/` home, `#/m/<moduleId>` a module, `#/l/<lessonId>/<step>` a lesson step.
+- `WRITING.md` holds the style rules for lesson text.

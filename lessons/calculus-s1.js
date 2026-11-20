@@ -473,8 +473,8 @@
         kind: 'text',
         title: 'Derivatives in machine learning',
         html:
-          '<p>A model is trained by adjusting a parameter \\(w\\) so that a loss \\(L(w)\\), a number measuring the prediction error, becomes small. The derivative \\(L\'(w)\\) states how the loss responds to a small change of \\(w\\): if it is positive, increasing \\(w\\) increases the loss. If it is negative, increasing \\(w\\) decreases it.</p>' +
-          '<p><b>Gradient descent</b> therefore moves the parameter against the sign of the derivative, with a step proportional to its size:</p>' +
+          '<p>A machine learning program, called a <em>model</em>, makes predictions that depend on adjustable numbers, called <em>parameters</em>. A single number \\(L(w)\\), called the <em>loss</em>, measures how wrong the predictions are for the parameter value \\(w\\). <em>Training</em> means changing \\(w\\) until the loss is small. The derivative \\(L\'(w)\\) states how the loss responds to a small change of \\(w\\): if it is positive, increasing \\(w\\) increases the loss. If it is negative, increasing \\(w\\) decreases it.</p>' +
+          '<p><b>Gradient descent</b> therefore moves the parameter against the sign of the derivative, with a step proportional to its size (the name comes from the version with many parameters, which the multivariable module covers):</p>' +
           '\\[ w_{\\text{new}} = w - \\eta \\, L\'(w), \\]' +
           '<p>where \\(\\eta > 0\\) is a small constant called the learning rate. Where the derivative is zero the update stops, which is the flat tangent found earlier.</p>'
       },

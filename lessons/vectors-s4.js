@@ -388,7 +388,7 @@
       ],
       correct: 2,
       onCorrect: function () {
-        ctx.note('Both columns lie on the line \\( y=2x \\), so every output does too. \\( (2,1) \\) is not on that line.');
+        ctx.note('Both vectors lie on the line \\( y=2x \\), so every mix of them does too. \\( (2,1) \\) is not on that line. The matrices module returns to this idea: multiplying by a matrix mixes its columns in exactly this way.');
         ctx.solved();
       },
       onWrong: function (i) {
@@ -548,8 +548,8 @@
       },
       {
         kind: 'exercise',
-        title: 'Span in machine learning',
-        html: '<p>A linear layer of a neural network multiplies an input \\( \\mathbf{x}=(x_1,x_2) \\) by a weight matrix \\(W\\). The result is a linear combination of the columns of \\(W\\), with the inputs as coefficients: \\( W\\mathbf{x}=x_1\\mathbf{w}_1+x_2\\mathbf{w}_2 \\). The set of outputs the layer can produce is therefore the span of its columns.</p><p>Suppose the columns are \\( \\mathbf{w}_1=(1,2) \\) and \\( \\mathbf{w}_2=(2,4) \\). Which output can this layer <em>not</em> produce, whatever the input?</p>',
+        title: 'What a mix can reach',
+        html: '<p>Many machine learning systems build their outputs by mixing a few fixed vectors. With two fixed vectors \\( \\mathbf{w}_1 \\) and \\( \\mathbf{w}_2 \\), the system picks two numbers \\( x_1, x_2 \\) and outputs \\( x_1\\mathbf{w}_1+x_2\\mathbf{w}_2 \\). Every output is a linear combination of the two vectors, so the outputs it can ever produce form their span.</p><p>Suppose \\( \\mathbf{w}_1=(1,2) \\) and \\( \\mathbf{w}_2=(2,4) \\). Which output can this system <em>not</em> produce, whatever numbers it picks?</p>',
         hint: 'Since \\( \\mathbf{w}_2=2\\mathbf{w}_1 \\), every output is a multiple of \\( (1,2) \\). Look for the option that is not.',
         mount: mountLayer
       },
@@ -563,7 +563,7 @@
       {
         kind: 'text',
         title: 'Recap',
-        html: '<ul><li>A linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\) scales each vector by its coefficient and adds the results component by component.</li><li>Reaching a target point means solving two equations, one per component, for the two coefficients \\(a\\) and \\(b\\).</li><li>The span is the set of all linear combinations: the whole plane when \\( v_1w_2-v_2w_1\\neq 0 \\), and only a line through the origin when two non-zero vectors are multiples of each other. A linear layer can only produce outputs in the span of its weight columns.</li></ul>'
+        html: '<ul><li>A linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\) scales each vector by its coefficient and adds the results component by component.</li><li>Reaching a target point means solving two equations, one per component, for the two coefficients \\(a\\) and \\(b\\).</li><li>The span is the set of all linear combinations: the whole plane when \\( v_1w_2-v_2w_1\\neq 0 \\), and only a line through the origin when two non-zero vectors are multiples of each other. A system that mixes fixed vectors can only produce outputs in their span.</li></ul>'
       }
     ]
   });

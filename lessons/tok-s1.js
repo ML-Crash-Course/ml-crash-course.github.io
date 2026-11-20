@@ -180,7 +180,7 @@
         kind: 'text',
         title: 'Learning goals',
         html: '<ul><li>Compare subword tokens with characters and whole words.</li>' +
-          '<li>Run byte pair encoding by hand on a small corpus.</li>' +
+          '<li>Run byte pair encoding yourself on a small corpus.</li>' +
           '<li>Tokenize new words with learned merges and relate vocabulary size to sequence length.</li></ul>'
       },
       {

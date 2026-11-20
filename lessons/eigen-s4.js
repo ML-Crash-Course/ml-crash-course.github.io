@@ -378,7 +378,7 @@
       ],
       correct: 1,
       onCorrect: function () {
-        ctx.note('\\(W^k h = c_1\\,0.9^k v_1 + c_2\\,0.5^k v_2\\): both terms vanish, the second one faster. This is the vanishing-signal problem of plain recurrent networks.');
+        ctx.note('\\(W^k h = c_1\\,0.9^k v_1 + c_2\\,0.5^k v_2\\): both terms vanish, the second one faster. Information stored in the state therefore fades away step by step.');
         ctx.solved();
       },
       onWrong: function (i) { ctx.wrong(msgs[i] || 'Consider \\(0.9^k\\) and \\(0.5^k\\) for large \\(k\\).'); }
@@ -505,7 +505,7 @@
       {
         kind: 'exercise',
         title: 'Repeated maps in machine learning',
-        html: '<p>Repeated multiplication by one matrix occurs throughout machine learning. Power iteration finds the first principal component of a data set by applying the covariance matrix repeatedly, and a simple recurrent network multiplies its hidden state by the same weight matrix \\(W\\) at every time step. Suppose \\(W\\) has eigenvalues \\(0.9\\) and \\(0.5\\) with independent eigenvectors, and no other operation is applied. What happens to a typical hidden state vector after many steps?</p>',
+        html: '<p>Repeated multiplication by one matrix occurs throughout machine learning. Applying the spread matrix of a data cloud again and again finds its long axis, a method called power iteration. Some systems that read a text word by word keep a state vector \\(\\mathbf{h}\\) and multiply it by the same matrix \\(W\\) at every word. Suppose \\(W\\) has eigenvalues \\(0.9\\) and \\(0.5\\) with independent eigenvectors, and no other operation is applied. What happens to a typical state vector after many steps?</p>',
         hint: 'Write the state as c₁v₁ + c₂v₂. After k steps the coordinates are c₁·0.9^k and c₂·0.5^k. Compare how quickly each one decays.',
         mount: mountRnn
       },
@@ -522,7 +522,7 @@
         html: '<ul>' +
           '<li>If \\(A\\) has independent eigenvectors as the columns of \\(P\\) and the matching eigenvalues on the diagonal of \\(D\\), then \\(A = PDP^{-1}\\). In eigenbasis coordinates \\(A\\) only stretches each coordinate by its eigenvalue.</li>' +
           '<li>Powers are obtained from powers of the eigenvalues: \\(A^k = PD^kP^{-1}\\), so \\(A^kx = c_1\\lambda_1^kv_1 + c_2\\lambda_2^kv_2\\).</li>' +
-          '<li>Under repeated application the direction of \\(A^kx\\) approaches the dominant eigenvector unless the start vector has no component along it. The size of the largest eigenvalue decides whether the vector grows or vanishes, which is the mechanism behind power iteration and behind exploding and vanishing signals in recurrent networks.</li>' +
+          '<li>Under repeated application the direction of \\(A^kx\\) approaches the dominant eigenvector unless the start vector has no component along it. The size of the largest eigenvalue decides whether the vector grows or vanishes, which is the mechanism behind power iteration and behind signals that explode or fade when a matrix is applied many times.</li>' +
           '</ul>'
       }
     ]

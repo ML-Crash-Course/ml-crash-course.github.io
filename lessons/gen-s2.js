@@ -292,7 +292,7 @@
       {
         kind: 'text',
         title: 'Weight decay',
-        html: '<p>In neural networks the same penalty is called <b>weight decay</b>. The gradient of \\(\\lambda \\sum_k w_k^2\\) with respect to \\(w_k\\) is \\(2\\lambda w_k\\), so a gradient step becomes</p>' +
+        html: '<p>The same penalty is also called <b>weight decay</b>. The gradient of \\(\\lambda \\sum_k w_k^2\\) with respect to \\(w_k\\) is \\(2\\lambda w_k\\), so a gradient step becomes</p>' +
           '\\[ w \\leftarrow w - \\eta\\big(\\nabla L_{\\text{data}}(w) + 2\\lambda w\\big) = (1 - 2\\eta\\lambda)\\, w \\; - \\; \\eta\\, \\nabla L_{\\text{data}}(w). \\]' +
           '<p>Every step first shrinks each weight by the factor \\(1 - 2\\eta\\lambda\\), slightly below 1, and then takes the ordinary step. A weight that the data does not pull on decays toward zero. Only weights that keep earning their size survive.</p>'
       },
@@ -350,7 +350,7 @@
       {
         kind: 'exercise',
         title: 'A diagnosis',
-        html: '<p>A network reaches a training error of 0.2% and a validation error of 9%. The best possible error on this task is about 1%. Which change is most likely to help?</p>',
+        html: '<p>A model reaches a training error of 0.2% and a validation error of 9%. The best possible error on this task is about 1%. Which change is most likely to help?</p>',
         mount: function (el, ctx) {
           M4.choices(el, {
             options: [
@@ -360,8 +360,8 @@
               'Turn off the weight decay'
             ],
             correct: 0,
-            onCorrect: function () { ctx.solved('Training error is far below the best possible error and validation error is far above it. The network overfits, so it needs more regularization, not more capacity or more training.'); },
-            onWrong: function () { ctx.wrong('Compare both errors with the best possible 1%. Is the network too weak or too free?'); }
+            onCorrect: function () { ctx.solved('Training error is far below the best possible error and validation error is far above it. The model overfits, so it needs more regularization, not more capacity or more training.'); },
+            onWrong: function () { ctx.wrong('Compare both errors with the best possible 1%. Is the model too weak or too free?'); }
           });
         }
       },

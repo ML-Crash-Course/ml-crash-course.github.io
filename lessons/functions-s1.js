@@ -136,7 +136,7 @@
         kind: 'text',
         title: 'Learning goals',
         html:
-          '<p>A function is a rule that assigns exactly one output to each input. Almost every formula in machine learning is a function: a model maps data to predictions, and a loss maps predictions to a number that measures error.</p>' +
+          '<p>A function is a rule that assigns exactly one output to each input. Almost every formula in machine learning is a function. A system that predicts house prices, for example, is a function from the description of a house to a price.</p>' +
           '<p>In this lesson you will evaluate a function, read the slope and intercept of a line \\(y = mx + b\\) from its graph, and predict how a graph moves when its formula is shifted or scaled.</p>'
       },
 
@@ -551,7 +551,7 @@
         kind: 'exercise',
         title: 'A line through data',
         html:
-          '<p>In machine learning, a linear model predicts \\(\\hat{y} = wx + b\\), where the slope \\(w\\) is called the weight and the intercept \\(b\\) the bias. Training means adjusting \\(w\\) and \\(b\\) until the predictions are close to the observed data points \\((x_i, y_i)\\).</p>' +
+          '<p>The simplest learning system predicts an output with a line, \\(\\hat{y} = wx + b\\). As in the vectors module, \\(w\\) is called a weight. The intercept \\(b\\) is called the bias. Learning means adjusting \\(w\\) and \\(b\\) until the predictions are close to the observed data points \\((x_i, y_i)\\).</p>' +
           '<p>Closeness is measured by the mean squared error, the average of the squared vertical distances \\((y_i - \\hat{y}_i)^2\\), drawn in pink. Adjust \\(w\\) and \\(b\\) until the mean squared error is below \\(0.05\\), then check.</p>',
         hint: 'First set b to the height at which the points cross the vertical axis, close to 1. Then tilt the line: the points rise by about 1 for every 2 units to the right.',
         mount: function (el, ctx) {
@@ -606,9 +606,9 @@
             var r = resid(), mean = 0, tilt = 0;
             for (var i = 0; i < r.length; i++) { mean += r[i] / r.length; tilt += r[i] * xs[i]; }
             if (Math.abs(mean) > 0.1) {
-              ctx.wrong('Mean squared error ' + e.toFixed(3) + '. On average the line lies ' + (mean > 0 ? 'below' : 'above') + ' the points; ' + (mean > 0 ? 'increase' : 'decrease') + ' the bias b.');
+              ctx.wrong('Mean squared error ' + e.toFixed(3) + '. On average the line lies ' + (mean > 0 ? 'below' : 'above') + ' the points, so ' + (mean > 0 ? 'increase' : 'decrease') + ' the bias b.');
             } else {
-              ctx.wrong('Mean squared error ' + e.toFixed(3) + '. The height is about right, but the line is ' + (tilt > 0 ? 'too flat' : 'too steep') + '; ' + (tilt > 0 ? 'increase' : 'decrease') + ' the weight w.');
+              ctx.wrong('Mean squared error ' + e.toFixed(3) + '. The height is about right, but the line is ' + (tilt > 0 ? 'too flat' : 'too steep') + ', so ' + (tilt > 0 ? 'increase' : 'decrease') + ' the weight w.');
             }
           }, { primary: true });
           update();
@@ -623,7 +623,7 @@
           '<ul>' +
           '<li>A function \\(f\\) assigns exactly one output \\(f(x)\\) to each input \\(x\\). Its graph is the set of points \\((x, f(x))\\).</li>' +
           '<li>A line \\(y = mx + b\\) has intercept \\(b\\), its value at \\(x = 0\\), and slope \\(m = \\dfrac{y_2 - y_1}{x_2 - x_1}\\), the rise per unit of run.</li>' +
-          '<li>The graph of \\(a\\,f(x - h) + k\\) is the graph of \\(f\\) stretched vertically by \\(a\\) and then shifted \\(h\\) to the right and \\(k\\) up. A linear model \\(\\hat{y} = wx + b\\) is fitted by choosing \\(w\\) and \\(b\\) to make the mean squared error small.</li>' +
+          '<li>The graph of \\(a\\,f(x - h) + k\\) is the graph of \\(f\\) stretched vertically by \\(a\\) and then shifted \\(h\\) to the right and \\(k\\) up. A line \\(\\hat{y} = wx + b\\) is fitted to data by choosing \\(w\\) and \\(b\\) to make the mean squared error small.</li>' +
           '</ul>' +
           '<p>The next session treats exponential functions, whose outputs are multiplied by a fixed factor for every unit step of the input.</p>'
       }

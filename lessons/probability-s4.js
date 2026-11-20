@@ -548,7 +548,7 @@
       {
         kind: 'exercise',
         title: 'Squared error',
-        html: '<p>A regression model outputs a prediction \\(\\hat y\\), and the observed value \\(y\\) is modelled as Gaussian with mean \\(\\hat y\\) and fixed standard deviation \\(\\sigma\\). Training minimises the negative log-likelihood \\(-\\log p(y)\\). Drag three tiles into the slots to assemble it.</p>',
+        html: '<p>A model predicts a number \\(\\hat y\\), and the observed value \\(y\\) is treated as Gaussian with mean \\(\\hat y\\) and fixed standard deviation \\(\\sigma\\). Training makes the density \\(p(y)\\) of the observed value large, which is the same as making \\(-\\log p(y)\\) small (the maximum likelihood module explains why). Drag three tiles into the slots to assemble it.</p>',
         hint: 'Start from \\(\\log p(x)\\) in the previous step, replace \\(x\\) by \\(y\\) and \\(\\mu\\) by \\(\\hat y\\), and change every sign.',
         mount: mountNll
       },
@@ -570,7 +570,7 @@
         title: 'Recap',
         html: '<ul>' +
           '<li>A Gaussian \\(\\mathcal{N}(\\mu, \\sigma^2)\\) is fixed by its mean \\(\\mu\\), which sets the position, and its standard deviation \\(\\sigma\\), which sets the width. About 68 %, 95 % and 99.7 % of the probability lie within \\(1\\sigma\\), \\(2\\sigma\\) and \\(3\\sigma\\) of the mean.</li>' +
-          '<li>The log-density is a parabola with curvature \\(-1/\\sigma^2\\), so maximising a Gaussian likelihood with fixed \\(\\sigma\\) is the same as minimising squared error.</li>' +
+          '<li>The log-density is a parabola with curvature \\(-1/\\sigma^2\\), so making the Gaussian density of the data large, with \\(\\sigma\\) fixed, is the same as making the squared error small.</li>' +
           '<li>A sum of \\(n\\) independent small effects is approximately Gaussian, and its standard deviation grows like \\(\\sqrt{n}\\), not like \\(n\\).</li>' +
           '</ul>'
       }

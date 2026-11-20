@@ -531,10 +531,10 @@
         kind: 'exercise',
         title: 'Matrix products in machine learning',
         html:
-          '<p>A linear layer of a neural network multiplies its input by a weight matrix. Inputs are processed in batches: the batch is stored as a matrix \\(X\\) with one example per row, ' +
-          'and the layer computes \\(XW\\) for all examples in a single product. Two linear layers in a row compute \\((XW_1)W_2 = X(W_1W_2)\\), which is again a single matrix product; ' +
-          'this is why networks place a non-linear function between layers.</p>' +
-          '<p>A batch \\(X\\) holds 32 images, each flattened to 784 numbers, so \\(X\\) has shape \\(32 \\times 784\\). The weight matrix \\(W\\) has shape \\(784 \\times 10\\). What is the shape of \\(XW\\)?</p>',
+          '<p>The previous session computed several scores of one input with \\(W\\mathbf{x}\\). Data usually comes in many examples at once. Store them as the rows of a matrix \\(X\\), one example per row, and put one weight vector in each column of \\(W\\). ' +
+          'Then the single product \\(XW\\) holds every score of every example: entry \\((i, j)\\) is the dot product of example \\(i\\) with weight vector \\(j\\). ' +
+          'Two such steps in a row compute \\((XW_1)W_2 = X(W_1W_2)\\), which is again a single matrix product. This fact becomes important later in the course.</p>' +
+          '<p>A batch \\(X\\) holds 32 images, each flattened to 784 numbers, so \\(X\\) has shape \\(32 \\times 784\\). The matrix \\(W\\) holds 10 weight vectors as columns, so it has shape \\(784 \\times 10\\). What is the shape of \\(XW\\)?</p>',
         hint: 'Check that the inner sizes agree, then read off the outer sizes: rows of X and columns of W.',
         mount: function (el, ctx) {
           injectStyle();

@@ -244,7 +244,7 @@
       {
         kind: 'text',
         title: 'Where the vectors come from',
-        html: '<p>Nobody places the words by hand. The rows of \\(E\\) are parameters, trained with gradient descent like any other weights. One classic method, word2vec, trains them to predict the words that appear near a given word.</p>' +
+        html: '<p>Nobody places the words manually. The rows of \\(E\\) are parameters, trained with gradient descent like any other weights. One classic method, word2vec, trains them to predict the words that appear near a given word.</p>' +
           '<p>Words that appear in similar contexts receive similar gradient updates and end up close together. Cat and dog both appear after "feed the" and before "barked" or "purred", so their vectors become similar. This is the <b>distributional hypothesis</b>: a word is characterized by the company it keeps.</p>'
       },
       {

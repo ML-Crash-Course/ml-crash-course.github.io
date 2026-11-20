@@ -436,7 +436,7 @@
       },
       {
         kind: 'exercise',
-        title: 'A new position by hand',
+        title: 'A new position on paper',
         html: '<p>Let \\[W = \\begin{pmatrix} 1 &amp; 2 \\\\ 3 &amp; -1 \\end{pmatrix}, \\qquad b = \\begin{pmatrix} 1 \\\\ -2 \\end{pmatrix}, \\qquad x = \\begin{pmatrix} 2 \\\\ 1 \\end{pmatrix}.\\] Each row of \\(W\\) asks one question of the input: \\(z_k\\) is row \\(k\\) of \\(W\\) times \\(x\\), plus \\(b_k\\). Drag the correct values into the slots for \\(z = Wx + b\\).</p>',
         hint: 'z₁ = 1·2 + 2·1 + 1 and z₂ = 3·2 + (−1)·1 + (−2).',
         mount: function (el, ctx) {

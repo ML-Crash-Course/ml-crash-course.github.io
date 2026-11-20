@@ -7,43 +7,50 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%231c1b19%22/%3E%3Cpath d=%22M7 23 L13 11 L19 19 L25 8%22 stroke=%22%23f4f1ea%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
 <meta name="description" content="Interactive notes on the mathematics behind machine learning: linear algebra, calculus, probability, likelihood, information theory, optimization and neural networks.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link rel="stylesheet" href="assets/app.css?v=15">
+<link rel="stylesheet" href="assets/app.css?v=27">
 </head>
 <body>
 <div id="app"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="assets/app.js?v=9"></script>
-<script src="assets/modules.js?v=10"></script>
+<script src="assets/app.js?v=11"></script>
+<script src="assets/modules.js?v=16"></script>
+<script src="assets/drill.js?v=9"></script>
 <!-- lessons: a missing or broken file is skipped and shown as "in preparation" -->
-<script src="lessons/vectors-s1.js?v=7"></script>
-<script src="lessons/vectors-s2.js?v=7"></script>
-<script src="lessons/vectors-s3.js?v=7"></script>
-<script src="lessons/vectors-s4.js?v=7"></script>
-<script src="lessons/matrices-s1.js?v=7"></script>
-<script src="lessons/matrices-s2.js?v=7"></script>
-<script src="lessons/matrices-s3.js?v=7"></script>
-<script src="lessons/matrices-s4.js?v=7"></script>
-<script src="lessons/eigen-s1.js?v=7"></script>
-<script src="lessons/eigen-s2.js?v=7"></script>
-<script src="lessons/eigen-s3.js?v=7"></script>
-<script src="lessons/eigen-s4.js?v=7"></script>
+<script src="lessons/vectors-s1.js?v=8"></script>
+<script src="lessons/vectors-s2.js?v=9"></script>
+<script src="lessons/vectors-s3.js?v=9"></script>
+<script src="lessons/vectors-s4.js?v=8"></script>
+<script src="lessons/vec-drill.js?v=2"></script>
+<script src="lessons/matrices-s1.js?v=8"></script>
+<script src="lessons/matrices-s2.js?v=8"></script>
+<script src="lessons/matrices-s3.js?v=8"></script>
+<script src="lessons/matrices-s4.js?v=8"></script>
+<script src="lessons/mat-drill.js?v=2"></script>
+<script src="lessons/eigen-s1.js?v=8"></script>
+<script src="lessons/eigen-s2.js?v=11"></script>
+<script src="lessons/eigen-s3.js?v=8"></script>
+<script src="lessons/eigen-s4.js?v=8"></script>
 <script src="lessons/functions-s1.js?v=7"></script>
-<script src="lessons/functions-s2.js?v=7"></script>
-<script src="lessons/functions-s3.js?v=7"></script>
-<script src="lessons/functions-s4.js?v=7"></script>
-<script src="lessons/calculus-s1.js?v=7"></script>
-<script src="lessons/calculus-s2.js?v=7"></script>
-<script src="lessons/calculus-s3.js?v=7"></script>
-<script src="lessons/calculus-s4.js?v=7"></script>
+<script src="lessons/functions-s2.js?v=8"></script>
+<script src="lessons/functions-s3.js?v=8"></script>
+<script src="lessons/functions-s4.js?v=9"></script>
+<script src="lessons/calculus-s1.js?v=8"></script>
+<script src="lessons/calculus-s2.js?v=8"></script>
+<script src="lessons/calculus-s3.js?v=9"></script>
+<script src="lessons/calc-drill.js?v=3"></script>
+<script src="lessons/calculus-s4.js?v=10"></script>
 <script src="lessons/mv-s1.js?v=9"></script>
 <script src="lessons/mv-s2.js?v=10"></script>
-<script src="lessons/mv-s3.js?v=9"></script>
-<script src="lessons/mv-s4.js?v=10"></script>
-<script src="lessons/probability-s1.js?v=7"></script>
-<script src="lessons/probability-s2.js?v=7"></script>
+<script src="lessons/mv-s3.js?v=11"></script>
+<script src="lessons/mv-s4.js?v=12"></script>
+<script src="lessons/mv-s5.js?v=7"></script>
+<script src="lessons/mv-s6.js?v=4"></script>
+<script src="lessons/mv-drill.js?v=6"></script>
+<script src="lessons/probability-s1.js?v=8"></script>
+<script src="lessons/probability-s2.js?v=15"></script>
 <script src="lessons/probability-s3.js?v=7"></script>
-<script src="lessons/probability-s4.js?v=7"></script>
+<script src="lessons/probability-s4.js?v=8"></script>
 <script src="lessons/l1-s1.js?v=7"></script>
 <script src="lessons/l1-s2.js?v=7"></script>
 <script src="lessons/l1-s3.js?v=7"></script>
@@ -56,26 +63,33 @@
 <script src="lessons/l2-s4.js?v=7"></script>
 <script src="lessons/info-s2.js?v=10"></script>
 <script src="lessons/optimisation-s1.js?v=7"></script>
-<script src="lessons/optimisation-s2.js?v=7"></script>
-<script src="lessons/l3-s1.js?v=7"></script>
+<script src="lessons/optimisation-s2.js?v=9"></script>
+<script src="lessons/l3-s1.js?v=8"></script>
 <script src="lessons/optimisation-s3.js?v=7"></script>
 <script src="lessons/l3-s2.js?v=7"></script>
-<script src="lessons/optimisation-s4.js?v=7"></script>
-<script src="lessons/l3-s3.js?v=7"></script>
-<script src="lessons/opt-s1.js?v=8"></script>
+<script src="lessons/optimisation-s4.js?v=8"></script>
+<script src="lessons/l3-s3.js?v=9"></script>
+<script src="lessons/opt-s1.js?v=9"></script>
 <script src="lessons/l3-s4.js?v=7"></script>
-<script src="lessons/opt-s2.js?v=8"></script>
-<script src="lessons/l4-s1.js?v=7"></script>
+<script src="lessons/opt-s2.js?v=9"></script>
+<script src="lessons/l4-s1.js?v=8"></script>
 <script src="lessons/l4-s2.js?v=7"></script>
-<script src="lessons/l4-s4.js?v=7"></script>
+<script src="lessons/l4-s4.js?v=8"></script>
 <script src="lessons/bp-s1.js?v=9"></script>
 <script src="lessons/l4-s3.js?v=7"></script>
 <script src="lessons/bp-s2.js?v=12"></script>
-<script src="lessons/gen-s1.js?v=3"></script>
-<script src="lessons/gen-s2.js?v=2"></script>
+<script src="lessons/bp-graphs.js?v=6"></script>
+<script src="lessons/nn-drill.js?v=3"></script>
+<script src="lessons/bp-drill.js?v=9"></script>
+<script src="lessons/norm-s1.js?v=4"></script>
+<script src="lessons/norm-s2.js?v=4"></script>
+<script src="lessons/res-s1.js?v=4"></script>
+<script src="lessons/norm-drill.js?v=2"></script>
+<script src="lessons/gen-s1.js?v=4"></script>
+<script src="lessons/gen-s2.js?v=3"></script>
 <script src="lessons/net-s1.js?v=5"></script>
-<script src="lessons/tok-s1.js?v=3"></script>
-<script src="lessons/emb-s1.js?v=1"></script>
+<script src="lessons/tok-s1.js?v=4"></script>
+<script src="lessons/emb-s1.js?v=2"></script>
 <script src="lessons/emb-s2.js?v=1"></script>
 <script src="lessons/emb-s3.js?v=4"></script>
 <script src="lessons/emb-s4.js?v=5"></script>

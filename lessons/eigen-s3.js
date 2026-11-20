@@ -413,10 +413,10 @@
       },
       {
         kind: 'exercise',
-        title: 'Variance along a direction',
+        title: 'Spread along a direction',
         html:
-          '<p>Principal component analysis (PCA) summarises a data set by its covariance matrix \\(\\Sigma\\), whose eigenvectors are the principal directions of the data cloud and whose eigenvalues are the variances of the data along those directions. The largest eigenvalue therefore measures the spread along the most informative direction.</p>' +
-          '<p>The cloud below was drawn from a distribution with \\(\\Sigma=\\begin{pmatrix}5&2\\\\2&2\\end{pmatrix}\\). Compute the largest eigenvalue of \\(\\Sigma\\).</p>',
+          '<p>The previous session summarised a cloud of data points by its spread matrix \\(\\Sigma\\). Its eigenvectors are the axes of the cloud, and its eigenvalues measure how far the cloud spreads along them. The largest eigenvalue therefore measures the spread along the long axis.</p>' +
+          '<p>The cloud below has spread matrix \\(\\Sigma=\\begin{pmatrix}5&2\\\\2&2\\end{pmatrix}\\). Compute the largest eigenvalue of \\(\\Sigma\\).</p>',
         hint: 'The trace is 7 and the determinant is \\(5\\cdot 2-2\\cdot 2=6\\), so solve \\(\\lambda^2-7\\lambda+6=0\\) and take the larger root.',
         mount: function (el, ctx) {
           var w = wrap(el);
@@ -435,21 +435,21 @@
             if (shown) return; shown = true;
             p.arrow(0, 0, s6 * u1[0], s6 * u1[1], { stroke: PINK, width: 5 });
             p.arrow(0, 0, u2[0], u2[1], { stroke: BLUE, width: 5 });
-            p.text(4.3, 0.2, 'variance 6', { fill: PINK, size: 17, weight: 700 });
-            p.text(-2.6, 1.6, 'variance 1', { fill: BLUE, size: 17, weight: 700 });
+            p.text(4.3, 0.2, 'spread 6', { fill: PINK, size: 17, weight: 700 });
+            p.text(-2.6, 1.6, 'spread 1', { fill: BLUE, size: 17, weight: 700 });
           }
           M4.numberInput(w, {
             answer: 6, tolerance: 0.01, label: 'largest eigenvalue', placeholder: 'λ',
             onCorrect: function () {
               reveal();
-              ctx.note('\\(\\lambda^2-7\\lambda+6=(\\lambda-1)(\\lambda-6)\\). The arrows have lengths \\(\\sqrt6\\) and \\(1\\), the standard deviations along the two principal directions.');
+              ctx.note('\\(\\lambda^2-7\\lambda+6=(\\lambda-1)(\\lambda-6)\\). The arrows have lengths \\(\\sqrt6\\) and \\(1\\), the square roots of the two eigenvalues.');
               ctx.solved();
             },
             onWrong: function (v) {
               v = +v;
               if (Math.abs(v - 1) < 0.01) ctx.wrong('1 is an eigenvalue, but the smaller one.');
               else if (Math.abs(v - 7) < 0.01) ctx.wrong('7 is the trace, which is the sum of both eigenvalues.');
-              else if (Math.abs(v - 5) < 0.01) ctx.wrong('5 is a diagonal entry: the variance along the horizontal axis, not along the principal direction.');
+              else if (Math.abs(v - 5) < 0.01) ctx.wrong('5 is a diagonal entry: the spread along the horizontal axis, not along the long axis of the cloud.');
               else ctx.wrong('Form λ² − (trace)λ + (determinant) and find its larger root.');
             }
           });
@@ -519,7 +519,7 @@
           '<ul>' +
           '<li>A number \\(\\lambda\\) is an eigenvalue of \\(A\\) exactly when \\(A-\\lambda I\\) collapses the plane, that is, when \\(\\det(A-\\lambda I)=0\\).</li>' +
           '<li>For a \\(2\\times 2\\) matrix this condition is the quadratic \\(\\lambda^2-\\operatorname{tr}A\\;\\lambda+\\det A=0\\). Its roots add up to the trace and multiply to the determinant.</li>' +
-          '<li>If the discriminant \\((\\operatorname{tr}A)^2-4\\det A\\) is negative, as for a rotation, there are no real eigenvalues. For a covariance matrix the eigenvalues are real and give the variances used in PCA.</li>' +
+          '<li>If the discriminant \\((\\operatorname{tr}A)^2-4\\det A\\) is negative, as for a rotation, there are no real eigenvalues. For a symmetric matrix such as a spread matrix the eigenvalues are always real.</li>' +
           '</ul>' +
           '<p>The next session uses eigenvalues and eigenvectors together to diagonalise a matrix and to predict what happens when a map is applied many times.</p>'
       }

@@ -141,6 +141,89 @@
     return api;
   }
 
+  // The plane morphs from the identity (t = 0) to A (t = 1). Eight arrows ride along.
+  // opts.colorize: arrows that stay on their own dashed line turn green, the others pink.
+  // opts.onEnd(): called when t reaches 1.
+  var warpId = 0;
+  function recolor(arrow, col) {
+    var ln = arrow.el.querySelector('line'), hd = arrow.el.querySelector('polygon');
+    if (ln) ln.setAttribute('stroke', col);
+    if (hd) { hd.setAttribute('fill', col); hd.setAttribute('stroke', col); }
+  }
+  function warpScene(el, A, opts) {
+    opts = opts || {};
+    var R = 5, Lv = 1.5;
+    var wrap = wrapEl(el);
+    matrixHeader(wrap, A);
+    var p = planeBox(wrap, { xmin: -R, xmax: R, ymin: -R, ymax: R, width: 520, height: 520 });
+    var id = 'eigen-s2-clip-' + (++warpId);
+    var defs = M4.svg('defs', {}, p.svg);
+    var cp = M4.svg('clipPath', { id: id }, defs);
+    M4.svg('rect', { x: p.x(-R), y: p.y(R), width: p.x(R) - p.x(-R), height: p.y(-R) - p.y(R) }, cp);
+    var grid = M4.svg('path', {
+      fill: 'none', stroke: C.blue, 'stroke-width': 1.6, 'stroke-opacity': 0.4,
+      'clip-path': 'url(#' + id + ')', 'pointer-events': 'none'
+    });
+    p.g.insertBefore(grid, p.g.firstChild);
+    var cell = p.path([[0, 0], [1, 0], [1, 1], [0, 1]], { stroke: C.blue, width: 2, closed: true, fill: C.blue });
+    cell.el.setAttribute('fill-opacity', '0.14');
+    var k, dirs = [];
+    for (k = 0; k < 4; k++) {
+      var a = k * Math.PI / 4, c = Math.cos(a), sn = Math.sin(a);
+      p.line(-R * 1.5 * c, -R * 1.5 * sn, R * 1.5 * c, R * 1.5 * sn, { stroke: C.muted, width: 1.5, dash: '6 6' });
+    }
+    for (k = 0; k < 8; k++) {
+      var b = k * Math.PI / 4;
+      var v = [Lv * Math.cos(b), Lv * Math.sin(b)];
+      dirs.push({ v: v, w: mul(A, v), arrow: p.arrow(0, 0, v[0], v[1], { stroke: C.ink, width: 5 }) });
+    }
+    var t = 0, raf = 0, slider, ended = false;
+    function M(tt) {
+      return [[1 + tt * (A[0][0] - 1), tt * A[0][1]], [tt * A[1][0], 1 + tt * (A[1][1] - 1)]];
+    }
+    function render() {
+      var Mt = M(t), e1 = [Mt[0][0], Mt[1][0]], e2 = [Mt[0][1], Mt[1][1]];
+      var d = '', N = 30, L = 40, j;
+      function seg(ax, ay, bx, by) {
+        d += 'M' + p.x(ax).toFixed(1) + ' ' + p.y(ay).toFixed(1) + 'L' + p.x(bx).toFixed(1) + ' ' + p.y(by).toFixed(1);
+      }
+      for (j = -N; j <= N; j++) {
+        seg(j * e1[0] - L * e2[0], j * e1[1] - L * e2[1], j * e1[0] + L * e2[0], j * e1[1] + L * e2[1]);
+        seg(j * e2[0] - L * e1[0], j * e2[1] - L * e1[1], j * e2[0] + L * e1[0], j * e2[1] + L * e1[1]);
+      }
+      grid.setAttribute('d', d);
+      cell.set([[0, 0], e1, [e1[0] + e2[0], e1[1] + e2[1]], e2]);
+      for (j = 0; j < dirs.length; j++) {
+        var q = dirs[j], x = mul(Mt, q.v);
+        q.arrow.set(0, 0, x[0], x[1]);
+        var col = C.ink;
+        if (opts.colorize && t > 0.04) col = angleDeg(q.v, x) < 1 ? C.green : C.pink;
+        recolor(q.arrow, col);
+      }
+      if (t >= 0.999 && !ended) { ended = true; if (opts.onEnd) opts.onEnd(); }
+    }
+    var box = M4.el('div', { style: 'width:100%;max-width:520px' }, wrap);
+    slider = M4.slider(box, {
+      min: 0, max: 1, step: 0.01, value: 0, label: 't',
+      format: function (x) { return Number(x).toFixed(2); },
+      onInput: function (x) { cancelAnimationFrame(raf); t = Number(x); render(); }
+    });
+    M4.button(wrap, 'Play', function () {
+      cancelAnimationFrame(raf);
+      var t0 = null;
+      function frame(now) {
+        if (t0 === null) t0 = now;
+        var u = Math.min(1, (now - t0) / 2600);
+        t = u * u * (3 - 2 * u);
+        slider.set(Math.round(t * 100) / 100);
+        render();
+        if (u < 1) raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+    }, { primary: true });
+    return { wrap: wrap, render: render, stop: function () { cancelAnimationFrame(raf); } };
+  }
+
   // ---------- matrices used ----------
   var A1 = [[2, 1], [1, 2]];   // eigenvectors (1,1) lambda 3, (1,-1) lambda 1
   var A2 = [[3, 1], [0, 2]];   // eigenvectors (1,0) lambda 3, (1,-1) lambda 2
@@ -153,7 +236,7 @@
     module: 'eigen',
     title: 'Eigenvectors',
     summary: 'Directions that a matrix only stretches, and the stretch factor attached to each of them.',
-    minutes: 10,
+    minutes: 13,
     steps: [
       // 1
       {
@@ -163,12 +246,59 @@
           '<p>A matrix \\(A\\) sends each vector \\(\\mathbf{v}\\) to a new vector \\(A\\mathbf{v}\\). In general the output points in a different direction from the input.</p>' +
           '<p>For most matrices there are a few special directions in which the output stays on the same line as the input.</p><p>In this lesson you will locate such directions by eye, state the definition of an eigenvector and an eigenvalue, and test whether a given vector is an eigenvector.</p>'
       },
+      // 1b
+      {
+        kind: 'explore',
+        title: 'Warping the plane',
+        html:
+          '<p>Think of \\(A\\) as a machine that moves every point of the plane at once. The slider blends from doing nothing (\\(t = 0\\)) to applying \\(A\\) in full (\\(t = 1\\)): the grid squares become slanted parallelograms, and eight arrows of equal length are carried along.</p>' +
+          '<p>Each dashed line marks the line an arrow starts on. Press Play and follow the arrows. An arrow that turns away from its dashed line becomes pink. An arrow that stays on its line becomes green: it only gets longer or shorter.</p>',
+        mount: function (el, ctx) {
+          var sc = warpScene(el, A1, {
+            colorize: true,
+            onEnd: function () {
+              ctx.note('Four arrows turn. The four along the diagonals never leave their lines: along \\((1, 1)\\) they grow to 3 times their length, along \\((1, -1)\\) they keep their length. These are the special directions of \\(A\\).');
+            }
+          });
+          ctx.onCleanup(sc.stop);
+          sc.render();
+        }
+      },
+      {
+        kind: 'exercise',
+        title: 'Directions that do not turn',
+        html:
+          '<p>Here is a different matrix, and this time the arrows keep one colour. Play the warp, or drag the slider slowly, and watch which arrows stay on their dashed lines.</p>' +
+          '<p>Which two directions does \\(A\\) only stretch?</p>',
+        hint: 'Drag the slider to \\(t = 1\\) and check each dashed line. The horizontal arrows stay horizontal. Which diagonal keeps its arrows?',
+        mount: function (el, ctx) {
+          var wo = {};
+          var sc = warpScene(el, A2, wo);
+          ctx.onCleanup(sc.stop);
+          sc.render();
+          var box = M4.el('div', { style: 'width:100%' }, sc.wrap);
+          M4.choices(box, {
+            options: ['\\((1, 0)\\) and \\((0, 1)\\)', '\\((1, 0)\\) and \\((1, -1)\\)', '\\((1, 1)\\) and \\((1, -1)\\)', '\\((0, 1)\\) and \\((1, 1)\\)'],
+            correct: 1,
+            onCorrect: function () {
+              wo.colorize = true;
+              sc.render();
+              ctx.solved('\\(A(1, 0) = (3, 0)\\) and \\(A(1, -1) = (2, -2)\\): both stay on their lines, stretched by 3 and by 2. The vertical arrows tip to the right, since \\(A(0, 1) = (1, 2)\\).');
+            },
+            onWrong: function (k) {
+              if (k === 0) ctx.wrong('The horizontal arrows stay put, but the vertical ones lean over: \\(A(0, 1) = (1, 2)\\).');
+              else if (k === 2) ctx.wrong('\\(A(1, 1) = (4, 2)\\), which is not on the line through \\((1, 1)\\).');
+              else ctx.wrong('\\(A(0, 1) = (1, 2)\\) leaves the vertical line. Look again at the horizontal arrows.');
+            }
+          });
+        }
+      },
       // 2
       {
         kind: 'explore',
         title: 'A rotating probe vector',
         html:
-          '<p>The blue arrow is a probe vector \\(\\mathbf{v}\\) of length 1, and the pink arrow is its image \\(A\\mathbf{v}\\). The dashed line is the line through \\(\\mathbf{v}\\).</p>' +
+          '<p>To find such directions precisely, test one direction at a time. The blue arrow is a probe vector \\(\\mathbf{v}\\) of length 1, and the pink arrow is its image \\(A\\mathbf{v}\\). The dashed line is the line through \\(\\mathbf{v}\\).</p>' +
           '<p>Drag the blue point around the circle and observe the angle between the two arrows. At certain positions the pink arrow falls onto the dashed line and turns green.</p>',
         mount: function (el, ctx) {
           var last = null;
@@ -464,11 +594,11 @@
       // 10
       {
         kind: 'exercise',
-        title: 'Principal components',
+        title: 'The long axis of a data cloud',
         html:
-          '<p>Principal component analysis (PCA) summarises a data set by its covariance matrix \\(\\Sigma\\), which records how strongly the coordinates vary together. The eigenvectors of \\(\\Sigma\\) are the principal directions of the data cloud, and each eigenvalue equals the variance of the data along its eigenvector.</p>' +
-          '<p>The cloud below has covariance matrix \\(\\Sigma = \\begin{bmatrix}2 & 1 \\\\ 1 & 2\\end{bmatrix}\\). Which vector points along the direction of greatest variance?</p>',
-        hint: 'This matrix appeared earlier in the session. Its eigenvalues are 3 and 1. The larger eigenvalue marks the direction of greatest variance.',
+          '<p>A cloud of data points can be summarised by a symmetric matrix \\(\\Sigma\\), its <em>spread matrix</em>, which records how far the points spread out in each direction. The eigenvectors of \\(\\Sigma\\) point along the axes of the cloud, and each eigenvalue measures how far the cloud spreads along its eigenvector. The probability module calls \\(\\Sigma\\) the covariance matrix, and finding these axes is called principal component analysis.</p>' +
+          '<p>The cloud below has spread matrix \\(\\Sigma = \\begin{bmatrix}2 & 1 \\\\ 1 & 2\\end{bmatrix}\\). Which vector points along the direction of greatest spread?</p>',
+        hint: 'This matrix appeared earlier in the session. Its eigenvalues are 3 and 1. The larger eigenvalue marks the direction of greatest spread.',
         mount: function (el, ctx) {
           var wrap = wrapEl(el);
           var p = planeBox(wrap, { xmin: -6.5, xmax: 6.5, ymin: -5, ymax: 5, width: 520, height: 400 });
@@ -493,7 +623,7 @@
               p.arrow(0, 0, 2 * h, -2 * h, { stroke: C.orange, width: 6 });
               p.text(3.4, 2.2, 'λ = 3', { fill: C.pink, size: 18, weight: 700 });
               p.text(2.6, -1.6, 'λ = 1', { fill: C.orange, size: 18, weight: 700 });
-              ctx.note('\\(\\Sigma(1,1) = (3,3)\\): variance 3 along \\((1,1)\\). Along \\((1,-1)\\) the variance is only 1. The arrows are drawn with length two standard deviations.');
+              ctx.note('\\(\\Sigma(1,1) = (3,3)\\): spread 3 along \\((1,1)\\). Along \\((1,-1)\\) the spread is only 1. Each arrow has length twice the square root of its eigenvalue.');
               ctx.solved();
             },
             onWrong: function (k) {
@@ -577,7 +707,7 @@
           '<ul>' +
           '<li>A non-zero vector \\(\\mathbf{v}\\) is an eigenvector of \\(A\\) if \\(A\\mathbf{v} = \\lambda\\mathbf{v}\\): the matrix keeps \\(\\mathbf{v}\\) on its own line.</li>' +
           '<li>The eigenvalue \\(\\lambda\\) is the stretch factor along that line. A negative value reverses the vector, and every non-zero multiple of an eigenvector is an eigenvector with the same \\(\\lambda\\).</li>' +
-          '<li>To test a candidate, compute \\(A\\mathbf{v}\\) and check whether it is a multiple of \\(\\mathbf{v}\\). In PCA the eigenvectors of the covariance matrix are the principal directions and the eigenvalues are the variances along them.</li>' +
+          '<li>To test a candidate, compute \\(A\\mathbf{v}\\) and check whether it is a multiple of \\(\\mathbf{v}\\). For the spread matrix of a data cloud the eigenvectors are the axes of the cloud and the eigenvalues measure the spread along them.</li>' +
           '</ul>' +
           '<p>The next session shows how to compute eigenvalues directly from the entries of a matrix, without trial and error.</p>'
       }

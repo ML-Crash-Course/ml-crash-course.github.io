@@ -378,7 +378,7 @@
       ],
       correct: 1,
       onCorrect: function () {
-        ctx.note('Each of the 3 rows is one unit with 4 weights, so the layer maps 4 input features to 3 outputs.');
+        ctx.note('Each of the 3 rows holds 4 weights, so the matrix turns 4 input numbers into 3 scores.');
         ctx.solved();
       },
       onWrong: function (i) {
@@ -449,7 +449,7 @@
         kind: 'text',
         title: 'Rows and columns',
         html: '<p>A matrix \\(A\\) moves every point of the plane. The arithmetic behind this computes the output \\(A\\mathbf{x}\\) for a given input vector \\(\\mathbf{x}\\).</p>' +
-          '<p>In this lesson you will compute \\(A\\mathbf{x}\\) entry by entry using the rows of \\(A\\), interpret the same product as a weighted sum of the columns of \\(A\\), and recognise the product inside a neural network layer.</p>'
+          '<p>In this lesson you will compute \\(A\\mathbf{x}\\) entry by entry using the rows of \\(A\\), interpret the same product as a weighted sum of the columns of \\(A\\), and use the product to compute several scores at once.</p>'
       },
       {
         kind: 'text',
@@ -507,8 +507,8 @@
       },
       {
         kind: 'exercise',
-        title: 'A linear layer',
-        html: '<p>A linear layer of a neural network computes \\(\\mathbf{z} = W\\mathbf{x}\\), usually followed by adding a bias vector. Here \\(\\mathbf{x}\\) is the vector of input features and \\(W\\) is the weight matrix. Each row of \\(W\\) holds the weights of one unit, and that unit outputs the dot product of its row with \\(\\mathbf{x}\\).</p>' +
+        title: 'Many scores at once',
+        html: '<p>The vectors module scored an input \\(\\mathbf{x}\\) with a weighted sum \\(\\mathbf{w}\\cdot\\mathbf{x}\\). To compute several scores at once, stack one weight vector per score as the rows of a matrix \\(W\\). Then \\(\\mathbf{z} = W\\mathbf{x}\\) lists all the scores: entry \\(i\\) of \\(\\mathbf{z}\\) is the dot product of row \\(i\\) with \\(\\mathbf{x}\\). This product appears in almost every model later in the course.</p>' +
           '<p>Suppose \\(W\\) has 3 rows and 4 columns. Which statement about the sizes of \\(\\mathbf{x}\\) and \\(\\mathbf{z}\\) is correct?</p>',
         hint: 'A dot product pairs each entry of a row with one entry of x, and every row yields one output number.',
         mount: mountLayer
@@ -526,7 +526,7 @@
         html: '<ul>' +
           '<li><strong>Row picture.</strong> Entry \\(i\\) of \\(A\\mathbf{x}\\) is the dot product of row \\(i\\) of \\(A\\) with \\(\\mathbf{x}\\).</li>' +
           '<li><strong>Column picture.</strong> \\(A\\mathbf{x} = x_1\\mathbf{a}_1 + x_2\\mathbf{a}_2 + \\dots\\) is a linear combination of the columns of \\(A\\), weighted by the entries of \\(\\mathbf{x}\\).</li>' +
-          '<li><strong>Shapes.</strong> A matrix with \\(m\\) rows and \\(n\\) columns takes a vector with \\(n\\) entries and returns one with \\(m\\) entries, which is what a linear layer \\(\\mathbf{z} = W\\mathbf{x}\\) does.</li>' +
+          '<li><strong>Shapes.</strong> A matrix with \\(m\\) rows and \\(n\\) columns takes a vector with \\(n\\) entries and returns one with \\(m\\) entries. Stacking weight vectors as rows computes many scores \\(\\mathbf{z} = W\\mathbf{x}\\) at once.</li>' +
           '</ul><p>The next session applies the same rule column by column to multiply two matrices.</p>'
       }
     ]

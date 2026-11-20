@@ -10,6 +10,7 @@
     s.id = PRE + 'style';
     s.textContent =
       '.' + PRE + 'wrap{max-width:520px;margin:0 auto;}' +
+      '.' + PRE + 'pair{max-width:1000px;margin:0 auto;}.' + PRE + 'pair svg{width:100%;height:auto;}.' + PRE + 'pair .' + PRE + 'wrap{max-width:none;}' +
       '.' + PRE + 'row{margin-top:14px;justify-content:center;}' +
       '.' + PRE + 'eq{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0;font-size:20px;}' +
       '.' + PRE + 'eq .m4-slot{min-width:150px;min-height:56px;display:flex;align-items:center;justify-content:center;font-size:20px;}' +
@@ -120,17 +121,37 @@
         title: 'Contour maps',
         html:
           '<p>A function \\(f(x,y)\\) assigns a height to every point \\((x,y)\\) of the plane. A <em>contour</em> is the set of points that share one height, as on a hiking map. The map below shows \\(' + F_TEX + '\\) with contours at heights 1 to 6.</p>' +
-          '<p>Drag the point. The bold curve is the contour through it. Equal height steps lie closer together where the surface is steeper.</p>',
+          '<p>On the left is the surface itself, a bowl. On the right is the same bowl seen from straight above, with every height ring drawn as a line. Drag the black ball on either picture and the other one follows. The bold green ring is the contour through the ball. The rings lie closer together where the bowl is steeper.</p>',
         mount: function (el, ctx) {
-          var cp = contourPlane(el), p = cp.p;
+          injectStyle();
+          var grid = M4.el('div', { class: 'm4-grid2 ' + PRE + 'pair' }, el);
+          var left = M4.el('div', {}, grid), right = M4.el('div', {}, grid);
+          var s3 = M4.surface3d(left, { f: f, r: 3.5, color: C.green, contours: [1, 2, 3, 4, 5, 6], width: 480, height: 440, scale: 0.4 });
+          var svg3 = left.querySelector('svg');
+          var ring3 = M4.svg('polyline', { fill: 'none', stroke: C.green, 'stroke-width': 3.5 }, svg3);
+          var cp = contourPlane(right), p = cp.p;
           var cur = p.path(ellipse(f(2, 1)), { stroke: C.green, width: 4, closed: true });
-          var out = readoutRow(cp.wrap, 2);
-          function update(x, y) {
-            cur.set(ellipse(f(x, y)));
-            out[0].textContent = '(x, y) = (' + fmt(x, 1) + ', ' + fmt(y, 1) + ')';
-            out[1].textContent = 'f(x, y) = ' + fmt(f(x, y));
+          var out = readoutRow(el, 2), pos = { x: 2, y: 1 }, busy = false, ball, h;
+          function drawRing() {
+            var pts = ellipse(f(pos.x, pos.y)).filter(function (q) { return Math.abs(q[0]) <= 3.5 && Math.abs(q[1]) <= 3.5; });
+            ring3.setAttribute('points', pts.length > 90 ? pts.concat([pts[0]]).map(function (q) { var r = s3.floor(q[0], q[1]); return r[0] + ',' + r[1]; }).join(' ') : '');
+            svg3.firstChild.appendChild(ring3);
           }
-          p.handle(2, 1, { color: C.green, snap: 0.1, onDrag: update, onEnd: function (x, y) { if (typeof x === 'number') update(x, y); } });
+          function update(x, y, from) {
+            if (busy) return;
+            busy = true;
+            pos.x = x; pos.y = y;
+            cur.set(ellipse(f(x, y)));
+            if (from !== 'ball' && ball) ball.set(Math.max(-3.5, Math.min(3.5, x)), Math.max(-3.5, Math.min(3.5, y)));
+            if (from !== 'map' && h) h.set(x, y);
+            drawRing();
+            out[0].textContent = '(x, y) = (' + fmt(x, 1) + ', ' + fmt(y, 1) + ')';
+            out[1].textContent = 'height f(x, y) = ' + fmt(f(x, y));
+            busy = false;
+          }
+          ball = s3.ball(2, 1, { onMove: function (x, y) { update(x, y, 'ball'); } });
+          s3.onRedraw(drawRing);
+          h = p.handle(2, 1, { color: C.ink, snap: 0.1, bounds: { xmin: -3.5, xmax: 3.5, ymin: -3.5, ymax: 3.5 }, onDrag: function (x, y) { update(x, y, 'map'); }, onEnd: function (x, y) { if (typeof x === 'number') update(x, y, 'map'); } });
           update(2, 1);
         }
       },
@@ -368,15 +389,15 @@
         kind: 'exercise',
         title: 'Gradient practice',
         html:
-          '<p>For \\(' + F_TEX + '\\), the point \\(P=(2,-2)\\) is marked in black. Drag the tip of the purple arrow so that the arrow, starting at \\(P\\), equals \\(\\nabla f(P)\\) at true length.</p>',
-        hint: 'Use \\(\\nabla f=(\\tfrac12 x,\\;y)\\) with \\(x=2\\), \\(y=-2\\). The first component is the horizontal displacement of the tip from \\(P\\), the second the vertical displacement.',
+          '<p>For \\(' + F_TEX + '\\), the point \\(P=(-2,1)\\) is marked in black. Drag the tip of the purple arrow so that the arrow, starting at \\(P\\), equals \\(\\nabla f(P)\\) at true length.</p>',
+        hint: 'Use \\(\\nabla f=(\\tfrac12 x,\\;y)\\) with \\(x=-2\\), \\(y=1\\). The first component is the horizontal displacement of the tip from \\(P\\), the second the vertical displacement.',
         mount: function (el, ctx) {
           var cp = contourPlane(el), p = cp.p, done = false;
-          var P = [2, -2], G = [1, -2], tip = { x: 3.5, y: -0.5 };
+          var P = [-2, 1], G = [-1, 1], tip = { x: 0.5, y: 2.5 };
           p.path(ellipse(f(P[0], P[1])), { stroke: C.green, width: 3, closed: true });
           var arrow = p.arrow(P[0], P[1], tip.x, tip.y, { stroke: C.purple, width: 5 });
           p.point(P[0], P[1], { r: 8, fill: C.ink });
-          halo(p.text(P[0] - 0.45, P[1] + 0.3, 'P', { fill: C.ink, size: 18, weight: 700 }));
+          halo(p.text(P[0] + 0.25, P[1] - 0.5, 'P', { fill: C.ink, size: 18, weight: 700 }));
           var out = readoutRow(cp.wrap, 1);
           function show(x, y) {
             tip.x = x; tip.y = y;
@@ -392,18 +413,18 @@
               done = true;
               recolor(arrow.el, C.green);
               out[0].classList.add(PRE + 'done');
-              ctx.note('\\(\\nabla f(2,-2)=(\\tfrac12\\cdot 2,\\,-2)=(1,-2)\\). The arrow crosses the contour through \\(P\\) at a right angle and points away from the minimum at the origin.');
+              ctx.note('\\(\\nabla f(-2,1)=(\\tfrac12\\cdot(-2),\\,1)=(-1,1)\\). The arrow crosses the contour through \\(P\\) at a right angle and points away from the minimum at the origin.');
               ctx.solved();
             } else if (Math.abs(cross) < 0.01 && dot > 0) {
               ctx.note('The direction is correct, but the length is not. The components must equal the partial derivatives exactly.');
             } else if (dot < 0) {
               ctx.note('This arrow points toward lower heights. The gradient points uphill, away from the centre of the contours.');
             } else if (!ex && ey) {
-              ctx.note('The vertical component is correct. The horizontal component must equal \\(\\partial f/\\partial x=\\tfrac12 x\\) at \\(x=2\\).');
+              ctx.note('The vertical component is correct. The horizontal component must equal \\(\\partial f/\\partial x=\\tfrac12 x\\) at \\(x=-2\\).');
             } else if (ex && !ey) {
-              ctx.note('The horizontal component is correct. The vertical component must equal \\(\\partial f/\\partial y=y\\) at \\(y=-2\\).');
+              ctx.note('The horizontal component is correct. The vertical component must equal \\(\\partial f/\\partial y=y\\) at \\(y=1\\).');
             } else {
-              ctx.note('Neither component matches yet. Evaluate \\(\\tfrac12 x\\) and \\(y\\) at \\(P=(2,-2)\\).');
+              ctx.note('Neither component matches yet. Evaluate \\(\\tfrac12 x\\) and \\(y\\) at \\(P=(-2,1)\\).');
             }
           });
           p.handle(tip.x, tip.y, {

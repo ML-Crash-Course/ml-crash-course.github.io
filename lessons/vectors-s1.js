@@ -420,9 +420,9 @@
     kind: 'text',
     title: 'Vectors in machine learning',
     html:
-      '<p>The adjustable numbers of a model, its <b>weights</b>, are collected in one vector \\(\\mathbf{w}\\). Here it has two components. A real model has millions, and the rules are the same.</p>' +
-      '<p>Training repeatedly replaces \\(\\mathbf{w}\\) by \\(\\mathbf{w} + \\Delta\\mathbf{w}\\), where the update \\(\\Delta\\mathbf{w}\\) is a vector added tip to tail. In gradient descent the update is \\(\\Delta\\mathbf{w} = -\\eta\\,\\mathbf{g}\\): a direction vector \\(\\mathbf{g}\\), called the gradient, multiplied by the negative of a small positive scalar \\(\\eta\\), the learning rate.</p>' +
-      '<p>One training step therefore consists of the two operations above, a scalar multiplication followed by a vector addition.</p>'
+      '<p>A machine learning system is controlled by a list of adjustable numbers. Later in the course they are called <b>weights</b>, and they are collected in one vector \\(\\mathbf{w}\\). Here it has two components. Real systems have millions, and the rules are the same.</p>' +
+      '<p>Learning means improving \\(\\mathbf{w}\\) a little at a time. Each improvement replaces \\(\\mathbf{w}\\) by \\(\\mathbf{w} + \\Delta\\mathbf{w}\\), where the change \\(\\Delta\\mathbf{w}\\) is itself a vector, added tip to tail.</p>' +
+      '<p>Usually the change is a direction vector \\(\\mathbf{d}\\) scaled by a small number \\(c\\), so \\(\\Delta\\mathbf{w} = c\\,\\mathbf{d}\\). One improvement step therefore uses exactly the two operations of this lesson, a scalar multiplication followed by a vector addition. Later modules show how the direction is chosen.</p>'
   });
 
   /* 11 ----------------------------------------------------------------- */
@@ -489,7 +489,7 @@
       '<ul>' +
       '<li>A vector \\(\\mathbf{v} = (v_1, v_2)\\) is a displacement: \\(v_1\\) units horizontally and \\(v_2\\) units vertically, equal to tip minus tail wherever the arrow is drawn.</li>' +
       '<li>Addition places arrows tip to tail and adds components: \\(\\mathbf{a} + \\mathbf{b} = (a_1 + b_1,\\ a_2 + b_2)\\). The order does not matter.</li>' +
-      '<li>Scalar multiplication \\(c\\,\\mathbf{a} = (c\\,a_1,\\ c\\,a_2)\\) scales the length by \\(|c|\\) and reverses the direction when \\(c\\) is negative. A gradient-descent step \\(\\mathbf{w} - \\eta\\,\\mathbf{g}\\) combines both operations.</li>' +
+      '<li>Scalar multiplication \\(c\\,\\mathbf{a} = (c\\,a_1,\\ c\\,a_2)\\) scales the length by \\(|c|\\) and reverses the direction when \\(c\\) is negative. An update \\(\\mathbf{w} + c\\,\\mathbf{d}\\) of the weights combines both operations.</li>' +
       '</ul>'
   });
 

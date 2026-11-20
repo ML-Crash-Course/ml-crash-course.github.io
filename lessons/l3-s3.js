@@ -535,7 +535,7 @@
             var s = M4.el('div', { class: 'm4-slot l3-s3-slot' }, eq);
             s.setAttribute('data-v', v);
             slots.push(s);
-            M4.el('span', { html: M4.tex('\\cdot\\, ' + gs[i] + (i < 2 ? ' \;+' : ' \;+ \\dots')) }, eq);
+            M4.el('span', { html: M4.tex('\\cdot\\, ' + gs[i] + (i < 2 ? ' \\;+' : ' \\;+ \\dots')) }, eq);
           });
           var tray = M4.el('div', { class: 'm4-row' }, w);
           var toks = ['0.64', '1.6', '1', '0.2', '0.8'].map(function (v) {
@@ -612,7 +612,7 @@
       /* 11 */
       {
         kind: 'exercise',
-        title: 'Two updates by hand',
+        title: 'Two updates on paper',
         html:
           R`<p>The size of an update is \( \dfrac{\eta}{\sqrt{G}}\,|g| \), where \( G \) already includes the current gradient \( g \). Use \( \eta = 0.5 \) in both parts and solve both to continue.</p>` +
           R`<p><b>AdaGrad.</b> \( G \) starts at \( 0 \) and the first two gradients are \( 3 \) and \( 4 \). Compute the size of the second update.</p>` +

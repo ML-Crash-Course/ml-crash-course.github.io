@@ -190,7 +190,7 @@
       // 6
       {
         kind: 'exercise',
-        title: 'One step by hand',
+        title: 'One step on paper',
         html:
           '<p>Let \\(f(x)=x^2\\), so \\(f\'(x)=2x\\). Starting from \\(x=3\\) with learning rate \\(\\eta=0.1\\), compute \\(x_{\\text{new}} = x - \\eta f\'(x)\\).</p>',
         hint: 'The slope at 3 is \\(2\\cdot 3 = 6\\). Multiply by \\(\\eta\\) and subtract the result from 3.',
@@ -342,7 +342,7 @@
         kind: 'exercise',
         title: 'Gradient descent in training',
         html:
-          '<p>In machine learning the position is the vector of model parameters \\(\\theta\\) (the weights of a network) and the function is the loss \\(L(\\theta)\\), which measures the error on the training data. Training repeats one update, with \\(\\nabla L(\\theta)\\) computed by backpropagation.</p>' +
+          '<p>In machine learning the position is the vector of model parameters \\(\\theta\\) and the function is the loss \\(L(\\theta)\\), which measures the error on the training data. Training repeats one update. For neural networks, a later module shows how to compute \\(\\nabla L(\\theta)\\) efficiently.</p>' +
           '<p>Drag the tiles into the slots to complete the gradient descent update.</p>',
         hint: 'The pattern is the same as in one variable: current position, minus, step size times slope.',
         mount: function (el, ctx) {

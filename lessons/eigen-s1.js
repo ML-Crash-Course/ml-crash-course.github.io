@@ -460,7 +460,7 @@
       {
         kind: 'exercise',
         title: 'Orthonormal bases',
-        html: '<p>Principal component analysis re-expresses each data point in a basis of directions along which the data vary most, and the layers of a neural network repeatedly re-describe their input in new coordinates. These bases are often <em>orthonormal</em>: the basis vectors have length 1 and are perpendicular. For such a matrix \\(Q\\) the inverse is the transpose, \\(Q^{-1} = Q^{\\top}\\), so each new coordinate is a dot product, \\(c_i = \\mathbf{q}_i \\cdot \\mathbf{v}\\).</p>' +
+        html: '<p>Data is often easier to read in a new basis, for example one whose first direction follows the long axis of a cloud of points. Such bases are often <em>orthonormal</em>: the basis vectors have length 1 and are perpendicular. For such a matrix \\(Q\\) the inverse is the transpose, \\(Q^{-1} = Q^{\\top}\\), so each new coordinate is a dot product, \\(c_i = \\mathbf{q}_i \\cdot \\mathbf{v}\\).</p>' +
           '<p>Let \\(\\mathbf{q}_1 = (0.6,\\ 0.8)\\) and \\(\\mathbf{q}_2 = (-0.8,\\ 0.6)\\). What are the coordinates of \\(\\mathbf{v} = (5, 0)\\) in this basis?</p>',
         hint: 'Compute the two dot products \\(\\mathbf{q}_1 \\cdot \\mathbf{v}\\) and \\(\\mathbf{q}_2 \\cdot \\mathbf{v}\\).',
         mount: function (el, ctx) {
@@ -526,7 +526,7 @@
         html: '<ul>' +
           '<li>A basis \\(\\mathbf{b}_1, \\mathbf{b}_2\\) assigns to each vector unique coordinates \\([\\mathbf{v}]_B = (c_1, c_2)\\) with \\(\\mathbf{v} = c_1\\mathbf{b}_1 + c_2\\mathbf{b}_2\\). Changing the basis changes the coordinates, not the vector.</li>' +
           '<li>With the basis vectors as columns of \\(B\\), the translations are \\(\\mathbf{v} = B\\,[\\mathbf{v}]_B\\) and \\([\\mathbf{v}]_B = B^{-1}\\mathbf{v}\\). The inverse exists exactly when the determinant of \\(B\\) is not zero.</li>' +
-          '<li>For an orthonormal basis \\(Q\\) the inverse is the transpose, so coordinates are dot products. This is the form used in principal component analysis and throughout machine learning.</li>' +
+          '<li>For an orthonormal basis \\(Q\\) the inverse is the transpose, so coordinates are dot products. This makes changing to such a basis cheap, and it is used throughout machine learning.</li>' +
           '</ul>' +
           '<p>The next session asks which vectors keep their direction when a matrix is applied. Expressed in a basis of such vectors, the matrix takes a particularly simple form.</p>'
       }

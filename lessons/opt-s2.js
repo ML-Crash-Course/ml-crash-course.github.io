@@ -221,7 +221,7 @@
         html: '<p>With plain gradient descent, the penalty term \\(\\lambda \\mathbf w\\) and the factor \\(1 - \\eta\\lambda\\) are the same thing. With Adam they differ. If \\(\\lambda \\mathbf w\\) is added to the gradient, it passes through the division by \\(\\sqrt{\\hat v} + \\epsilon\\) like every other part of the gradient. Weights with a large gradient history then receive a small decay, and weights with small gradients a large one.</p>' +
           '<p><b>AdamW</b> applies the decay outside the adaptive step:</p>' +
           '\\[ \\mathbf w \\leftarrow \\mathbf w - \\eta \\left( \\frac{\\hat{\\mathbf m}}{\\sqrt{\\hat{\\mathbf v}} + \\epsilon} + \\lambda \\mathbf w \\right). \\]' +
-          '<p>Every weight now shrinks by the same factor \\(1 - \\eta\\lambda\\) per step. AdamW is the standard optimizer for transformers, with \\(\\lambda\\) typically between \\(0.01\\) and \\(0.1\\).</p>'
+          '<p>Every weight now shrinks by the same factor \\(1 - \\eta\\lambda\\) per step. AdamW is the standard optimizer for large language models, which close the course, with \\(\\lambda\\) typically between \\(0.01\\) and \\(0.1\\).</p>'
       },
       {
         kind: 'exercise',

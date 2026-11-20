@@ -579,7 +579,8 @@
 <li>The backward pass multiplies one factor per layer: \(0.8^{50}\approx 10^{-5}\) vanishes, \(1.2^{50}\approx 9000\) explodes, and sigmoid layers contribute at most \(0.25\) each, whereas an active ReLU unit contributes \(1\).</li>
 <li>From \(\mathrm{Var}(z)=n\cdot\mathrm{Var}(w)\cdot\mathrm{Var}(x)\): \(\mathrm{Var}(w)=1/n\) preserves the scale of a linear layer (Xavier / Glorot), and \(\mathrm{Var}(w)=2/n\) preserves it through ReLU layers (Kaiming / He).</li>
 <li>Residual connections \(h+f(h)\) carry the gradient back with factor \(1\), and normalization layers re-centre and rescale the activations after every layer. Together with ReLU and Kaiming initialization they let deep networks train.</li>
-</ul>`
+</ul>
+<p class="m4-note">To make shapes, parameter counts and forward passes automatic, work through <a href="#/l/nn-drill">Neural network practice</a>.</p>`
       }
     ]
   });

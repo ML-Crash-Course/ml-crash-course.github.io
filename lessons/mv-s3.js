@@ -103,11 +103,18 @@
       {
         kind: 'text',
         title: 'Second derivatives in two dimensions',
-        html: '<p>The gradient tells us the slope. The next question is how the slope itself changes as we move, and in two dimensions there are four ways to ask it. Differentiating \\(\\partial f/\\partial x\\) again with respect to \\(x\\) or \\(y\\), and likewise \\(\\partial f/\\partial y\\), gives four second partial derivatives. They form the <b>Hessian matrix</b></p>' +
-          '\\[ H = \\begin{pmatrix} \\dfrac{\\partial^2 f}{\\partial x^2} & \\dfrac{\\partial^2 f}{\\partial x\\,\\partial y} \\\\[2mm] \\dfrac{\\partial^2 f}{\\partial y\\,\\partial x} & \\dfrac{\\partial^2 f}{\\partial y^2} \\end{pmatrix}. \\]' +
-          '<p>For every function we meet here the two mixed partials agree, so \\(H\\) is symmetric. The Hessian adds a curved term to the linear approximation:</p>' +
-          '\\[ f(\\mathbf x + \\mathbf h) \\approx f(\\mathbf x) + \\nabla f(\\mathbf x) \\cdot \\mathbf h + \\tfrac12\\, \\mathbf h^\\top H \\mathbf h. \\]' +
-          '<p>Near any point the surface looks like a tilted plane plus a quadratic bowl, dome or saddle. At a critical point the gradient vanishes and only the quadratic part is left, so \\(H\\) alone decides the local shape.</p>'
+        html: '<p>The gradient tells us the slope. The next question is how the slope itself changes as we move. The slope has two parts, \\(\\partial f/\\partial x\\) and \\(\\partial f/\\partial y\\), and we can step in two directions, along \\(x\\) or along \\(y\\). So there are four ways it can change: each of the two slopes, for a step in each of the two directions.</p>' +
+          '<p>Differentiating once more gives these four numbers. They form the <b>Hessian matrix</b></p>' +
+          '\\[ H = \\begin{pmatrix} \\dfrac{\\partial^2 f}{\\partial x^2} & \\hspace{2.5em} \\dfrac{\\partial^2 f}{\\partial x\\,\\partial y} \\\\[6mm] \\dfrac{\\partial^2 f}{\\partial y\\,\\partial x} & \\hspace{2.5em} \\dfrac{\\partial^2 f}{\\partial y^2} \\end{pmatrix}. \\]' +
+          '<p>The diagonal entries say how the slope along \\(x\\) changes when we step along \\(x\\), and likewise for \\(y\\). They measure how strongly the surface curves along each axis. The two entries off the diagonal say how the slope in one direction changes when we step in the other. For every function in this course they are equal, so \\(H\\) is symmetric.</p>'
+      },
+      {
+        kind: 'text',
+        title: 'What the Hessian adds',
+        html: '<p>Zoom in close to a point and the surface looks like a tilted plane. That is what the gradient describes. Zoom out a little and the plane starts to bend, up like a bowl, down like a dome, or up in one direction and down in another like a saddle. The Hessian describes this bending.</p>' +
+          '<p>Take a small step \\(\\mathbf h\\) away from \\(\\mathbf x\\). The new height is approximately the sum of three parts:</p>' +
+          '\\[ f(\\mathbf x + \\mathbf h) \\;\\approx\\; \\underbrace{f(\\mathbf x)}_{\\text{height now}} \\;+\\; \\underbrace{\\nabla f(\\mathbf x) \\cdot \\mathbf h}_{\\text{change along the tilt}} \\;+\\; \\underbrace{\\tfrac12\\, \\mathbf h^\\top H \\mathbf h}_{\\text{bending}}. \\]' +
+          '<p>At the bottom of a valley, the top of a hill or the centre of a saddle, the surface is flat and the gradient is zero. The middle part vanishes and only the bending is left. If \\(\\tfrac12\\mathbf h^\\top H\\mathbf h\\) is positive for every step, every step goes up and we sit at a minimum. If it is negative for every step, we sit at a maximum. If it is positive for some steps and negative for others, we sit on a saddle. The next widget shows all three shapes.</p>'
       },
       {
         kind: 'explore',

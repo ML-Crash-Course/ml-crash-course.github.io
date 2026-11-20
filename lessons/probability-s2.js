@@ -276,7 +276,7 @@
   /* ---------- token matching (step 9) ---------- */
   function tokenExercise(el, ctx) {
     css();
-    M4.el('div', { class: 'probability-s2-given', html: 'Given: ' + M4.tex('\\mathbb{E}[X] = 3,\\quad \\mathrm{Var}(X) = 4,\\quad \\mathbb{E}[Y] = 5') }, el);
+    M4.el('div', { class: 'probability-s2-given', html: 'Given: ' + M4.tex('\\mathbb{E}[X] = 3,\\qquad \\mathrm{Var}(X) = 4,\\qquad \\mathbb{E}[Y] = 5') }, el);
     var rows = [
       { tex: '\\mathbb{E}[X + Y] =', ans: 8, msg: 'The expectation of a sum is the sum of the expectations.' },
       { tex: '\\mathbb{E}[2X + 1] =', ans: 7, msg: 'Scale the expectation by 2, then add the shift 1.' },
@@ -479,12 +479,65 @@
     });
   }
 
+
+  /* sample mean and standard deviation of draggable data points */
+  function sampleExplore(el) {
+    var p = M4.plane(el, { xmin: 0.4, xmax: 10.6, ymin: -1, ymax: 3.2, width: 620, height: 280, grid: false, labels: false });
+    for (var t = 1; t <= 10; t++) p.text(t, -0.55, String(t), { size: 14, fill: COL.muted, weight: 400 });
+    var xs = [2, 3, 3.5, 5, 8.5];
+    var band = p.path([], { fill: COL.orange, fillOpacity: 0.16, closed: true, layer: 'bg' });
+    var meanLine = p.path([], { stroke: COL.purple, width: 3 });
+    var meanLab = p.text(5, 2.95, 'mean', { fill: COL.purple });
+    var devs = xs.map(function () { return p.path([], { stroke: COL.orange, width: 3 }); });
+    var sq = M4.el('p', { class: 'm4-cap' }, el);
+    var set = readoutMulti(el, [['m', '\\bar x'], ['v', 's^2'], ['s', 's']]);
+    function upd() {
+      var n = xs.length, m = 0, v = 0, i;
+      for (i = 0; i < n; i++) m += xs[i] / n;
+      for (i = 0; i < n; i++) v += (xs[i] - m) * (xs[i] - m) / n;
+      var sd = Math.sqrt(v);
+      band.set([[m - sd, -0.6], [m + sd, -0.6], [m + sd, 2.7], [m - sd, 2.7]]);
+      meanLine.set([[m, -0.6], [m, 2.7]]);
+      meanLab.set(m, 2.95);
+      xs.forEach(function (x, k) { devs[k].set([[x, 0.45 + 0.42 * k], [m, 0.45 + 0.42 * k]]); });
+      sq.innerHTML = 'Squared deviations: ' + xs.map(function (x) { return M4.fmt((x - m) * (x - m), 2); }).join(', ') + '. Their average is the variance.';
+      set('m', m); set('v', v); set('s', sd);
+    }
+    xs.forEach(function (x, k) {
+      p.handle(x, 0, { color: COL.blue, r: 10, snap: 0.5, bounds: { xmin: 1, xmax: 10, ymin: 0, ymax: 0 }, onDrag: function (u) { xs[k] = u; upd(); } });
+    });
+    upd();
+  }
+  function readoutMulti(parent, items) {
+    var row = M4.el('div', { class: 'm4-readout' }, parent), vals = {};
+    items.forEach(function (it) {
+      var sp = M4.el('span', null, row);
+      var l = M4.el('span', { html: '\\(' + it[1] + '\\) = ' }, sp); M4.typeset(l);
+      vals[it[0]] = M4.el('b', { text: '0' }, sp);
+    });
+    return function (k, v) { vals[k].textContent = M4.fmt(v, 2); };
+  }
+  function sampleGen() {
+    var n = M4.pick([4, 5]), xs = [], i, kind = M4.pick(['mean', 'var', 'sd', 'z']);
+    for (i = 0; i < n; i++) xs.push(M4.rand(0, 9));
+    var m = xs.reduce(function (a, b) { return a + b; }, 0) / n;
+    var v = xs.reduce(function (a, b) { return a + (b - m) * (b - m); }, 0) / n;
+    if (v === 0) return sampleGen();
+    var sd = Math.sqrt(v), data = '\\(' + xs.join(',\\ ') + '\\)';
+    var base = 'The mean is \\(\\bar x = ' + M4.fmt(m, 2) + '\\)';
+    if (kind === 'mean') return { q: 'Data: ' + data + '. Compute the sample mean \\(\\bar x\\).', answer: m, tol: 0.01, explain: 'Add the ' + n + ' values and divide by ' + n + '.' };
+    if (kind === 'var') return { q: 'Data: ' + data + '. Compute the sample variance \\(s^2 = \\frac1n\\sum_i (x_i - \\bar x)^2\\).', answer: v, tol: 0.02, explain: base + '. Average the squared deviations from it.' };
+    if (kind === 'sd') return { q: 'Data: ' + data + '. Compute the sample standard deviation \\(s\\), using the \\(\\frac1n\\) convention.', answer: sd, tol: 0.02, explain: base + ' and \\(s^2 = ' + M4.fmt(v, 2) + '\\).' };
+    var j = M4.rand(0, n - 1);
+    return { q: 'Data: ' + data + '. Compute the standardized value \\(z = (x - \\bar x)/s\\) of \\(x = ' + xs[j] + '\\).', answer: (xs[j] - m) / sd, tol: 0.03, hint: 'Use the \\(\\frac1n\\) convention for \\(s\\).', explain: base + ' and \\(s = ' + M4.fmt(sd, 2) + '\\).' };
+  }
+
   M4.lesson({
     id: 'probability-s2',
     module: 'probability',
     title: 'Expectation and variance',
     summary: 'The mean as the balance point of a distribution, variance as its spread, and the linearity that makes both easy to compute.',
-    minutes: 12,
+    minutes: 16,
     steps: [
       {
         kind: 'text',
@@ -571,7 +624,7 @@
       {
         kind: 'explore',
         title: 'The loss as an expectation',
-        html: '<p>Training minimises the <b>expected loss</b> \\(\\mathbb{E}[L]\\), the average loss over the whole data distribution. Stochastic gradient descent cannot compute it exactly, so it estimates it by the average loss of a mini-batch of \\(n\\) examples. By linearity the expectation of that average is exactly \\(\\mathbb{E}[L]\\), and for independent examples its standard deviation is \\(\\sigma/\\sqrt{n}\\), where \\(\\sigma\\) is the standard deviation of a single loss. Here a single loss is 0, 1, 2 or 4 with probabilities 0.4, 0.3, 0.2, 0.1. The histogram collects mini-batch averages.</p>',
+        html: '<p>Training aims for a small <b>expected loss</b> \\(\\mathbb{E}[L]\\), the average loss over all examples the model could ever see. Nobody can compute it exactly, so each training step estimates it by the average loss of a small random batch of \\(n\\) examples, called a <b>mini-batch</b>. By linearity the expectation of that average is exactly \\(\\mathbb{E}[L]\\), and for independent examples its standard deviation is \\(\\sigma/\\sqrt{n}\\), where \\(\\sigma\\) is the standard deviation of a single loss. Here a single loss is 0, 1, 2 or 4 with probabilities 0.4, 0.3, 0.2, 0.1. The histogram collects mini-batch averages.</p>',
         mount: function (el, ctx) { batchExplore(el, ctx); }
       },
       {
@@ -583,10 +636,28 @@
       },
       {
         kind: 'text',
+        title: 'From a distribution to data',
+        html: '<p>Usually we do not know \\(p(x)\\). We have \\(n\\) observed values \\(x_1, \\dots, x_n\\) and treat each as having probability \\(1/n\\). The expectation and the variance of that distribution are the <b>sample mean</b> and the <b>sample variance</b>: \\[\\bar x = \\frac1n \\sum_{i=1}^n x_i, \\qquad s^2 = \\frac1n \\sum_{i=1}^n (x_i - \\bar x)^2, \\qquad s = \\sqrt{s^2}.\\] Statistics texts often divide by \\(n - 1\\) to estimate the variance of the underlying distribution without bias. Normalization layers in neural networks use \\(\\frac1n\\), and so does this course. For large \\(n\\) the two agree closely.</p>'
+      },
+      {
+        kind: 'explore',
+        title: 'Sample mean and spread',
+        html: '<p>Drag the five blue data points along the line. The purple line is the sample mean \\(\\bar x\\), each orange segment is the deviation \\(x_i - \\bar x\\) of one point, and the shaded band spans \\(\\bar x \\pm s\\). Move one point far away and watch both numbers react: a single outlier shifts the mean and inflates \\(s\\) quickly, because its deviation enters squared.</p>',
+        mount: function (el) { sampleExplore(el); }
+      },
+      {
+        kind: 'exercise',
+        title: 'Sample statistics practice',
+        html: '<p>Compute the requested statistic. Answers within 0.02 count, and fractions such as 7/2 are accepted. Get four right.</p>',
+        mount: function (el, ctx) { M4.practice(el, ctx, { n: 4, gen: sampleGen }); }
+      },
+      {
+        kind: 'text',
         title: 'Recap',
         html: '<ul>' +
           '<li>The expectation \\(\\mathbb{E}[X] = \\sum_x x\\,p(x)\\) is the balance point of the distribution: the moments \\(p(x)\\,(x - \\mu)\\) on both sides cancel.</li>' +
           '<li>The variance \\(\\mathrm{Var}(X) = \\mathbb{E}[(X - \\mu)^2]\\) is the average squared deviation from the mean. The standard deviation \\(\\sigma\\) is its square root.</li>' +
+          '<li>For data \\(x_1, \\dots, x_n\\), the sample mean \\(\\bar x\\) and sample standard deviation \\(s\\) are the same quantities computed with weight \\(1/n\\) on each point.</li>' +
           '<li>Expectation is linear, \\(\\mathbb{E}[aX + b] = a\\,\\mathbb{E}[X] + b\\) and \\(\\mathbb{E}[X + Y] = \\mathbb{E}[X] + \\mathbb{E}[Y]\\), while \\(\\mathrm{Var}(aX + b) = a^2\\,\\mathrm{Var}(X)\\). This is why a mini-batch average is an unbiased estimate of the expected loss, with noise \\(\\sigma/\\sqrt{n}\\).</li>' +
           '</ul>'
       }

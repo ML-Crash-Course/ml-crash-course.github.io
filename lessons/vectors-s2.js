@@ -61,7 +61,7 @@
         kind: 'text',
         title: 'Learning goals',
         html: '<p>The dot product takes two vectors and returns a single number.</p><p>In this lesson you will compute it from components, read it geometrically as a projection, use it to find the angle between two vectors, and recognise when two vectors are orthogonal (perpendicular).</p>' +
-          '<p>The same operation is the basic building block of linear models, neural network layers and similarity search.</p>'
+          '<p>The same operation turns up throughout machine learning whenever things are scored or compared, for example when a search engine ranks documents for a query.</p>'
       },
       {
         kind: 'text',
@@ -457,7 +457,8 @@
       {
         kind: 'exercise',
         title: 'Dot products in machine learning',
-        html: '<p>A linear model scores an input vector \\(\\mathbf{x}\\) with a weight vector \\(\\mathbf{w}\\) by computing \\(\\mathbf{w} \\cdot \\mathbf{x}\\). Every neuron in a neural network starts with this operation. Search systems use the same idea: texts are mapped to vectors (embeddings), and a document is ranked by the dot product of its vector with the query vector.</p>' +
+        html: '<p>A search system turns every text into a vector of numbers, for example one number per keyword saying how strongly the text is about it. A document \\(\\mathbf{d}\\) is then ranked by its dot product with the query vector: the larger \\(\\mathbf{q} \\cdot \\mathbf{d}\\), the better the match.</p>' +
+          '<p>Written out, \\(\\mathbf{w} \\cdot \\mathbf{x} = w_1 x_1 + w_2 x_2\\) is a weighted sum of the entries of \\(\\mathbf{x}\\). Weighted sums like this come back in almost every later module.</p>' +
           '<p>The query is \\(\\mathbf{q} = (2, 1)\\). Which document vector receives the highest score \\(\\mathbf{q} \\cdot \\mathbf{d}\\)?</p>',
         hint: 'Compute all three scores: \\(2 \\cdot 1 + 1 \\cdot 3\\), \\(2 \\cdot 3 + 1 \\cdot 0\\) and \\(2 \\cdot (-1) + 1 \\cdot 4\\).',
         mount: function (el, ctx) {
@@ -551,7 +552,7 @@
         html: '<ul>' +
           '<li>The dot product of \\(\\mathbf{a} = (a_1, a_2)\\) and \\(\\mathbf{b} = (b_1, b_2)\\) is the number \\(\\mathbf{a} \\cdot \\mathbf{b} = a_1 b_1 + a_2 b_2\\), and it equals \\(|\\mathbf{a}|\\,|\\mathbf{b}| \\cos\\theta\\), where \\(\\theta\\) is the angle between the vectors.</li>' +
           '<li>Geometrically it is the signed length of the projection of \\(\\mathbf{b}\\) on \\(\\mathbf{a}\\) multiplied by \\(|\\mathbf{a}|\\). The projection itself is the vector \\(\\dfrac{\\mathbf{a} \\cdot \\mathbf{b}}{\\mathbf{a} \\cdot \\mathbf{a}}\\,\\mathbf{a}\\).</li>' +
-          '<li>The sign classifies the angle: positive for acute, zero for orthogonal, negative for obtuse. Linear models and neurons compute scores \\(\\mathbf{w} \\cdot \\mathbf{x}\\), and similarity search ranks by dot products of embedding vectors.</li>' +
+          '<li>The sign classifies the angle: positive for acute, zero for orthogonal, negative for obtuse. A dot product \\(\\mathbf{w} \\cdot \\mathbf{x}\\) is a weighted sum of the entries of \\(\\mathbf{x}\\), and search systems rank documents by the dot product of their vectors with the query vector.</li>' +
           '</ul>'
       }
     ]

@@ -494,7 +494,7 @@
       // 10
       {
         kind: 'exercise',
-        title: 'Two steps by hand',
+        title: 'Two steps on paper',
         html:
           '<p>A parameter \\(w\\) moves on a line where the gradient is constant, \\(g=-2\\). Use \\(\\eta=0.5\\), \\(\\beta=0.5\\), start \\(w_0=0\\) and velocity \\(v_0=0\\). The first step gives \\(v_1=0.5\\cdot0-0.5\\cdot(-2)=1\\) and \\(w_1=1\\). Drag the red point to the position \\(w_2\\) after the second step, then check.</p>',
         hint: 'First compute \\(v_2=\\beta v_1-\\eta g=0.5\\cdot1+1\\), then \\(w_2=w_1+v_2\\).',

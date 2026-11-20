@@ -503,9 +503,9 @@
     kind: 'explore',
     title: 'Distributions in machine learning',
     html:
-      '<p>A classifier does not output a class directly. It computes one real number per class, called a <em>logit</em> \\(z_i\\), and converts the logits into a PMF with the <em>softmax</em> function:</p>' +
+      '<p>A <em>classifier</em> is a model that sorts inputs into classes, for example pictures into cat, dog and bird. It does not output a class directly. It computes one real number per class, called a <em>logit</em> \\(z_i\\), and converts the logits into a PMF with the <em>softmax</em> function:</p>' +
       '\\[ p_i = \\frac{e^{z_i}}{\\sum_{j} e^{z_j}} . \\]' +
-      '<p>Each \\(p_i\\) is positive and the values sum to one, so the output is a valid distribution over classes. A language model does the same over its whole vocabulary and then samples the next token from that PMF. Move the logits and observe the bars.</p>',
+      '<p>Each \\(p_i\\) is positive and the values sum to one, so the output is a valid distribution over classes. A text generator does the same over every word it knows and then picks the next word at random from that PMF. Move the logits and observe the bars.</p>',
     mount: function (el, ctx) {
       injectStyle();
       var z = [1, 0, -1], rSum, rTop, names = ['cat', 'dog', 'bird'];

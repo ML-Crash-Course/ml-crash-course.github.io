@@ -233,7 +233,7 @@
           '<p>Two remedies follow from the formula \\(\\eta \\cdot \\sigma / \\sqrt B\\) for the size of a noisy step:</p>' +
           '<ul><li><b>Decay the learning rate.</b> Large steps early cover distance quickly, small steps late let the iterates settle. The button "Decay" uses \\(\\eta_t = \\eta / (1 + t/20)\\).</li>' +
           '<li><b>Grow the batch.</b> This also lowers the noise, at a higher cost per step.</li></ul>' +
-          '<p>The noise is not only a nuisance. In deep networks it helps the iterates leave narrow regions of the loss surface, and small batches often generalize better than very large ones.</p>'
+          '<p>The noise is not only a nuisance. In large models it helps the iterates leave narrow regions of the loss surface, and small batches often generalize better than very large ones, meaning the trained model does better on new data it never saw during training.</p>'
       },
       {
         kind: 'exercise',

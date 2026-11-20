@@ -444,7 +444,7 @@
       onInput: function (v) { n = Math.round(Number(v)); upd(); }
     });
     M4.slider(controls, {
-      min: 0.5, max: 0.99, step: 0.01, value: p, label: 'probability p of each',
+      min: 0.5, max: 0.99, step: 0.01, value: p, label: 'chance p of each',
       format: function (v) { return Number(v).toFixed(2); },
       onInput: function (v) { p = Number(v); upd(); }
     });
@@ -631,8 +631,8 @@
       },
       {
         kind: 'explore',
-        title: 'Log-likelihood as a sum',
-        html: '<p>Suppose a model assigns probability \\(p_i\\) to the correct answer of training example \\(i\\). If the \\(n\\) examples are independent, the probability of getting all of them right is the product \\(\\prod_{i=1}^{n} p_i\\), called the <em>likelihood</em>. Because the logarithm of a product is the sum of the logarithms, \\[\\ln \\prod_{i=1}^{n} p_i = \\sum_{i=1}^{n} \\ln p_i,\\] and training usually minimises the mean of \\(-\\ln p_i\\) instead.</p>' +
+        title: 'A product becomes a sum',
+        html: '<p>Suppose a program answers \\(n\\) questions and gets question \\(i\\) right with chance \\(p_i\\). The chance of getting all of them right is the product \\(\\prod_{i=1}^{n} p_i\\) (the probability module explains when this holds). Because the logarithm of a product is the sum of the logarithms, \\[\\ln \\prod_{i=1}^{n} p_i = \\sum_{i=1}^{n} \\ln p_i,\\] and the sum on the right is much easier to compute with.</p>' +
           '<p>For simplicity every \\(p_i\\) below has the same value \\(p\\). The product shrinks towards zero very quickly, whereas the sum of logarithms grows only in proportion to \\(n\\).</p>',
         mount: mountLikelihood
       },
@@ -646,7 +646,7 @@
       {
         kind: 'exercise',
         title: 'Argmax in a classifier',
-        html: '<p>An image classifier outputs one score per class: \\(z_1 = 1.2\\) for cat, \\(z_2 = 3.4\\) for dog and \\(z_3 = 0.5\\) for bird. The predicted class is the one with index \\(\\arg\\max_i z_i\\). Select the statement in which both quantities are correct.</p>',
+        html: '<p>An image classifier is a program that sorts pictures into classes. It outputs one score per class: \\(z_1 = 1.2\\) for cat, \\(z_2 = 3.4\\) for dog and \\(z_3 = 0.5\\) for bird. The predicted class is the one with index \\(\\arg\\max_i z_i\\). Select the statement in which both quantities are correct.</p>',
         hint: 'The maximum must be one of the three scores. The argmax must be one of the indices 1, 2, 3.',
         mount: mountClassifier
       },
@@ -662,7 +662,7 @@
         title: 'Recap',
         html: '<ul>' +
           '<li>\\(\\sum_{i=m}^{n} x_i\\) adds the terms for \\(i = m, m+1, \\dots, n\\), and \\(\\prod_{i=m}^{n} x_i\\) multiplies them. The index is a counter whose name does not matter.</li>' +
-          '<li>The mean is a scaled sum, \\(\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\\), and the logarithm converts a product into a sum, \\(\\ln \\prod_i p_i = \\sum_i \\ln p_i\\), which is how a likelihood becomes a loss.</li>' +
+          '<li>The mean is a scaled sum, \\(\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\\), and the logarithm converts a product into a sum, \\(\\ln \\prod_i p_i = \\sum_i \\ln p_i\\), which keeps a long product of small numbers from vanishing.</li>' +
           '<li>\\(\\max_i x_i\\) is the largest value, whereas \\(\\arg\\max_i x_i\\) is the index at which it occurs. A classifier predicts the class with the argmax score.</li>' +
           '</ul>'
       }

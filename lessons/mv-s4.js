@@ -112,9 +112,9 @@
       {
         kind: 'text',
         title: 'The same pattern for classification',
-        html: '<p>Logistic regression predicts a probability \\(\\hat p = \\sigma(z)\\) with \\(z = wx + b\\) and the <b>sigmoid</b> \\(\\sigma(z) = 1/(1 + e^{-z})\\). For a label \\(y \\in \\{0, 1\\}\\) the loss of one example is the negative log-likelihood</p>' +
+        html: '<p>Some models answer a yes or no question. Each example has a label \\(y = 1\\) for yes or \\(y = 0\\) for no, and the model, called <b>logistic regression</b>, outputs its chance \\(\\hat p\\) of yes. It squeezes \\(z = wx + b\\) into the range from 0 to 1 with the <b>sigmoid</b> \\(\\sigma(z) = 1/(1 + e^{-z})\\), so \\(\\hat p = \\sigma(z)\\). The loss of one example is</p>' +
           '\\[ \\ell = -\\big[y \\log \\hat p + (1 - y) \\log(1 - \\hat p)\\big]. \\]' +
-          '<p>Using \\(\\sigma\'(z) = \\sigma(z)(1 - \\sigma(z))\\), the chain rule collapses to a short result:</p>' +
+          '<p>For \\(y = 1\\) this is \\(-\\log \\hat p\\), for \\(y = 0\\) it is \\(-\\log(1 - \\hat p)\\): minus the log of the chance given to the right answer, small when that chance is close to 1. It is called the <b>cross-entropy</b> loss, and later modules derive it from probability. Using \\(\\sigma\'(z) = \\sigma(z)(1 - \\sigma(z))\\), the chain rule collapses to a short result:</p>' +
           '\\[ \\frac{\\partial \\ell}{\\partial z} = \\hat p - y, \\qquad \\frac{\\partial \\ell}{\\partial w} = (\\hat p - y)\\,x, \\qquad \\frac{\\partial \\ell}{\\partial b} = \\hat p - y. \\]' +
           '<p>The error \\(\\hat p - y\\) plays the role of the residual. Squared error with a line and cross-entropy with a sigmoid lead to gradients of the same form: prediction minus target, times the input.</p>' +
           '<p>Adding a penalty \\(\\lambda \\lVert \\mathbf w \\rVert^2\\) to the loss, called <b>L2 regularization</b> or weight decay, adds \\(2\\lambda \\mathbf w\\) to the gradient and pulls every weight towards zero.</p>'
@@ -240,7 +240,8 @@
           '<li>A loss is a function of the parameters, with the data held fixed. Every point of the parameter floor is one model.</li>' +
           '<li>For squared error each data point pushes on the parameters with its residual, and on the slope with residual times input.</li>' +
           '<li>Squaring makes large residuals dominate, which is why one outlier can move the whole fit.</li>' +
-          '</ul>'
+          '</ul>' +
+          '<p class="m4-note">The next session, <a href="#/l/mv-s5">Vector and matrix derivatives</a>, gives the rules that compute these gradients for whole vectors and matrices at once.</p>'
       }
     ]
   });

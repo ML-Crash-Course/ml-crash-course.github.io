@@ -578,9 +578,10 @@
     kind: 'text',
     title: 'Linear maps in machine learning',
     html:
-      '<p>A layer of a neural network stores a weight matrix \\(W\\) and applies it to its input, a list of numbers called features. ' +
-      'Column \\(j\\) of \\(W\\) is the output the matrix produces when feature \\(j\\) equals 1 and every other feature equals 0.</p>' +
-      '<p>The picture of a deformed grid therefore carries over, with more than two dimensions: each column of \\(W\\) states where one input direction is sent, and training a network amounts to adjusting those destinations until the deformed space is useful for the task.</p>'
+      '<p>Many data sets describe each item by a list of numbers, for example a house by its size, age and number of rooms. A matrix can turn such a list into a new list: it mixes the old numbers into new ones that are more useful for the task at hand. ' +
+      'Column \\(j\\) of the matrix is the output it produces when the \\(j\\)-th input number equals 1 and every other input number equals 0.</p>' +
+      '<p>The picture of a deformed grid therefore carries over to more than two dimensions: each column states where one input direction is sent. ' +
+      'The vectors module described a learning system as a collection of adjustable numbers. Later in the course many of these numbers sit in matrices like this one, and learning amounts to adjusting the columns until the deformed space is useful for the task.</p>'
   });
 
   steps.push({
@@ -634,7 +635,7 @@
       '<ul>' +
       '<li>A linear map keeps the origin fixed and keeps grid lines straight, parallel and evenly spaced. It is fully determined by the images \\(\\mathbf{a}_1\\) and \\(\\mathbf{a}_2\\) of the basis vectors \\(\\mathbf{e}_1\\) and \\(\\mathbf{e}_2\\).</li>' +
       '<li>The matrix of the map has \\(\\mathbf{a}_1\\) as its first column and \\(\\mathbf{a}_2\\) as its second column, so a matrix can be read from a picture and a picture can be drawn from a matrix.</li>' +
-      '<li>Stretches, shears, rotations and reflections are all of this form, and the columns of a weight matrix in a neural network play the same role in higher dimensions.</li>' +
+      '<li>Stretches, shears, rotations and reflections are all of this form, and in higher dimensions the columns of a matrix play the same role.</li>' +
       '</ul>' +
       '<p>The next session uses the columns to compute where an arbitrary vector lands.</p>'
   });

@@ -370,13 +370,13 @@
     id: 'functions-s3',
     module: 'functions',
     title: 'Logarithms',
-    summary: 'The logarithm inverts the exponential, turns products into sums, and is the reason machine learning works with log-probabilities.',
+    summary: 'The logarithm inverts the exponential, turns products into sums, and keeps long products of small numbers from vanishing.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>The inverse of an exponential function such as \\(2^x\\) or \\(e^x\\) is the logarithm.</p><p>In this lesson you will evaluate simple logarithms, apply the rule that turns products into sums, read a logarithmic scale, and explain why machine learning computes with logarithms of probabilities.</p>'
+        html: '<p>The inverse of an exponential function such as \\(2^x\\) or \\(e^x\\) is the logarithm.</p><p>In this lesson you will evaluate simple logarithms, apply the rule that turns products into sums, read a logarithmic scale, and explain why machine learning takes the logarithm of long products of small numbers.</p>'
       },
       {
         kind: 'text',
@@ -441,8 +441,8 @@
       },
       {
         kind: 'exercise',
-        title: 'Log-probabilities',
-        html: '<p>A model that assigns a probability to each of \\(n\\) independent observations assigns their product to the whole data set. Each factor lies between 0 and 1, so the product shrinks rapidly. A computer stores numbers with finite precision and rounds anything below roughly \\(5 \\times 10^{-324}\\) to zero. Taking the logarithm replaces the product by a sum, \\(\\ln(p_1 p_2 \\cdots p_n) = \\ln p_1 + \\dots + \\ln p_n\\), which stays in a comfortable range. Because \\(\\ln\\) is increasing, the parameters that maximise the sum also maximise the product. Here every factor is 0.1. Increase \\(n\\) until the stored product becomes exactly 0.</p>',
+        title: 'Products of small numbers',
+        html: '<p>Machine learning often multiplies many numbers between 0 and 1, for example the chances of \\(n\\) separate events all happening (the probability module explains why this is a product). Each factor lies between 0 and 1, so the product shrinks rapidly. A computer stores numbers with finite precision and rounds anything below roughly \\(5 \\times 10^{-324}\\) to zero. Taking the logarithm replaces the product by a sum, \\(\\ln(p_1 p_2 \\cdots p_n) = \\ln p_1 + \\dots + \\ln p_n\\), which stays in a comfortable range. Because \\(\\ln\\) is increasing, whatever makes the sum as large as possible also makes the product as large as possible. Here every factor is 0.1. Increase \\(n\\) until the stored product becomes exactly 0.</p>',
         hint: 'The product is \\(10^{-n}\\). It is lost once \\(n\\) exceeds roughly 323.',
         mount: mountUnderflow
       },
@@ -472,7 +472,7 @@
       {
         kind: 'text',
         title: 'Recap',
-        html: '<ul><li>The logarithm is the inverse of the exponential: \\(\\log_b x = y\\) means \\(b^y = x\\), and \\(\\ln\\) is the logarithm with base \\(e\\).</li><li>Logarithms turn multiplication into addition: \\(\\log(xy) = \\log x + \\log y\\), \\(\\log(x/y) = \\log x - \\log y\\) and \\(\\log(x^k) = k \\log x\\). On a logarithmic scale, equal distances are equal ratios.</li><li>Machine learning sums log-probabilities instead of multiplying probabilities. The sum is numerically stable and has the same maximiser as the product. The next session treats sums, products and the argmax in detail.</li></ul>'
+        html: '<ul><li>The logarithm is the inverse of the exponential: \\(\\log_b x = y\\) means \\(b^y = x\\), and \\(\\ln\\) is the logarithm with base \\(e\\).</li><li>Logarithms turn multiplication into addition: \\(\\log(xy) = \\log x + \\log y\\), \\(\\log(x/y) = \\log x - \\log y\\) and \\(\\log(x^k) = k \\log x\\). On a logarithmic scale, equal distances are equal ratios.</li><li>Machine learning adds logarithms of small numbers instead of multiplying the numbers. The sum does not vanish on a computer, and it is largest exactly where the product is largest. The next session treats sums, products and the argmax in detail.</li></ul>'
       }
     ]
   });

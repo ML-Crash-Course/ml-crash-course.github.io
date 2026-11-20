@@ -209,7 +209,7 @@
     if (k === 0) { tr = fl * M4.pick([6, 8, 10]); va = tr * M4.pick([1.05, 1.1, 1.15]); }
     else if (k === 1) { tr = fl * M4.pick([0.1, 0.2, 0.4]); va = fl * M4.pick([5, 8, 12]); }
     else { tr = fl * M4.pick([0.9, 0.95]); va = fl * M4.pick([1.05, 1.1, 1.2]); }
-    var model = M4.pick(['A regression model', 'A small network', 'A polynomial fit', 'A random forest']);
+    var model = M4.pick(['A regression model', 'A cubic fit', 'A polynomial fit', 'A random forest']);
     return {
       q: model + ' reaches a training error of \\(' + tr.toFixed(3) + '\\) and a validation error of \\(' + va.toFixed(3) + '\\). Repeating a measurement of the target gives an error of about \\(' + fl.toFixed(2) + '\\), which no model can beat. What is the diagnosis?',
       options: OPTS, answer: k,
@@ -286,7 +286,7 @@
         kind: 'text',
         title: 'Flexibility is relative',
         html: '<p>A degree 9 polynomial has 10 coefficients. With 12 points the data barely pins them down, and the noise decides the rest. With 120 points the noise of individual points averages out and the same model fits the curve well.</p>' +
-          '<p>Whether a model overfits depends on its flexibility <i>compared to the amount of data</i>. This is why large neural networks need very large datasets.</p>'
+          '<p>Whether a model overfits depends on its flexibility <i>compared to the amount of data</i>. This is why the very flexible models later in the course, such as neural networks, need very large datasets.</p>'
       },
       {
         kind: 'explore',

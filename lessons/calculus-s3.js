@@ -546,12 +546,12 @@
         title: 'A computation graph',
         html:
           '<p>In machine learning, a model with a weight \\(w\\) makes a prediction \\(p = 2w\\) for an input equal to \\(2\\), the error is \\(e = p - 3\\) for a target of \\(3\\), and the loss is \\(L = e^2\\). Written as a chain of nodes this is a <em>computation graph</em>.</p>' +
-          '<p>The forward pass computes the values from left to right. The backward pass starts from \\(\\mathrm{d}L/\\mathrm{d}L = 1\\) and moves right to left, multiplying by one local slope per edge. This procedure is called <em>backpropagation</em> and is how neural networks obtain the slopes used for training.</p>',
+          '<p>The forward pass computes the values from left to right. The backward pass starts from \\(\\mathrm{d}L/\\mathrm{d}L = 1\\) and moves right to left, multiplying by one local slope per edge. This procedure is called <em>backpropagation</em>. Later in the course it computes the slopes for models with millions of parameters.</p>',
         mount: mountGraphExplore
       },
       {
         kind: 'exercise',
-        title: 'A backward pass by hand',
+        title: 'A backward pass on paper',
         html:
           '<p>The forward pass for \\(w = 1\\) has been done: \\(p = 2\\), \\(e = -1\\), \\(L = 1\\). The local slopes of the three edges are \\(\\mathrm{d}p/\\mathrm{d}w = 2\\), \\(\\mathrm{d}e/\\mathrm{d}p = 1\\) and \\(\\mathrm{d}L/\\mathrm{d}e = 2e\\).</p>' +
           '<p>Working from right to left, place the slope of \\(L\\) with respect to each node.</p>',

@@ -440,14 +440,14 @@
       {
         kind: 'exercise',
         title: 'Determinants in machine learning',
-        html: '<p>A linear layer of a neural network computes \\(\\mathbf{y} = W\\mathbf{x}\\) with a weight matrix \\(W\\). Models called normalizing flows require every layer to be invertible and use \\(\\log\\lvert\\det W\\rvert\\) to track how the layer stretches volume. Linear regression can be solved in closed form only when a certain matrix built from the data is invertible.</p>' +
-          '<p>Consider a layer with \\( W = \\begin{pmatrix} 1 & 2 \\\\ 2 & 4 \\end{pmatrix} \\). Can the input \\(\\mathbf{x}\\) always be recovered from the output \\(\\mathbf{y}\\)?</p>',
+        html: '<p>Many computations turn a list of numbers \\(\\mathbf{x}\\) into a new list \\(\\mathbf{y} = W\\mathbf{x}\\), for example when a photo is rotated or when data is mixed into scores. Whether the original \\(\\mathbf{x}\\) can be recovered from \\(\\mathbf{y}\\) depends on the determinant. If \\(\\det W = 0\\), some information is lost for good. Later in the course, some methods only work when a certain matrix built from the data has a nonzero determinant.</p>' +
+          '<p>Consider the matrix \\( W = \\begin{pmatrix} 1 & 2 \\\\ 2 & 4 \\end{pmatrix} \\). Can the input \\(\\mathbf{x}\\) always be recovered from the output \\(\\mathbf{y}\\)?</p>',
         hint: 'Compute the determinant: 1 times 4 minus 2 times 2. Compare the two columns of W.',
         mount: function (el, ctx) {
           M4.choices(el, {
             options: [
               'Yes, by applying \\(W^{-1}\\), which exists for every square matrix.',
-              'No. \\(\\det W = 0\\), so the layer squashes the plane onto a line and different inputs give the same output.',
+              'No. \\(\\det W = 0\\), so \\(W\\) squashes the plane onto a line and different inputs give the same output.',
               'Yes, because \\(W\\) is symmetric.',
               'No, because the entries of \\(W\\) are all positive.'
             ],

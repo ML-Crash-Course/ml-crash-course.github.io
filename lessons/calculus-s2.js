@@ -625,7 +625,7 @@
       {
         kind: 'exercise',
         title: 'The slope of a loss',
-        html: '<p>A classifier assigns probability \\(p\\) to the correct class, and the cross-entropy loss is \\(L(p)=-\\ln p\\). Training adjusts the model in proportion to the slope \\(L\'(p)=-1/p\\). Drag the point to the probability at which the slope of the loss equals \\(-2\\).</p>',
+        html: '<p>A model gives the correct answer the chance \\(p\\) between 0 and 1, and its loss is \\(L(p)=-\\ln p\\): zero when \\(p=1\\), and larger the smaller \\(p\\) gets. Training moves in proportion to the slope \\(L\'(p)=-1/p\\). Drag the point to the chance at which the slope of the loss equals \\(-2\\).</p>',
         hint: 'Solve \\(-1/p=-2\\) for \\(p\\), then release the point at that value on the horizontal axis.',
         mount: mountLoss
       },
@@ -642,7 +642,7 @@
         html: '<ul>' +
           '<li><b>Power and sum rules.</b> \\(\\frac{d}{dx}x^n=n\\,x^{n-1}\\), constants factor out, and sums are differentiated term by term.</li>' +
           '<li><b>Product rule.</b> \\((uv)\'=u\'v+uv\'\\): each factor is differentiated once while the other is held fixed.</li>' +
-          '<li><b>Exponential and logarithm.</b> \\(\\frac{d}{dx}e^x=e^x\\) and \\(\\frac{d}{dx}\\ln x=1/x\\). The second gives the slope \\(-1/p\\) of the cross-entropy loss.</li>' +
+          '<li><b>Exponential and logarithm.</b> \\(\\frac{d}{dx}e^x=e^x\\) and \\(\\frac{d}{dx}\\ln x=1/x\\). The second gives the slope \\(-1/p\\) of the loss \\(-\\ln p\\), which returns later in the course as the cross-entropy loss.</li>' +
           '</ul>' +
           '<p>The next session treats functions nested inside other functions, which require the chain rule.</p>'
       }

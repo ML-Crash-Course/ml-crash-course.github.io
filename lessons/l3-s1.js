@@ -630,7 +630,7 @@
   /* 11 --------------------------------------------------------------- */
   steps.push({
     kind: 'exercise',
-    title: 'One step by hand',
+    title: 'One step on paper',
     html:
       '<p>Consider the loss \\(L(\\theta) = \\tfrac12\\left(3\\,\\theta_1^2 + 0.8\\,\\theta_2^2\\right)\\), whose Hessian has the eigenvalues \\(3\\) and \\(0.8\\). The current parameters are \\(\\theta = (1,\\ 2.5)\\) and the learning rate is \\(\\eta = 0.5\\).</p>' +
       '<p>Drag the orange point from \\(\\theta\\) to the position after one gradient descent step, \\(\\theta - \\eta\\,\\nabla L(\\theta)\\). The point snaps to steps of \\(0.5\\).</p>',
