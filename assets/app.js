@@ -820,6 +820,7 @@
     M4.el('a', { class: 'm4-word', href: '#/', html: '<span class="m4-word-mark">' + MARK + '</span><span>Machine Learning <i class="m4-word-long">Crash Course</i></span>' }, inn);
     var star = M4.el('a', { class: 'm4-star', href: REPO_URL, target: '_blank', rel: 'noopener', title: 'Star the project on GitHub', html: ICON.star + '<em class="m4-star-txt" style="font-style:normal">Star</em><span class="m4-star-n"></span>' }, inn);
     starCount(function (n) { var e = star.querySelector('.m4-star-n'); if (e && n != null) e.textContent = n.toLocaleString('en-US'); });
+    if (M4.feedbackButton) M4.feedbackButton(inn);
     M4.el('span', { class: 'm4-stat', title: 'Day streak', html: ICON.flame + '<b>' + liveStreak() + '</b>' }, inn);
     M4.el('span', { class: 'm4-stat', title: 'Experience points', html: ICON.bolt + '<b class="m4-xpval">' + S.xp + '</b>' }, inn);
     var lv = M4.el('span', { class: 'm4-stat m4-level', title: 'Level' }, inn);
@@ -829,7 +830,7 @@
     return bar;
   }
 
-  var REPO = 'Thiggel/NLPandDL', REPO_URL = 'https://github.com/' + REPO;
+  var REPO = 'ML-Crash-Course/ml-crash-course.github.io', REPO_URL = 'https://github.com/' + REPO;
   var MARK = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#22201c" stroke-width="1.4" stroke-linecap="round"><circle cx="14" cy="14" r="12.5"/><path d="M4 19 C9 19 10 8 14 8 S19 19 24 19" stroke="#2f5f9e" stroke-width="1.8"/><path d="M3 14h22M14 3v22" stroke-opacity=".25"/></svg>';
   function starCount(cb) {
     var K = 'm4.stars.v1', now = Date.now();
@@ -1113,6 +1114,7 @@
     var close = M4.el('button', { class: 'm4-close', type: 'button', title: 'Leave lesson', 'aria-label': 'Leave lesson', html: ICON.close }, ptop);
     close.addEventListener('click', function () { location.hash = m ? '#/m/' + m.id : '#/'; });
     var segs = M4.el('div', { class: 'm4-segs' }, ptop);
+    if (M4.feedbackButton) M4.feedbackButton(ptop);
     var xpStat = M4.el('span', { class: 'm4-stat', html: ICON.bolt + '<span>' + S.xp + '</span>' }, ptop);
     var body = M4.el('div', { class: 'm4-pbody' }, root);
     var stage = M4.el('div', { class: 'm4-stage' }, body);
@@ -1167,6 +1169,7 @@
       dir = dir || (i >= cur ? 'r' : 'l');
       runCleanups();
       cur = i; finished = false;
+      M4.where = { lesson: id, step: i };
       if (cur > reached) reached = cur;
       stage.innerHTML = '';
       body.scrollTop = 0;
@@ -1254,6 +1257,7 @@
       if (bonus) bumpXp(bonus);
       save();
       finished = true;
+      M4.where = { lesson: id, step: n - 1, done: true };
       reached = n - 1;
       stage.innerHTML = '';
       var d = M4.el('div', { class: 'm4-done m4-step in-r' }, stage);

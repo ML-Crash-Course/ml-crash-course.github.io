@@ -2,7 +2,7 @@
 
 Interactive lessons on the mathematics behind machine learning, from vectors to language models. Every idea comes with something to drag, a picture that moves with it, and exercises that check your answer on the spot.
 
-**Live site:** https://thiggel.github.io/ML-CrashCourse/
+**Live site:** https://ml-crash-course.github.io/
 
 ## What is inside
 
