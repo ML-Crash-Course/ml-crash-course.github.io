@@ -1,0 +1,4 @@
+New Computer Modern (NewCM10-Book, NewCM10-BookItalic, NewCM10-Bold)
+Copyright (c) Antonis Tsolomitis and contributors, based on Computer Modern by Donald E. Knuth.
+Distributed under the GUST Font License (GFL), https://www.gust.org.pl/projects/e-foundry/licenses
+The files are redistributed unmodified apart from conversion to WOFF2.
