@@ -77,7 +77,7 @@
       hint: T('\\partial L/\\partial W = \\boldsymbol\\delta\\mathbf x^\\top') + ' has the shape of ' + T('W') + ', here ' + T(m + '\\times ' + n) + '.',
       fields: [{ label: T('\\partial L/\\partial W'), answer: G, tol: 0 }, { label: T('\\partial L/\\partial\\mathbf b'), answer: d, tol: 0 }],
       solution: lines(['\\frac{\\partial L}{\\partial W} = \\boldsymbol\\delta\\mathbf x^\\top = ' + D.vec(d) + D.rowv(x) + ' = ' + D.mat(G), '\\frac{\\partial L}{\\partial \\mathbf b} = \\boldsymbol\\delta = ' + D.vec(d)]) +
-        '<p>Entry ' + T('(i, j)') + ' is ' + T('\\delta_i x_j') + '. By sums: ' + T('W_{ij}') + ' appears only in ' + T('z_i') + ', with factor ' + T('x_j') + '.</p>'
+        '<p>Entry ' + T('(i, j)') + ' is ' + T('\\delta_i x_j') + ', because ' + T('\\partial z_k/\\partial W_{ij} = \\delta_{ki}\\, x_j') + ' with the Kronecker delta ' + T('\\delta_{ki}') + ': ' + T('W_{ij}') + ' appears only in ' + T('z_i') + ', with factor ' + T('x_j') + '.</p>'
     };
   }
 

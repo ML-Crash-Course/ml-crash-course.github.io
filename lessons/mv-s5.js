@@ -163,8 +163,10 @@
         title: 'The gradient has the shape of the variable',
         html: '<p>Many functions take many numbers and return one number. When those numbers are collected in a vector \\(\\mathbf x \\in \\mathbb R^n\\), the gradient collects the partial derivatives in a vector of the same shape:</p>' +
           '\\[ \\nabla f(\\mathbf x) = \\frac{\\partial f}{\\partial \\mathbf x} = \\begin{pmatrix} \\partial f/\\partial x_1 \\\\ \\vdots \\\\ \\partial f/\\partial x_n \\end{pmatrix}. \\]' +
-          '<p>Every formula in this session can be checked the slow way: write the function as a sum over components, differentiate with respect to one component \\(x_j\\), and collect the results. The simplest case is a linear function</p>' +
-          '\\[ f(\\mathbf x) = \\mathbf a^\\top \\mathbf x = \\sum_{i} a_i x_i, \\qquad \\frac{\\partial f}{\\partial x_j} = a_j, \\qquad \\nabla f = \\mathbf a. \\]' +
+          '<p>Every formula in this session can be checked the slow way: write the function as a sum over components, differentiate with respect to one component \\(x_j\\), and collect the results. One small tool does the bookkeeping. The derivative of one component with respect to another is 1 if they are the same component and 0 otherwise. This is the <b>Kronecker delta</b>:</p>' +
+          '\\[ \\frac{\\partial x_i}{\\partial x_j} = \\delta_{ij} = \\begin{cases} 1 & i = j \\\\ 0 & i \\neq j \\end{cases} \\]' +
+          '<p>Inside a sum, \\(\\delta_{ij}\\) keeps the single term with \\(i = j\\) and removes all others. The simplest case is a linear function</p>' +
+          '\\[ f(\\mathbf x) = \\mathbf a^\\top \\mathbf x = \\sum_{i} a_i x_i, \\qquad \\frac{\\partial f}{\\partial x_j} = \\sum_i a_i\\, \\delta_{ij} = a_j, \\qquad \\nabla f = \\mathbf a. \\]' +
           '<p>This is the vector version of \\(\\tfrac{d}{dx}(ax) = a\\).</p>'
       },
       {
@@ -177,8 +179,10 @@
       {
         kind: 'text',
         title: 'Quadratic forms',
-        html: '<p>The next building block is the <b>quadratic form</b> \\(f(\\mathbf x) = \\mathbf x^\\top A\\mathbf x = \\sum_{i,k} x_i A_{ik} x_k\\). The variable \\(x_j\\) appears in row \\(j\\) and in column \\(j\\), so</p>' +
-          '\\[ \\frac{\\partial f}{\\partial x_j} = \\sum_k A_{jk}x_k + \\sum_i x_i A_{ij}, \\qquad \\nabla f = A\\mathbf x + A^\\top\\mathbf x = (A + A^\\top)\\mathbf x. \\]' +
+        html: '<p>The next building block is the <b>quadratic form</b> \\(f(\\mathbf x) = \\mathbf x^\\top A\\mathbf x = \\sum_{i,k} x_i A_{ik} x_k\\). By the product rule each term gives two pieces, and the Kronecker deltas pick out the terms that contain \\(x_j\\):</p>' +
+          '\\[ \\frac{\\partial f}{\\partial x_j} = \\sum_{i,k} \\big(\\delta_{ij} A_{ik} x_k + x_i A_{ik}\\, \\delta_{kj}\\big) = \\sum_k A_{jk}x_k + \\sum_i x_i A_{ij}. \\]' +
+          '<p>The first sum is entry \\(j\\) of \\(A\\mathbf x\\), the second is entry \\(j\\) of \\(A^\\top\\mathbf x\\), so</p>' +
+          '\\[  \\nabla f = A\\mathbf x + A^\\top\\mathbf x = (A + A^\\top)\\mathbf x. \\]' +
           '<p>For a symmetric matrix this is \\(2A\\mathbf x\\), the vector version of \\(\\tfrac{d}{dx}(ax^2) = 2ax\\). The special case \\(A = I\\) gives the squared length:</p>' +
           '\\[ \\nabla \\lVert \\mathbf x \\rVert^2 = \\nabla (\\mathbf x^\\top\\mathbf x) = 2\\mathbf x. \\]' +
           '<p>Combined with the chain rule this gives the gradient of the least squares error, \\(\\nabla \\lVert A\\mathbf x - \\mathbf b \\rVert^2 = 2A^\\top(A\\mathbf x - \\mathbf b)\\), which you met in <a href="#/l/mv-s4">Gradients of loss functions</a>.</p>'
@@ -241,7 +245,9 @@
         kind: 'text',
         title: 'Derivatives with respect to a matrix',
         html: '<p>Now let a scalar function \\(L\\) depend on a matrix \\(W \\in \\mathbb R^{m \\times n}\\). Its gradient again has the shape of the variable: \\(\\partial L/\\partial W\\) is an \\(m \\times n\\) matrix whose entry \\((i, j)\\) is \\(\\partial L/\\partial W_{ij}.\\)</p>' +
-          '<p>Suppose \\(L\\) depends on \\(W\\) and \\(\\mathbf b\\) only through \\(\\mathbf z = W\\mathbf x + \\mathbf b\\), and that its gradient \\(\\boldsymbol\\delta = \\partial L/\\partial \\mathbf z\\) is known. The entry \\(W_{ij}\\) appears in one place only, in \\(z_i = \\sum_k W_{ik}x_k + b_i\\), with factor \\(x_j\\). So</p>' +
+          '<p>Suppose \\(L\\) depends on \\(W\\) and \\(\\mathbf b\\) only through \\(\\mathbf z = W\\mathbf x + \\mathbf b\\), and that its gradient \\(\\boldsymbol\\delta = \\partial L/\\partial \\mathbf z\\) is known. Write \\(z_k = \\sum_l W_{kl}x_l + b_k\\). The entry \\(W_{ij}\\) only appears in \\(z_i\\), with factor \\(x_j\\), and the Kronecker delta says exactly that: \\(\\partial z_k/\\partial W_{ij} = \\delta_{ki}\\, x_j\\). The chain rule sums over all \\(z_k\\):</p>' +
+          '\\[ \\frac{\\partial L}{\\partial W_{ij}} = \\sum_k \\frac{\\partial L}{\\partial z_k}\\, \\delta_{ki}\\, x_j = \\frac{\\partial L}{\\partial z_i}\\, x_j. \\]' +
+          '<p>Do not confuse the two deltas. The Kronecker delta \\(\\delta_{ki}\\) has two indices and is always 0 or 1. The gradient \\(\\delta_i = \\partial L/\\partial z_i\\) has one index. With that notation</p>' +
           '\\[ \\frac{\\partial L}{\\partial W_{ij}} = \\delta_i\\, x_j, \\qquad \\frac{\\partial L}{\\partial W} = \\boldsymbol\\delta\\, \\mathbf x^\\top, \\qquad \\frac{\\partial L}{\\partial \\mathbf b} = \\boldsymbol\\delta, \\qquad \\frac{\\partial L}{\\partial \\mathbf x} = W^\\top \\boldsymbol\\delta. \\]' +
           '<p>The gradient with respect to \\(W\\) is the <b>outer product</b> of the known gradient \\(\\boldsymbol\\delta\\) and the input \\(\\mathbf x\\). The gradient with respect to \\(\\mathbf x\\) multiplies \\(\\boldsymbol\\delta\\) by the transpose \\(W^\\top\\). Later in the course, neural networks compute all their gradients with exactly these two rules.</p>'
       },
