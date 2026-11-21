@@ -158,6 +158,7 @@ h1,h2,h3{line-height:1.2;letter-spacing:0;margin:0;font-weight:400}
 .m4-node-row.done .m4-node-rail:after{background:var(--mc);width:2px;margin-left:-.5px}
 .m4-node{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;background:#fff;border:1.5px solid var(--mc);color:var(--mc);position:relative;z-index:1;font-style:italic}
 .m4-node-row.done .m4-node{background:var(--mc);color:#fff;font-style:normal}
+.m4-node span{display:inline-block;line-height:normal}
 .m4-node-row.next .m4-node{box-shadow:0 0 0 5px var(--mcp)}
 .m4-node-row.soon .m4-node{border-style:dashed;border-color:#cfc7b4;color:#b4ad9c}
 .m4-node-card{flex:1;min-width:0;background:#fff;border:1px solid var(--m4-line);border-radius:var(--m4-radius);padding:14px 18px;transition:border-color .15s,box-shadow .15s;align-self:flex-start}

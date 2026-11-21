@@ -1075,7 +1075,8 @@
       var row = M4.el(L ? 'a' : 'div', { class: 'm4-node-row ' + state }, path);
       if (L) row.setAttribute('href', '#/l/' + lid);
       var rail = M4.el('div', { class: 'm4-node-rail' }, row);
-      M4.el('div', { class: 'm4-node', html: state === 'done' ? '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : String(i + 1) }, rail);
+      var node = M4.el('div', { class: 'm4-node', html: state === 'done' ? '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<span>' + (i + 1) + '</span>' }, rail);
+      if (state !== 'done') inkCenter(node);
       var card = M4.el('div', { class: 'm4-node-card' }, row);
       M4.el('h3', { text: L ? L.title : 'Session ' + (i + 1) }, card);
       M4.el('p', { text: L ? (L.summary || '') : 'In preparation.' }, card);
@@ -1090,6 +1091,31 @@
         if (state === 'next') M4.el('span', { class: 'm4-chip', text: 'Up next', style: 'border-color:' + c + ';color:' + c }, meta);
       }
     });
+  }
+
+  /* Centre a number on the ink of its glyphs. Digits in the serif font sit
+     low and italic ones lean right, so flex centring alone looks off. */
+  var inkCtx = null;
+  function inkCenter(box) {
+    var sp = box.firstChild;
+    function fit() {
+      if (!sp.isConnected) return;
+      sp.style.transform = '';
+      var cs = getComputedStyle(sp);
+      inkCtx = inkCtx || document.createElement('canvas').getContext('2d');
+      inkCtx.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+      var m = inkCtx.measureText(sp.textContent);
+      if (!m.actualBoundingBoxAscent) return;
+      var r = sp.getBoundingClientRect(), b = box.getBoundingClientRect();
+      var fa = m.fontBoundingBoxAscent, fd = m.fontBoundingBoxDescent;
+      var base = r.top + (fa && fd ? (r.height - fa - fd) / 2 + fa : r.height * 0.8);
+      var cy = base - (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+      var cx = r.left + (m.actualBoundingBoxRight - m.actualBoundingBoxLeft) / 2;
+      var dx = (b.left + b.width / 2) - cx, dy = (b.top + b.height / 2) - cy;
+      sp.style.transform = 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px)';
+    }
+    requestAnimationFrame(fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
   }
 
   function notFound(page) {
