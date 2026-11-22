@@ -385,7 +385,7 @@ h1,h2,.m4-hero h1,.m4-step h1,.m4-mhead h1,.m4-done h1,.m4-empty h1,.m4-track h2
 .m4-back{font-family:var(--m4-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
 
 /* Home: almanac layout */
-.m4-alm{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 60px)}
+.m4-alm{display:grid;grid-template-columns:440px 1fr;min-height:calc(100vh - 60px)}
 .m4-alm-side{position:sticky;top:60px;height:calc(100vh - 60px);overflow:auto;padding:30px 30px 24px;border-right:1px solid var(--m4-ink);display:flex;flex-direction:column;gap:18px}
 .m4-alm-side h1{font-size:54px;line-height:.95;margin:0}
 .m4-alm-side h1 em{color:var(--m4-accent)}
@@ -400,9 +400,6 @@ h1,h2,.m4-hero h1,.m4-step h1,.m4-mhead h1,.m4-done h1,.m4-empty h1,.m4-track h2
 .m4-stats3>div{padding:10px 0;text-align:center}
 .m4-stats3>div+div{border-left:1px solid var(--m4-line2)}
 .m4-stats3 b{display:block;font-family:var(--m4-display);font-weight:400;font-size:32px;line-height:1}
-.m4-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--m4-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--m4-muted)}
-.m4-legend span{display:flex;align-items:center;gap:6px}
-.m4-legend i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--m4-ink);display:inline-block}
 .m4-alm-main{padding:10px 24px 40px;display:flex;flex-direction:column;align-items:center}
 .m4-map{position:relative;width:100%;max-width:860px}
 .m4-map svg.edges{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
@@ -424,7 +421,9 @@ h1,h2,.m4-hero h1,.m4-step h1,.m4-mhead h1,.m4-done h1,.m4-empty h1,.m4-track h2
 .m4-uh{position:absolute;transform:translate(-50%,-50%);font-family:var(--m4-display);font-style:italic;font-size:26px;white-space:nowrap;background:var(--m4-bg);padding:0 10px;text-align:center;line-height:1.1}
 .m4-uh small{display:block;font-family:var(--m4-mono);font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--m4-muted)}
 .m4-alm-foot{width:100%;max-width:860px;margin-top:30px}
-@media(max-width:900px){.m4-alm{grid-template-columns:1fr}.m4-alm-side{position:static;height:auto;border-right:none;border-bottom:1px solid var(--m4-ink);padding:24px 18px}.m4-alm-side h1{font-size:44px}.m4-legend{display:none}.m4-alm-main{padding:10px 12px 30px}}
+@media(max-width:900px){.m4-alm{grid-template-columns:1fr}.m4-alm-side{position:static;height:auto;border-right:none;border-bottom:1px solid var(--m4-ink);padding:24px 18px}.m4-alm-side h1{font-size:44px}.m4-alm-main{padding:10px 12px 30px}}
 /* Module page: ink nodes, accent ring for the next lesson, like the home map */
 .m4-node-row.done .m4-node{color:var(--m4-bg)}
 .m4-node-row.next .m4-node{border-color:var(--m4-accent,#b6472b);color:var(--m4-accent,#b6472b);box-shadow:0 0 0 4px var(--m4-bg),0 0 0 5.5px var(--m4-accent,#b6472b)}
+.m4-top-in{height:59px;padding-top:0;padding-bottom:0}
+.m4-lbl .m4-kick{white-space:nowrap}

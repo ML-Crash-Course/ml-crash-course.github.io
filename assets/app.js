@@ -1012,7 +1012,6 @@
     ['Language', ['language']]
   ];
   var ROMAN = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ'];
-  function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function homeUnits() {
     var byId = {}; M4.modules.forEach(function (m) { byId[m.id] = m; });
     var seen = {}, units = UNIT_DEFS.map(function (d, k) {
@@ -1025,15 +1024,15 @@
     return units;
   }
   function mapLayout(units, o) {
-    var w = o.w, cx = w / 2, row = o.row, gap = o.gap, amp = o.amp, ug = o.unitGap;
+    var w = o.w, cx = w / 2, row = o.row, row1 = o.row1 || o.row, gap = o.gap, amp = o.amp, ug = o.unitGap;
     var pos = {}, edges = [], heads = [], y0 = o.top + ug, xs = [cx - gap, cx, cx + gap];
     var top = units.slice(0, 3), maxN = Math.max.apply(null, top.map(function (u) { return u.mods.length; }));
     top.forEach(function (u, b) {
       heads.push({ u: u, x: xs[b], y: y0 - ug * .7 });
       var off = (maxN - u.mods.length) / 2;
-      u.mods.forEach(function (m, j) { pos[m.id] = { x: xs[b], y: y0 + (j + off) * row, u: u }; if (j) edges.push([u.mods[j - 1].id, m.id]); });
+      u.mods.forEach(function (m, j) { pos[m.id] = { x: xs[b], y: y0 + (j + off) * row1, u: u }; if (j) edges.push([u.mods[j - 1].id, m.id]); });
     });
-    var y = y0 + maxN * row + ug * .4 - row, k = 0, prev = null;
+    var y = y0 + maxN * row1 + ug * .4 - row1, k = 0, prev = null;
     var lasts = top.map(function (u) { return u.mods[u.mods.length - 1].id; });
     for (var b = 3; b < units.length; b++) {
       var u = units[b]; y += row * .7 + ug; heads.push({ u: u, x: cx, y: y - ug * .75 }); y += 24;
@@ -1075,15 +1074,13 @@
       M4.el('h2', { text: L.title }, now);
       M4.el('a', { class: 'm4-cta', href: '#/l/' + cont, text: (S.xp ? 'Continue' : 'Start') + ' →' }, now);
     }
-    var leg = M4.el('div', { class: 'm4-legend' }, side);
-    leg.innerHTML = '<span><i style="background:var(--m4-ink)"></i>Finished</span><span><i style="border-color:var(--m4-accent);box-shadow:0 0 0 2px var(--m4-bg),0 0 0 3.5px var(--m4-accent)"></i>You are here</span><span><i style="opacity:.4"></i>Ahead</span>';
 
     var main = M4.el('div', { class: 'm4-alm-main' }, wrap);
     var map = M4.el('div', { class: 'm4-map' }, main);
 
     function draw() {
       var W = Math.min(860, map.clientWidth || main.clientWidth), narrow = W < 760;
-      var LY = mapLayout(units, { w: W, top: 30, row: narrow ? 160 : 150, gap: Math.min(240, W / 3.3), amp: narrow ? 0 : 90, unitGap: 110 });
+      var LY = mapLayout(units, { w: W, top: 30, row: narrow ? 190 : 150, row1: 190, gap: Math.min(240, W / 3.3), amp: narrow ? 0 : 90, unitGap: 110 });
       map.innerHTML = ''; map.style.height = LY.h + 'px';
       var sv = M4.svg('svg', { class: 'edges', width: W, height: LY.h }, map);
       LY.edges.forEach(function (e) {
@@ -1102,10 +1099,10 @@
         var disc = M4.el('span', { class: 'm4-disc' }, a);
         disc.appendChild(art(m, 156, 156));
         if (state === 'done') M4.el('span', { class: 'm4-check', html: '<svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' }, a);
-        var status = state === 'done' ? 'Finished' : state === 'current' ? 'Continue · ' + st.done + '/' + st.total : st.done ? st.done + '/' + st.total + ' lessons' : st.total + ' lessons';
+        var status = (st.done || state === 'current') ? st.done + '/' + st.total : st.total + (st.total === 1 ? ' lesson' : ' lessons');
         var lb = M4.el('span', { class: 'm4-lbl ' + side2 }, a);
         M4.el('b', { text: m.title }, lb);
-        M4.el('span', { class: 'm4-kick', text: 'No. ' + pad2(idx + 1) + ' · ' + status }, lb);
+        M4.el('span', { class: 'm4-kick', text: status }, lb);
       });
     }
     draw();
