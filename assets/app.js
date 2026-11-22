@@ -8,8 +8,8 @@
 
   M4.colors = {
     blue: '#2f5f9e', green: '#2f7d5b', orange: '#b8692a', purple: '#5f4f9c', pink: '#a8476f',
-    yellow: '#b68a1c', red: '#b1433a', ink: '#22201c', muted: '#6f6a60', line: '#e7e2d6',
-    bg: '#fdfcf8', card: '#ffffff', paper: '#fbf9f3'
+    yellow: '#b68a1c', red: '#b1433a', ink: '#1d1b17', muted: '#7a705d', line: '#d6cbb3',
+    bg: '#f1ead9', card: '#f6f0e2', paper: '#f6f0e2'
   };
   var C = M4.colors;
   var DARK = { blue: '#22487a', green: '#215d43', orange: '#8c4e1d', purple: '#463a78', pink: '#7f3453', yellow: '#876612', red: '#86322b' };
@@ -817,8 +817,8 @@
   function topBar(parent) {
     var bar = M4.el('header', { class: 'm4-top' }, parent);
     var inn = M4.el('div', { class: 'm4-top-in' }, bar);
-    M4.el('a', { class: 'm4-word', href: '#/', html: '<span class="m4-word-mark">' + MARK + '</span><span>Machine Learning <i class="m4-word-long">Crash Course</i></span>' }, inn);
-    var star = M4.el('a', { class: 'm4-star', href: REPO_URL, target: '_blank', rel: 'noopener', title: 'Star the project on GitHub', html: ICON.star + '<em class="m4-star-txt" style="font-style:normal">Star</em><span class="m4-star-n"></span>' }, inn);
+    M4.el('a', { class: 'm4-word', href: '#/', 'aria-label': 'Machine Learning Crash Course, home', html: '<span class="m4-word-mark">' + MARK + '</span><span class="m4-word-txt">Machine Learning <i class="m4-word-long">Crash Course</i></span>' }, inn);
+    var star = M4.el('a', { class: 'm4-star', href: REPO_URL, target: '_blank', rel: 'noopener', title: 'Star the project on GitHub', 'aria-label': 'Star the project on GitHub', html: ICON.star + '<em class="m4-star-txt" style="font-style:normal">Star</em><span class="m4-star-n"></span>' }, inn);
     starCount(function (n) { var e = star.querySelector('.m4-star-n'); if (e && n != null) e.textContent = n.toLocaleString('en-US'); });
     if (M4.feedbackButton) M4.feedbackButton(inn);
     M4.el('span', { class: 'm4-stat', title: 'Day streak', html: ICON.flame + '<b>' + liveStreak() + '</b>' }, inn);
@@ -831,7 +831,7 @@
   }
 
   var REPO = 'ML-Crash-Course/ml-crash-course.github.io', REPO_URL = 'https://github.com/' + REPO;
-  var MARK = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#22201c" stroke-width="1.4" stroke-linecap="round"><circle cx="14" cy="14" r="12.5"/><path d="M4 19 C9 19 10 8 14 8 S19 19 24 19" stroke="#2f5f9e" stroke-width="1.8"/><path d="M3 14h22M14 3v22" stroke-opacity=".25"/></svg>';
+  var MARK = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#1d1b17" stroke-width="1.4" stroke-linecap="round"><circle cx="14" cy="14" r="12.5"/><path d="M4 19 C9 19 10 8 14 8 S19 19 24 19" stroke="#b6472b" stroke-width="1.8"/><path d="M3 14h22M14 3v22" stroke-opacity=".25"/></svg>';
   function starCount(cb) {
     var K = 'm4.stars.v1', now = Date.now();
     try {
@@ -870,7 +870,7 @@
     var c = col(m.color), ink = C.ink;
     var s = M4.svg('svg', { viewBox: '0 0 ' + w + ' ' + h, preserveAspectRatio: 'xMidYMid slice', class: cls || 'm4-mcard-art' });
     M4.svg('rect', { width: w, height: h, fill: C.paper }, s);
-    var grid = M4.svg('g', { stroke: '#e9e3d4', 'stroke-width': 1 }, s);
+    var grid = M4.svg('g', { stroke: '#e2d8c2', 'stroke-width': 1 }, s);
     var step = Math.max(16, Math.round(h / 8));
     var cx = w / 2, cy = h / 2, k = h / 150;
     for (var gx = cx % step; gx <= w; gx += step) M4.svg('line', { x1: gx, y1: 0, x2: gx, y2: h }, grid);
@@ -965,10 +965,21 @@
       [[0, 2], [1, 2], [2, 3], [3, 4]].forEach(function (e) { var a = nodes[e[0]], b = nodes[e[1]]; arrow(a[0] + 12, a[1] * .8, b[0] - 13, b[1], ink, 1.4); });
       [[4, 3], [3, 2], [2, 0]].forEach(function (e) { var a = nodes[e[0]], b = nodes[e[1]]; M4.svg('path', { d: 'M' + P(a[0] - 8, a[1] + 14) + ' Q' + P((a[0] + b[0]) / 2, Math.max(a[1], b[1]) + 46) + ' ' + P(b[0] + 6, b[1] + 15), stroke: c, 'stroke-width': 1.8, 'stroke-dasharray': '4 4' }, gg); });
       nodes.forEach(function (q, j) { ring(q[0], q[1], j === 4 ? 13 : 11, { stroke: j === 4 ? c : ink, 'stroke-width': j === 4 ? 2.2 : 1.6 }); });
+    } else if (id === 'norm') {
+      M4.svg('rect', { x: cx - 34 * k, y: cy - 4 * k, width: 68 * k, height: 44 * k, rx: 4 * k, fill: C.paper, stroke: ink, 'stroke-width': 1.6 }, gg);
+      line(-14, 10, 14, 10, { stroke: '#b9b19e', 'stroke-width': 1 }); line(-14, 22, 14, 22, { stroke: '#b9b19e', 'stroke-width': 1 });
+      arrow(-120, 18, -38, 18, ink, 1.8); arrow(38, 18, 76, 18, ink, 1.8);
+      M4.svg('path', { d: 'M' + P(-80, 18) + ' C' + P(-80, -66) + ' ' + P(92, -66) + ' ' + P(92, 4), stroke: c, 'stroke-width': 2.4 }, gg);
+      M4.svg('polygon', { points: [P(92, 6), P(85, -6), P(99, -6)].join(' '), fill: c, stroke: 'none' }, gg);
+      ring(92, 18, 12, { stroke: c, 'stroke-width': 2.2 }); line(86, 18, 98, 18, { stroke: c, 'stroke-width': 2 }); line(92, 12, 92, 24, { stroke: c, 'stroke-width': 2 });
+      arrow(104, 18, 128, 18, ink, 1.8);
     } else if (id === 'training') {
-      ring(0, 0, 40, { stroke: c, 'stroke-width': 2.2, 'stroke-dasharray': '6 5' });
-      [[-12, -10], [10, -16], [14, 8], [-6, 14], [0, 0], [-18, 4]].forEach(function (q) { dot(q[0], q[1], 4.5, C.orange); });
-      for (var ti = 0; ti < 12; ti++) { var ta = ti / 12 * 2 * Math.PI + 0.3, tr = ti % 2 ? 62 : 72; dot(tr * Math.cos(ta) * 1.5, tr * Math.sin(ta) * 0.8, 4.5, C.blue); }
+      line(-120, 52, 125, 52, { stroke: '#b9b19e', 'stroke-width': 1 }); line(-120, 52, -120, -66, { stroke: '#b9b19e', 'stroke-width': 1 });
+      var tl = function (x) { var t = (x + 112) / 230; return -60 + 104 * (1 - Math.exp(-t * 3.2)) + 5 * Math.sin(x / 5) * Math.exp(-t * 2); };
+      var vl = function (x) { var t = (x + 112) / 230; return -54 + 92 * (1 - Math.exp(-t * 3.6)) - 70 * t * t; };
+      curve(tl, -112, 118, { stroke: c, 'stroke-width': 2.4 });
+      curve(vl, -112, 118, { stroke: ink, 'stroke-width': 1.4, 'stroke-dasharray': '4 4' });
+      var vx = -112 + 230 * 0.455; line(vx, vl(vx), vx, 52, { stroke: '#8a8373', 'stroke-width': 1, 'stroke-dasharray': '2 3' }); dot(vx, vl(vx), 4.5, ink);
     } else if (id === 'language') {
       var lw = [[-96, 40, .9], [-48, 40, .25], [0, 40, .5], [48, 40, .15], [96, 40, 1]];
       lw.forEach(function (q) { line(q[0], q[1] - 10, 0, -38, { stroke: c, 'stroke-width': 1 + 3 * q[2], 'stroke-opacity': .3 + .7 * q[2] }); });
@@ -990,14 +1001,68 @@
   }
 
   /* ------------------------------------------------------------------ home */
+  /* ------------------------------------------------------------------ home: almanac map */
+  var UNIT_DEFS = [
+    ['Linear algebra', ['vectors', 'matrices', 'eigen']],
+    ['Calculus', ['functions', 'calculus', 'multivariable']],
+    ['Probability', ['probability']],
+    ['Learning from data', ['l1', 'mle', 'info']],
+    ['Optimization', ['optimisation', 'optimizers', 'generalisation']],
+    ['Neural networks', ['nn', 'backprop', 'norm', 'training']],
+    ['Language', ['language']]
+  ];
+  var ROMAN = ['Ⅰ', 'Ⅱ', 'Ⅲ', 'Ⅳ', 'Ⅴ', 'Ⅵ', 'Ⅶ', 'Ⅷ'];
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function homeUnits() {
+    var byId = {}; M4.modules.forEach(function (m) { byId[m.id] = m; });
+    var seen = {}, units = UNIT_DEFS.map(function (d, k) {
+      var mods = d[1].filter(function (id) { return byId[id]; }).map(function (id) { seen[id] = 1; return byId[id]; });
+      return { k: k, name: d[0], mods: mods };
+    }).filter(function (u) { return u.mods.length; });
+    var rest = M4.modules.filter(function (m) { return !seen[m.id]; });
+    if (rest.length) units.push({ k: units.length, name: 'More', mods: rest });
+    units.forEach(function (u, k) { u.k = k; });
+    return units;
+  }
+  function mapLayout(units, o) {
+    var w = o.w, cx = w / 2, row = o.row, gap = o.gap, amp = o.amp, ug = o.unitGap;
+    var pos = {}, edges = [], heads = [], y0 = o.top + ug, xs = [cx - gap, cx, cx + gap];
+    var top = units.slice(0, 3), maxN = Math.max.apply(null, top.map(function (u) { return u.mods.length; }));
+    top.forEach(function (u, b) {
+      heads.push({ u: u, x: xs[b], y: y0 - ug * .7 });
+      var off = (maxN - u.mods.length) / 2;
+      u.mods.forEach(function (m, j) { pos[m.id] = { x: xs[b], y: y0 + (j + off) * row, u: u }; if (j) edges.push([u.mods[j - 1].id, m.id]); });
+    });
+    var y = y0 + maxN * row + ug * .4 - row, k = 0, prev = null;
+    var lasts = top.map(function (u) { return u.mods[u.mods.length - 1].id; });
+    for (var b = 3; b < units.length; b++) {
+      var u = units[b]; y += row * .7 + ug; heads.push({ u: u, x: cx, y: y - ug * .75 }); y += 24;
+      u.mods.forEach(function (m) {
+        pos[m.id] = { x: cx + amp * Math.sin(k * Math.PI / 2.5), y: y, u: u };
+        if (prev) edges.push([prev, m.id]); else lasts.forEach(function (l) { edges.push([l, m.id]); });
+        prev = m.id; k++; y += row;
+      });
+      y -= row * .45;
+    }
+    return { pos: pos, edges: edges, heads: heads, h: y + 60 };
+  }
+  function mapCurve(a, b) { var my = (a.y + b.y) / 2; return 'M' + a.x + ' ' + a.y + ' C' + a.x + ' ' + my + ' ' + b.x + ' ' + my + ' ' + b.x + ' ' + b.y; }
+
   function renderHome() {
     document.title = 'Machine Learning Crash Course';
     app.innerHTML = '';
     topBar(app);
-    var page = M4.el('main', { class: 'm4-page' }, app);
-    var hero = M4.el('section', { class: 'm4-hero' }, page);
-    M4.el('h1', { html: 'The mathematics behind <em>machine learning</em>' }, hero);
-    var intro = M4.el('div', { class: 'm4-intro' }, hero);
+    var units = homeUnits(), order = [];
+    units.forEach(function (u) { u.mods.forEach(function (m) { order.push(m); }); });
+
+    var cont = S.last && M4.lessons[S.last] && !S.done[S.last] ? S.last : null;
+    if (!cont) { for (var i = 0; i < order.length && !cont; i++) cont = nextLessonOf(order[i]); }
+    var curMod = cont ? moduleOf(cont) : null;
+
+    var wrap = M4.el('main', { class: 'm4-alm' }, app);
+    var side = M4.el('aside', { class: 'm4-alm-side' }, wrap);
+    M4.el('h1', { html: 'The mathematics behind <em>machine learning</em>' }, side);
+    var intro = M4.el('div', { class: 'm4-intro' }, side);
     [
       'Hi, I’m Filipe! This little course is intended as supplementary material for my “Machine Learning Crash Course” as part of the “Deep Learning and NLP” course from Prof. Alan Akbik at Humboldt University Berlin (Winter Semester 2026/2027).',
       'You can freshen up your knowledge on the mathematical foundation of ML (Linear Algebra, Multivariate Calculus, and Probability), and additionally there are modules for each of my lecture topics (ML basics, Maximum Likelihood Estimation, Information Theory, Gradient Descent and advanced optimizers, Neural Networks, and Back Propagation).',
@@ -1005,42 +1070,50 @@
       '-Filipe'
     ].forEach(function (h, i, arr) { M4.el('p', { html: h, class: i === arr.length - 1 ? 'm4-sign' : '' }, intro); });
 
-    var cont = S.last && M4.lessons[S.last] && !S.done[S.last] ? S.last : null;
-    if (!cont) { for (var i = 0; i < M4.modules.length && !cont; i++) cont = nextLessonOf(M4.modules[i]); }
     if (cont) {
-      var L = M4.lessons[cont], mm = moduleOf(cont);
-      var box = M4.el('div', { class: 'm4-continue' }, page);
-      if (mm) { var a = art(mm, 120, 80, 'm4-cont-art'); a.setAttribute('width', 96); a.setAttribute('height', 64); a.style.borderRadius = '6px'; a.style.flex = 'none'; box.appendChild(a); }
-      var t = M4.el('div', { class: 'm4-continue-txt' }, box);
-      M4.el('strong', { text: L.title }, t);
-      if (mm) M4.el('span', { text: mm.title }, t);
-      var b = M4.button(box, S.xp ? 'Continue' : 'Start', function () { location.hash = '#/l/' + cont; }, { primary: true });
-      b.style.minWidth = '150px';
+      var L = M4.lessons[cont], now = M4.el('div', { class: 'm4-now' }, side);
+      M4.el('h2', { text: L.title }, now);
+      M4.el('a', { class: 'm4-cta', href: '#/l/' + cont, text: (S.xp ? 'Continue' : 'Start') + ' →' }, now);
     }
+    var leg = M4.el('div', { class: 'm4-legend' }, side);
+    leg.innerHTML = '<span><i style="background:var(--m4-ink)"></i>Finished</span><span><i style="border-color:var(--m4-accent);box-shadow:0 0 0 2px var(--m4-bg),0 0 0 3.5px var(--m4-accent)"></i>You are here</span><span><i style="opacity:.4"></i>Ahead</span>';
 
-    var tracks = [];
-    M4.modules.forEach(function (m) { if (tracks.indexOf(m.track) < 0) tracks.push(m.track); });
-    var blurbs = {
-      'Math foundations': 'Linear algebra, calculus and probability, the language in which every model is written.',
-      'Machine learning': 'The lectures of the crash course as interactive sessions: from a first model to likelihoods, information, optimizers and neural networks.'
-    };
-    tracks.forEach(function (tr, ti) {
-      var sec = M4.el('section', { class: 'm4-track' }, page);
-      M4.el('h2', { text: tr }, sec);
-      M4.el('p', { text: blurbs[tr] || '' }, sec);
-      var grid = M4.el('div', { class: 'm4-cards' }, sec);
-      M4.modules.filter(function (m) { return m.track === tr; }).forEach(function (m, mi) {
-        var st = modStats(m);
-        var card = M4.el('a', { class: 'm4-mcard', href: '#/m/' + m.id }, grid);
-        card.appendChild(art(m, 320, 150));
-        var body = M4.el('div', { class: 'm4-mcard-body' }, card);
-        var tx = M4.el('div', { class: 'm4-mcard-txt' }, body);
-        M4.el('h3', { text: m.title }, tx);
-        M4.el('p', { text: m.blurb }, tx);
-        ring(body, st.frac, col(m.color), st.done + '/' + st.total);
+    var main = M4.el('div', { class: 'm4-alm-main' }, wrap);
+    var map = M4.el('div', { class: 'm4-map' }, main);
+
+    function draw() {
+      var W = Math.min(860, map.clientWidth || main.clientWidth), narrow = W < 760;
+      var LY = mapLayout(units, { w: W, top: 30, row: narrow ? 160 : 150, gap: Math.min(240, W / 3.3), amp: narrow ? 0 : 90, unitGap: 110 });
+      map.innerHTML = ''; map.style.height = LY.h + 'px';
+      var sv = M4.svg('svg', { class: 'edges', width: W, height: LY.h }, map);
+      LY.edges.forEach(function (e) {
+        var a = LY.pos[e[0]], b = LY.pos[e[1]], src = order.filter(function (m) { return m.id === e[0]; })[0];
+        var done = src && modStats(src).done === modStats(src).total;
+        M4.svg('path', { d: mapCurve(a, b), fill: 'none', stroke: C.ink, 'stroke-width': 1.5, 'stroke-dasharray': done ? '' : '3 6', 'stroke-linecap': 'round' }, sv);
       });
-    });
-    var foot = M4.el('footer', { class: 'm4-foot' }, app);
+      LY.heads.forEach(function (h) {
+        M4.el('div', { class: 'm4-uh', style: 'left:' + h.x + 'px;top:' + h.y + 'px', html: '<small>PART ' + (ROMAN[h.u.k] || h.u.k + 1) + '</small>' + h.u.name }, map);
+      });
+      order.forEach(function (m, idx) {
+        var p = LY.pos[m.id], st = modStats(m);
+        var state = st.total && st.done === st.total ? 'done' : m === curMod ? 'current' : st.done ? 'started' : 'new';
+        var below = p.u.k < 3 || narrow, side2 = below ? 'below' : (p.x >= W / 2 + 10 ? 'left' : '');
+        var a = M4.el('a', { class: 'm4-mn ' + state, href: '#/m/' + m.id, style: 'left:' + p.x + 'px;top:' + p.y + 'px' }, map);
+        var disc = M4.el('span', { class: 'm4-disc' }, a);
+        disc.appendChild(art(m, 156, 156));
+        if (state === 'done') M4.el('span', { class: 'm4-check', html: '<svg width="14" height="14" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' }, a);
+        var status = state === 'done' ? 'Finished' : state === 'current' ? 'Continue · ' + st.done + '/' + st.total : st.done ? st.done + '/' + st.total + ' lessons' : st.total + ' lessons';
+        var lb = M4.el('span', { class: 'm4-lbl ' + side2 }, a);
+        M4.el('b', { text: m.title }, lb);
+        M4.el('span', { class: 'm4-kick', text: 'No. ' + pad2(idx + 1) + ' · ' + status }, lb);
+      });
+    }
+    draw();
+    var t = null;
+    homeResize = function () { clearTimeout(t); t = setTimeout(draw, 80); };
+    window.addEventListener('resize', homeResize);
+
+    var foot = M4.el('footer', { class: 'm4-foot m4-alm-foot' }, main);
     M4.el('span', { html: 'Made with ❤️ by <a href="https://thiggel.github.io" target="_blank" rel="noopener">Filipe Laitenberger</a>' }, foot);
     var rs = M4.el('a', { href: '#/', text: 'Reset progress' }, foot);
     rs.addEventListener('click', function (e) { e.preventDefault(); if (confirm('Reset all progress, XP and streak?')) M4.resetProgress(); });
@@ -1065,9 +1138,10 @@
     head.appendChild(art(m, 520, 300, 'bgart'));
 
     var path = M4.el('div', { class: 'm4-path' }, page);
-    path.style.setProperty('--mc', c);
-    path.style.setProperty('--mcd', dark(m.color));
-    path.style.setProperty('--mcp', c + '22');
+    path.style.setProperty('--mc', '#1d1b17');
+    path.style.setProperty('--mcd', '#1d1b17');
+    path.style.setProperty('--mcp', 'rgba(182,71,43,.14)');
+    c = '#b6472b';
     var nxt = nextLessonOf(m);
     m.lessons.forEach(function (lid, i) {
       var L = M4.lessons[lid];
@@ -1075,7 +1149,7 @@
       var row = M4.el(L ? 'a' : 'div', { class: 'm4-node-row ' + state }, path);
       if (L) row.setAttribute('href', '#/l/' + lid);
       var rail = M4.el('div', { class: 'm4-node-rail' }, row);
-      var node = M4.el('div', { class: 'm4-node', html: state === 'done' ? '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<span>' + (i + 1) + '</span>' }, rail);
+      var node = M4.el('div', { class: 'm4-node', html: state === 'done' ? '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#f1ead9" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '<span>' + (i + 1) + '</span>' }, rail);
       if (state !== 'done') inkCenter(node);
       var card = M4.el('div', { class: 'm4-node-card' }, row);
       M4.el('h3', { text: L ? L.title : 'Session ' + (i + 1) }, card);
@@ -1339,8 +1413,10 @@
   }
 
   /* ------------------------------------------------------------------ router */
+  var homeResize = null;
   function route() {
     if (player) { player.destroy(); player = null; }
+    if (homeResize) { window.removeEventListener('resize', homeResize); homeResize = null; }
     var h = location.hash.replace(/^#\/?/, '');
     var parts = h.split('/');
     window.scrollTo(0, 0);
