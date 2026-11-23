@@ -49,7 +49,7 @@
   }
   function readout(parent, label) {
     var r = M4.el('span', { class: 'm4-readout' }, parent);
-    return { el: r, set: function (v) { r.textContent = label + ' ' + v; } };
+    return { el: r, set: function (v) { r.textContent = label + ' ' + v; }, vec: function (a) { r.textContent = label + ' '; r.insertAdjacentHTML('beforeend', M4.tex(M4.col(a))); } };
   }
 
   // Deterministic, centred, unit-variance noise sequence.
@@ -233,7 +233,7 @@
     id: 'l3-s4',
     module: 'l3',
     title: 'Adam',
-    summary: 'How Adam combines a running average of gradients with a running average of squared gradients, why its step is a signal-to-noise ratio bounded by the learning rate, and how it compares with the other optimizers.',
+    summary: 'Adam combines a running average of the gradients with a running average of their squares. Its step size is bounded by the learning rate, and its behaviour is compared with that of the other optimizers.',
     minutes: 12,
     steps: [
       /* 1 ------------------------------------------------------------ */
@@ -241,7 +241,7 @@
         kind: 'text',
         title: 'Learning goals',
         html: '<p>Momentum smooths the gradient, and RMSProp gives every parameter its own step size. Adam combines the two and is the optimizer used for almost all deep learning models.</p>' +
-          '<p>In this lesson you will write down the Adam update, explain why the quantity \\(v/\\sqrt{G}\\) behaves like a signal-to-noise ratio, predict how far a parameter moves in one Adam step, and describe the learning-rate schedule used with Adam.</p>'
+          '<p>The aim is to write down the Adam update, explain why the quantity \\(v/\\sqrt{G}\\) behaves like a signal-to-noise ratio, predict how far a parameter moves in one Adam step, and describe the learning-rate schedule used with Adam.</p>'
       },
       /* 2 ------------------------------------------------------------ */
       {
@@ -473,7 +473,7 @@
             answer: 0.01, tolerance: 0.0005, placeholder: '0.000', label: '|\u0394\u03B8| =',
             onCorrect: function () {
               box.classList.add('m4-pop');
-              ctx.note('Since \\(v/\\sqrt{G} = 0.5/0.5 = 1\\), the step is exactly \\(\\eta = 0.01\\). A gradient of 50 would give the same step. Because \\(|v|/\\sqrt{G}\\) is at most about 1, each weight moves at most about \\(\\eta\\) per step.');
+              ctx.note('Since \\(v/\\sqrt{G} = 0.5/0.5 = 1\\), the step is \\(\\eta = 0.01\\). A gradient of 50 would give the same step. Because \\(|v|/\\sqrt{G}\\) is at most about 1, each weight moves at most about \\(\\eta\\) per step.');
               ctx.solved();
             },
             onWrong: function (v) {
@@ -489,8 +489,8 @@
       {
         kind: 'exercise',
         title: 'Four Adam steps',
-        html: '<p>A model has two parameters \\(\\theta = (\\theta_1, \\theta_2)\\), starting at \\((-3, -2)\\). The gradient is the same at every step, \\(g = (-40,\\; 0.2)\\), and the running averages have settled. The learning rate is \\(\\eta = 0.5\\). Drag the green point to the position of \\(\\theta\\) after four Adam steps.</p>',
-        hint: 'For a constant gradient, \\(v/\\sqrt{G} = g/|g|\\), which is \\(+1\\) or \\(-1\\). Each parameter therefore moves by exactly \\(\\eta = 0.5\\) per step, against the sign of its gradient, regardless of the size of the gradient.',
+        html: '<p>A model has two parameters \\(\\theta = \\begin{pmatrix}\\theta_1\\\\\\theta_2\\end{pmatrix}\\), starting at \\((-3, -2)\\). The gradient is the same at every step, \\(g = \\begin{pmatrix}-40\\\\0.2\\end{pmatrix}\\), and the running averages have settled. The learning rate is \\(\\eta = 0.5\\). Drag the green point to the position of \\(\\theta\\) after four Adam steps.</p>',
+        hint: 'For a constant gradient, \\(v/\\sqrt{G} = g/|g|\\), which is \\(+1\\) or \\(-1\\). Each parameter therefore moves by \\(\\eta = 0.5\\) per step, against the sign of its gradient, regardless of the size of the gradient.',
         mount: function (el, ctx) {
           var root = wrap(el);
           var outs = M4.el('div', { class: 'm4-row' }, root);
@@ -504,7 +504,7 @@
           p.text(-3.1, -1.45, 'start', { fill: C.ink, size: 16, weight: 600, anchor: 'end' });
           var done = false;
           function show(x, y) {
-            oP.set('(' + fx(x, 1) + ', ' + fx(y, 1) + ')');
+            oP.vec([fx(x, 1), fx(y, 1)]);
             var moved = Math.abs(x + 3) + Math.abs(y + 2) > 0.3;
             arrow.el.style.opacity = moved ? 1 : 0;
             if (moved) arrow.set(-3, -2, x, y);

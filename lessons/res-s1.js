@@ -147,7 +147,7 @@
     id: 'res-s1',
     module: 'norm',
     title: 'Residual connections',
-    summary: 'A skip connection adds the input of a block to its output. Its derivative adds an identity, which keeps gradients alive in very deep networks.',
+    summary: 'A skip connection adds the input of a block to its output. Its derivative contains an identity term, which keeps gradients from vanishing in very deep networks.',
     minutes: 16,
     steps: [
       {
@@ -165,7 +165,7 @@
       {
         kind: 'text',
         title: 'Differentiating a residual block',
-        html: '<p>Take the scalar block \\(y = x + w_2\\,\\mathrm{ReLU}(w_1 x)\\). The derivative of a sum is the sum of the derivatives: \\[\\frac{\\partial y}{\\partial x} = 1 + w_2 \\cdot \\mathbb 1[w_1 x > 0] \\cdot w_1.\\] The 1 comes from the skip, the rest from the branch, exactly as in the <a href="#/l/bp-s1">chain rule</a> for any composition. When the ReLU is off, the branch contributes nothing, but the derivative is still 1.</p>' +
+        html: '<p>Take the scalar block \\(y = x + w_2\\,\\mathrm{ReLU}(w_1 x)\\). The derivative of a sum is the sum of the derivatives: \\[\\frac{\\partial y}{\\partial x} = 1 + w_2 \\cdot \\mathbb 1[w_1 x > 0] \\cdot w_1.\\] The 1 comes from the skip, the rest from the branch, as in the <a href="#/l/bp-s1">chain rule</a> for any composition. When the ReLU is off, the branch contributes nothing, but the derivative is still 1.</p>' +
           '<p>For vectors the same computation gives a Jacobian with an identity added: \\[J = \\frac{\\partial \\mathbf y}{\\partial \\mathbf x} = I + W_2\\,\\mathrm{diag}(\\mathbf m)\\,W_1, \\qquad \\mathbf m = \\mathbb 1[W_1\\mathbf x > 0].\\] In the backward pass the upstream gradient \\(\\mathbf g = \\partial L/\\partial \\mathbf y\\) becomes \\[\\frac{\\partial L}{\\partial \\mathbf x} = J^\\top \\mathbf g = \\mathbf g + W_1^\\top\\big(\\mathbf m \\odot W_2^\\top \\mathbf g\\big).\\] The first term is the gradient copied straight through the skip. See the <a href="#/l/mv-drill">matrix calculus drills</a> if the transposes are unfamiliar.</p>'
       },
       {
@@ -178,7 +178,7 @@
       {
         kind: 'explore',
         title: 'Many short paths',
-        html: '<p>Three blocks in a row give \\(\\partial y/\\partial x = (1+a)(1+b)(1+c)\\). Multiplying out produces eight terms, and each term is one route through the network: at every block the gradient either takes the skip, which multiplies by 1, or the branch. Click all eight routes. The route \\(1\\) never touches a branch, so it survives even when every branch has a tiny derivative.</p>',
+        html: '<p>Three blocks in a row give \\(\\partial y/\\partial x = (1+a)(1+b)(1+c)\\). Multiplying out produces eight terms, and each term is one route through the network: at every block the gradient either takes the skip, which multiplies by 1, or the branch. Click all eight routes. The route \\(1\\) never touches a branch, so its derivative stays 1 even when every branch has a tiny derivative.</p>',
         mount: function (el) { paths(el); }
       },
       {

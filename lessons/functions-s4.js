@@ -577,13 +577,13 @@
     id: 'functions-s4',
     module: 'functions',
     title: 'Sums, products and argmax',
-    summary: 'Sigma and Pi notation, the mean as a scaled sum, and the difference between the largest value and the position where it occurs.',
+    summary: 'Sums and products of many terms are written with Σ and Π. The mean is a scaled sum, and the largest value of a function is different from the position where it occurs.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Notation for long expressions',
-        html: '<p>Formulas in machine learning routinely combine thousands of numbers, so they are written with symbols that describe a whole pattern of terms at once.</p><p>In this lesson you will read and write sums with \\(\\Sigma\\) and products with \\(\\Pi\\), express the mean as a sum, and distinguish \\(\\max\\) from \\(\\arg\\max\\).</p>' +
+        html: '<p>Formulas in machine learning routinely combine thousands of numbers, so they are written with symbols that describe a whole pattern of terms at once.</p><p>The goals are to read and write sums with \\(\\Sigma\\) and products with \\(\\Pi\\), express the mean as a sum, and distinguish \\(\\max\\) from \\(\\arg\\max\\).</p>' +
           '<p>Throughout, \\(x_1, x_2, \\dots, x_n\\) denotes a list of \\(n\\) numbers. The small number attached to \\(x\\) is called the <em>index</em>. It states the position in the list.</p>'
       },
       {

@@ -114,7 +114,7 @@
     id: 'emb-s2',
     module: 'language',
     title: 'Predicting the next word',
-    summary: 'A language model turns a context into a probability for every possible next word.',
+    summary: 'A language model takes a context of words and assigns a probability to every possible next word.',
     minutes: 15,
     steps: [
       {
@@ -151,7 +151,7 @@
               var z = [M4.pick([0, 1, 2]), M4.pick([0, 1]), M4.pick([-1, 0])];
               var e = z.map(Math.exp), s = e[0] + e[1] + e[2], p = e[0] / s;
               return {
-                q: 'The logits are \\(z = (' + z.join(', ') + ')\\). What is \\(p_1\\)?',
+                q: 'The logits are \\(z = ' + M4.col(z) + '\\). What is \\(p_1\\)?',
                 answer: p, tol: 0.011,
                 hint: 'Use \\(e \\approx 2.718\\), \\(e^2 \\approx 7.39\\) and \\(e^{-1} \\approx 0.37\\).',
                 explain: '\\(p_1 = ' + e[0].toFixed(2) + ' / (' + e.map(function (v) { return v.toFixed(2); }).join(' + ') + ') \\approx ' + p.toFixed(2) + '\\).'

@@ -254,9 +254,9 @@
       var d1 = M4.randNZ(-2, 2), d2 = M4.randNZ(-2, 2), j = M4.pick([1, 2]);
       var ans = j === 1 ? a * d1 + c * d2 : b * d1 + d * d2;
       return {
-        q: 'For \\(y = W x\\) with \\(W = \\begin{pmatrix} ' + a + ' & ' + b + ' \\\\ ' + c + ' & ' + d + ' \\end{pmatrix}\\) and \\(\\delta = \\partial L / \\partial y = (' + d1 + ', ' + d2 + ')\\), compute entry ' + j + ' of \\(\\partial L / \\partial x\\).',
+        q: 'For \\(y = W x\\) with \\(W = \\begin{pmatrix} ' + a + ' & ' + b + ' \\\\ ' + c + ' & ' + d + ' \\end{pmatrix}\\) and \\(\\delta = \\partial L / \\partial y = \\begin{pmatrix}' + d1 + '\\\\' + d2 + '\\end{pmatrix}\\), compute entry ' + j + ' of \\(\\partial L / \\partial x\\).',
         answer: ans, hint: 'Entry ' + j + ' of \\(W^\\top \\delta\\) is column ' + j + ' of \\(W\\) dotted with \\(\\delta\\).',
-        explain: 'Column ' + j + ' of \\(W\\) is \\((' + (j === 1 ? a + ', ' + c : b + ', ' + d) + ')\\). Its dot product with \\(\\delta\\) is \\(' + ans + '\\).'
+        explain: 'Column ' + j + ' of \\(W\\) is \\(\\begin{pmatrix}' + (j === 1 ? a + '\\\\' + c : b + '\\\\' + d) + '\\end{pmatrix}\\). Its dot product with \\(\\delta\\) is \\(' + ans + '\\).'
       };
     }
     if (kind === 'relu') {
@@ -264,7 +264,7 @@
       for (var i = 0; i < 4; i++) { zz.push(M4.randNZ(-4, 4)); gg.push(M4.randNZ(-3, 3)); }
       var k = M4.rand(1, 4), on = zz[k - 1] > 0;
       return {
-        q: 'A ReLU layer receives \\(z = (' + zz.join(', ') + ')\\), and the upstream gradient is \\((' + gg.join(', ') + ')\\). What gradient reaches \\(z_' + k + '\\)?',
+        q: 'A ReLU layer receives \\(z = ' + M4.col(zz) + '\\), and the upstream gradient is \\(' + M4.col(gg) + '\\). What gradient reaches \\(z_' + k + '\\)?',
         answer: on ? gg[k - 1] : 0, hint: 'ReLU passes the gradient where \\(z > 0\\) and blocks it elsewhere.',
         explain: on ? '\\(z_' + k + ' = ' + zz[k - 1] + ' > 0\\), so the upstream \\(' + gg[k - 1] + '\\) passes through.' : '\\(z_' + k + ' = ' + zz[k - 1] + ' \\le 0\\), so the gradient is \\(0\\).'
       };
@@ -274,7 +274,7 @@
       var p = M4.pick(sets), yy = M4.rand(1, 3), kk = M4.rand(1, 3);
       var v = p[kk - 1] - (kk === yy ? 1 : 0);
       return {
-        q: 'Softmax outputs \\(p = (' + p.join(', ') + ')\\), and the correct class is ' + yy + '. With cross-entropy loss, what is \\(\\partial L / \\partial z_' + kk + '\\)?',
+        q: 'Softmax outputs \\(p = ' + M4.col(p) + '\\), and the correct class is ' + yy + '. With cross-entropy loss, what is \\(\\partial L / \\partial z_' + kk + '\\)?',
         answer: v, tol: 0.001, hint: 'The gradient on logit \\(k\\) is \\(p_k - y_k\\).',
         explain: '\\(p_' + kk + ' - y_' + kk + ' = ' + p[kk - 1] + ' - ' + (kk === yy ? 1 : 0) + ' = ' + f(v) + '\\).'
       };
@@ -292,7 +292,7 @@
     id: 'bp-s2',
     module: 'backprop',
     title: 'Vectors, masks and the autograd tape',
-    summary: 'Backpropagation with whole vectors: shapes, the transpose, ReLU masks, the softmax gradient, and the tape that autograd libraries record.',
+    summary: 'Backpropagation also works on whole vectors and matrices. Shapes, the transpose, ReLU masks and the gradient of the softmax come up along the way, as does the record of operations that automatic differentiation libraries keep.',
     minutes: 17,
     steps: [
       {
@@ -370,7 +370,7 @@
       {
         kind: 'exercise',
         title: 'Gradient for a given label',
-        html: '<p>A model predicts \\(p = (0.7, 0.2, 0.1)\\), and the correct class is the second one. What is \\(\\partial L / \\partial z_2\\)?</p>',
+        html: '<p>A model predicts \\(p = \\begin{pmatrix}0.7\\\\0.2\\\\0.1\\end{pmatrix}\\), and the correct class is the second one. What is \\(\\partial L / \\partial z_2\\)?</p>',
         mount: function (el, ctx) {
           M4.choices(el, {
             options: ['\\(0.2\\)', '\\(-0.8\\)', '\\(0.8\\)', '\\(-0.2\\)'],

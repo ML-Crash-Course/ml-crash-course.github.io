@@ -133,7 +133,7 @@
     id: 'calculus-s1',
     module: 'calculus',
     title: 'Slope and the derivative',
-    summary: 'Secant lines become the tangent as the step shrinks, and the tangent slope at every point defines a new function, the derivative.',
+    summary: 'The derivative is defined through secant lines, which approach the tangent as the step size shrinks. The slope of the tangent at each point forms a new function.',
     minutes: 10,
     steps: [
       // 1
@@ -142,7 +142,7 @@
         title: 'Steepness of a curve',
         html:
           '<p>A straight line has one slope. A curve has a different steepness at every point, and the derivative is the tool that measures it.</p>' +
-          '<p>In this lesson you will compute the slope of a secant line, explain how the tangent slope arises as a limit of secant slopes, and read the derivative as a function that assigns a slope to every input.</p>'
+          '<p>You will learn to compute the slope of a secant line, explain how the tangent slope arises as a limit of secant slopes, and read the derivative as a function that assigns a slope to every input.</p>'
       },
       // 2
       {

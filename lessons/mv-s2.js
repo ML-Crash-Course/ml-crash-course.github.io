@@ -19,7 +19,10 @@
       var l = M4.el('span', { html: '\\(' + it[1] + '\\) = ' }, s); M4.typeset(l);
       vals[it[0]] = M4.el('b', { text: '0' }, s);
     });
-    return function (k, v) { vals[k].textContent = typeof v === 'number' ? M4.fmt(v, 2) : v; };
+    return function (k, v) {
+      if (Array.isArray(v)) vals[k].innerHTML = M4.tex(M4.col(v.map(function (a) { return typeof a === 'number' ? M4.fmt(a, 2) : a; })));
+      else vals[k].textContent = typeof v === 'number' ? M4.fmt(v, 2) : v;
+    };
   }
 
   // Contour map with a point P (draggable) and a unit direction u (drag its tip).
@@ -40,8 +43,8 @@
       var ring = []; for (var i = 0; i <= 60; i++) { var t = 2 * Math.PI * i / 60; ring.push([x + Math.cos(t), y + Math.sin(t)]); }
       circle.set(ring);
       var d = g[0] * ux + g[1] * uy;
-      set('g', '(' + M4.fmt(g[0], 2) + ', ' + M4.fmt(g[1], 2) + ')');
-      set('u', '(' + M4.fmt(ux, 2) + ', ' + M4.fmt(uy, 2) + ')');
+      set('g', [g[0], g[1]]);
+      set('u', [ux, uy]);
       set('d', d);
       if (onChange) onChange(x, y, ux, uy, g, d);
     }
@@ -107,7 +110,7 @@
     id: 'mv-s2',
     module: 'multivariable',
     title: 'Directional derivatives and the chain rule',
-    summary: 'The slope of a surface in any direction is a dot product with the gradient. The same dot product drives the multivariable chain rule.',
+    summary: 'The slope of a surface in any direction is the dot product of that direction with the gradient. The same idea gives the chain rule for several variables.',
     minutes: 14,
     steps: [
       {
@@ -115,7 +118,7 @@
         title: 'Slopes in every direction',
         html: '<p>The partial derivatives give the slope along the two coordinate axes. Walking in any other direction gives another slope. Let \\(\\mathbf u\\) be a <b>unit vector</b>, a vector of length 1, that points the way we walk. The <b>directional derivative</b> of \\(f\\) in direction \\(\\mathbf u\\) is</p>' +
           '\\[ D_{\\mathbf u} f(\\mathbf x) = \\lim_{t \\to 0} \\frac{f(\\mathbf x + t\\mathbf u) - f(\\mathbf x)}{t} = \\nabla f(\\mathbf x) \\cdot \\mathbf u. \\]' +
-          '<p>The second equality is the linear approximation \\(f(\\mathbf x + \\mathbf h) \\approx f(\\mathbf x) + \\nabla f \\cdot \\mathbf h\\), applied to the step \\(t\\mathbf u\\). One gradient is enough to compute the slope in every direction. For \\(\\mathbf u = (1, 0)\\) the formula returns \\(\\partial f/\\partial x\\), and for \\(\\mathbf u = (0, 1)\\) it returns \\(\\partial f/\\partial y\\).</p>' +
+          '<p>The second equality is the linear approximation \\(f(\\mathbf x + \\mathbf h) \\approx f(\\mathbf x) + \\nabla f \\cdot \\mathbf h\\), applied to the step \\(t\\mathbf u\\). One gradient is enough to compute the slope in every direction. For \\(\\mathbf u = \\begin{pmatrix}1\\\\0\\end{pmatrix}\\) the formula returns \\(\\partial f/\\partial x\\), and for \\(\\mathbf u = \\begin{pmatrix}0\\\\1\\end{pmatrix}\\) it returns \\(\\partial f/\\partial y\\).</p>' +
           '<p>Since \\(\\nabla f \\cdot \\mathbf u = \\lVert \\nabla f \\rVert \\cos\\theta\\) for a unit vector, every directional derivative lies between \\(-\\lVert \\nabla f \\rVert\\) and \\(\\lVert \\nabla f \\rVert\\).</p>'
       },
       {
@@ -156,7 +159,7 @@
               return {
                 q: '<p>Let \\(f(x, y) = ' + M4.poly([[a, 'x^2'], [c, 'xy'], [b, 'y^2']]) + '\\). Compute the directional derivative at \\((' + p + ', ' + q + ')\\) in the direction \\(\\mathbf u = ' + ustr + '\\).</p>',
                 answer: (gx * ux + gy * uy) / un,
-                explain: '\\(\\nabla f = (' + gx + ', ' + gy + ')\\), so \\(D_{\\mathbf u} f = ' + (un === 1 ? M4.sn(gx) + '\\cdot ' + M4.sn(ux) + ' + ' + M4.sn(gy) + '\\cdot ' + M4.sn(uy) : '(' + M4.sn(gx) + '\\cdot ' + M4.sn(ux) + ' + ' + M4.sn(gy) + '\\cdot ' + M4.sn(uy) + ')/' + un) + '\\).'
+                explain: '\\(\\nabla f = \\begin{pmatrix}' + gx + '\\\\' + gy + '\\end{pmatrix}\\), so \\(D_{\\mathbf u} f = ' + (un === 1 ? M4.sn(gx) + '\\cdot ' + M4.sn(ux) + ' + ' + M4.sn(gy) + '\\cdot ' + M4.sn(uy) : '(' + M4.sn(gx) + '\\cdot ' + M4.sn(ux) + ' + ' + M4.sn(gy) + '\\cdot ' + M4.sn(uy) + ')/' + un) + '\\).'
               };
             }
           });

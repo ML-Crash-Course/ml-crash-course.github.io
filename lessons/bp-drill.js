@@ -269,5 +269,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: l[2], n: l[3], key: 'bp-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'bp-drill', module: 'backprop', title: 'Backpropagation practice', summary: 'Nine levels of endless problems, from two gates to matrices, softmax and residual blocks.', minutes: 30, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'bp-drill', module: 'backprop', title: 'Backpropagation practice', summary: 'Practice problems on backpropagation, from two gates up to matrices, softmax and residual blocks, arranged in nine levels. New problems are generated each time.', minutes: 30, free: true, drill: true, steps: steps });
 })();

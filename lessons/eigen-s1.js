@@ -39,7 +39,7 @@
     if (Math.abs(r) < 0.005) r = 0;
     return String(r);
   }
-  function texPair(a, b) { return '(' + texNum(a) + ',\\ ' + texNum(b) + ')'; }
+  function texPair(a, b) { return M4.col([texNum(a), texNum(b)]); }
 
   function det(b1, b2) { return b1[0] * b2[1] - b1[1] * b2[0]; }
   // coordinates of v with respect to basis (b1, b2); null if not a basis
@@ -155,21 +155,21 @@
     id: 'eigen-s1',
     module: 'eigen',
     title: 'Change of basis',
-    summary: 'The same vector has different coordinates in different bases. The basis matrix and its inverse translate between them.',
+    summary: 'The same vector has different coordinates in different bases. The basis matrix and its inverse convert between them.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Coordinates and bases',
         html: '<p>A vector is a geometric object: an arrow with a length and a direction. Its coordinates are a description of that arrow, and the description depends on which reference directions are used.</p>' +
-          '<p>In this lesson you will express a vector in a new basis, write down the basis matrix \\(B\\), and use \\(B\\) and its inverse \\(B^{-1}\\) to translate coordinates in both directions.</p>'
+          '<p>This session trains you to express a vector in a new basis, write down the basis matrix \\(B\\), and use \\(B\\) and its inverse \\(B^{-1}\\) to translate coordinates in both directions.</p>'
       },
       {
         kind: 'text',
         title: 'Coordinates as weights',
         html: '<p>A <em>basis</em> of the plane is a pair of vectors \\(\\mathbf{b}_1, \\mathbf{b}_2\\) that do not lie on one line. Every vector \\(\\mathbf{v}\\) can then be written in exactly one way as</p>' +
           '\\[ \\mathbf{v} = c_1\\,\\mathbf{b}_1 + c_2\\,\\mathbf{b}_2 . \\]' +
-          '<p>The numbers \\(c_1, c_2\\) are the <em>coordinates of \\(\\mathbf{v}\\) in the basis</em> \\(B\\), written \\([\\mathbf{v}]_B = (c_1, c_2)\\). The familiar coordinates \\((x, y)\\) are the special case in which the basis is \\(\\mathbf{e}_1 = (1,0)\\), \\(\\mathbf{e}_2 = (0,1)\\), called the standard basis.</p>'
+          '<p>The numbers \\(c_1, c_2\\) are the <em>coordinates of \\(\\mathbf{v}\\) in the basis</em> \\(B\\), written \\([\\mathbf{v}]_B = \\begin{pmatrix}c_1\\\\c_2\\end{pmatrix}\\). The familiar coordinates \\(\\begin{pmatrix}x\\\\y\\end{pmatrix}\\) are the special case in which the basis is \\(\\mathbf{e}_1 = \\begin{pmatrix}1\\\\0\\end{pmatrix}\\), \\(\\mathbf{e}_2 = \\begin{pmatrix}0\\\\1\\end{pmatrix}\\), called the standard basis.</p>'
       },
       {
         kind: 'explore',
@@ -206,14 +206,14 @@
       {
         kind: 'exercise',
         title: 'From B-coordinates to standard coordinates',
-        html: '<p>Let \\(\\mathbf{b}_1 = (2, 1)\\) and \\(\\mathbf{b}_2 = (-1, 1)\\). A vector has coordinates \\([\\mathbf{v}]_B = (2, 1)\\) in this basis. What are its standard coordinates?</p>',
+        html: '<p>Let \\(\\mathbf{b}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) and \\(\\mathbf{b}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\). A vector has coordinates \\([\\mathbf{v}]_B = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) in this basis. What are its standard coordinates?</p>',
         hint: 'Follow the recipe: compute \\(2\\,\\mathbf{b}_1 + 1\\,\\mathbf{b}_2\\) entry by entry.',
         mount: function (el, ctx) {
           M4.choices(el, {
-            options: ['\\((2,\\ 1)\\)', '\\((3,\\ 3)\\)', '\\((1,\\ 2)\\)', '\\((4,\\ 2)\\)'],
+            options: ['\\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}3\\\\3\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\2\\end{pmatrix}\\)', '\\(\\begin{pmatrix}4\\\\2\\end{pmatrix}\\)'],
             correct: 1,
             onCorrect: function () {
-              ctx.note('\\(2\\,(2,1) + 1\\,(-1,1) = (4-1,\\ 2+1) = (3,\\ 3)\\).');
+              ctx.note('\\(2\\,\\begin{pmatrix}2\\\\1\\end{pmatrix} + 1\\,\\begin{pmatrix}-1\\\\1\\end{pmatrix} = \\begin{pmatrix}4-1\\\\2+1\\end{pmatrix} = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\).');
               ctx.solved();
             },
             onWrong: function (i) {
@@ -227,7 +227,7 @@
       {
         kind: 'exercise',
         title: 'A vector from its coordinates',
-        html: '<p>The basis is again \\(\\mathbf{b}_1 = (2, 1)\\), \\(\\mathbf{b}_2 = (-1, 1)\\), and the pink grid is its coordinate grid. Drag the tip of \\(\\mathbf{v}\\) to the point whose coordinates in this basis are \\([\\mathbf{v}]_B = (-1,\\ 2)\\), then press Check.</p>',
+        html: '<p>The basis is again \\(\\mathbf{b}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\), \\(\\mathbf{b}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\), and the pink grid is its coordinate grid. Drag the tip of \\(\\mathbf{v}\\) to the point whose coordinates in this basis are \\([\\mathbf{v}]_B = \\begin{pmatrix}-1\\\\2\\end{pmatrix}\\), then press Check.</p>',
         hint: 'Start at the origin, take one step against \\(\\mathbf{b}_1\\), then two steps along \\(\\mathbf{b}_2\\), following the pink grid lines.',
         mount: function (el, ctx) {
           injectStyle();
@@ -251,10 +251,10 @@
             if (Math.abs(c[0] + 1) < 0.01 && Math.abs(c[1] - 2) < 0.01) {
               done = true;
               ring.el.setAttribute('fill-opacity', '0.3');
-              ctx.note('\\(-1\\,(2,1) + 2\\,(-1,1) = (-4,\\ 1)\\).');
+              ctx.note('\\(-1\\,\\begin{pmatrix}2\\\\1\\end{pmatrix} + 2\\,\\begin{pmatrix}-1\\\\1\\end{pmatrix} = \\begin{pmatrix}-4\\\\1\\end{pmatrix}\\).');
               ctx.solved();
             } else {
-              ctx.wrong('This point has coordinates \\([\\mathbf{v}]_B = ' + texPair(c[0], c[1]) + '\\). The target is \\((-1,\\ 2)\\).');
+              ctx.wrong('This point has coordinates \\([\\mathbf{v}]_B = ' + texPair(c[0], c[1]) + '\\). The target is \\(\\begin{pmatrix}-1\\\\2\\end{pmatrix}\\).');
             }
           }, { primary: true });
           scene.redraw();
@@ -271,7 +271,7 @@
       {
         kind: 'exercise',
         title: 'Inverse of a basis matrix',
-        html: '<p>For \\(\\mathbf{b}_1 = (2, 1)\\) and \\(\\mathbf{b}_2 = (-1, 1)\\) the basis matrix is \\(B = \\begin{pmatrix} 2 &amp; -1 \\\\ 1 &amp; 1 \\end{pmatrix}\\), with determinant \\(2 \\cdot 1 - (-1) \\cdot 1 = 3\\). Drag tiles into the four slots to complete \\(B^{-1}\\).</p>',
+        html: '<p>For \\(\\mathbf{b}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) and \\(\\mathbf{b}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\) the basis matrix is \\(B = \\begin{pmatrix} 2 &amp; -1 \\\\ 1 &amp; 1 \\end{pmatrix}\\), with determinant \\(2 \\cdot 1 - (-1) \\cdot 1 = 3\\). Drag tiles into the four slots to complete \\(B^{-1}\\).</p>',
         hint: 'Exchange the two diagonal entries of \\(B\\), and change the sign of the two off-diagonal entries without moving them.',
         mount: function (el, ctx) {
           injectStyle();
@@ -348,7 +348,7 @@
       {
         kind: 'explore',
         title: 'Changing the grid',
-        html: '<p>The slider deforms the standard grid into the grid of \\(\\mathbf{b}_1 = (2,1)\\), \\(\\mathbf{b}_2 = (-1,1)\\). The vector \\(\\mathbf{v} = (3, 3)\\) stays fixed throughout. Only its description relative to the current grid changes, from \\((3, 3)\\) to \\((2, 1)\\).</p>',
+        html: '<p>The slider deforms the standard grid into the grid of \\(\\mathbf{b}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\), \\(\\mathbf{b}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\). The vector \\(\\mathbf{v} = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\) stays fixed throughout. Only its description relative to the current grid changes, from \\(\\begin{pmatrix}3\\\\3\\end{pmatrix}\\) to \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\).</p>',
         mount: function (el, ctx) {
           injectStyle();
           var rB, rEq, raf = 0, t = 0;
@@ -357,7 +357,7 @@
             onChange: function (c, st) {
               if (!rB) return;
               rB.set('[\\mathbf{v}]_B = ' + texPair(c[0], c[1]));
-              rEq.set(texNum(c[0]) + '\\,\\mathbf{b}_1 + ' + texNum(c[1]) + '\\,\\mathbf{b}_2 = (3,\\ 3)');
+              rEq.set(texNum(c[0]) + '\\,\\mathbf{b}_1 + ' + texNum(c[1]) + '\\,\\mathbf{b}_2 = \\begin{pmatrix}3\\\\3\\end{pmatrix}');
             }
           });
           var row = M4.el('div', { class: 'm4-row eigen-s1-readouts' }, scene.wrap);
@@ -397,7 +397,7 @@
       {
         kind: 'exercise',
         title: 'Coordinates in a new basis',
-        html: '<p>Here \\(\\mathbf{b}_1 = (1, 2)\\) and \\(\\mathbf{b}_2 = (3, -1)\\). The faint arrow is the target \\(\\mathbf{v} = (-1, 5)\\). Adjust \\(c_1\\) and \\(c_2\\) until the chain \\(c_1\\mathbf{b}_1 + c_2\\mathbf{b}_2\\) ends exactly at the tip of \\(\\mathbf{v}\\).</p>',
+        html: '<p>Here \\(\\mathbf{b}_1 = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(\\mathbf{b}_2 = \\begin{pmatrix}3\\\\-1\\end{pmatrix}\\). The faint arrow is the target \\(\\mathbf{v} = \\begin{pmatrix}-1\\\\5\\end{pmatrix}\\). Adjust \\(c_1\\) and \\(c_2\\) until the chain \\(c_1\\mathbf{b}_1 + c_2\\mathbf{b}_2\\) ends at the tip of \\(\\mathbf{v}\\).</p>',
         hint: 'A negative coefficient reverses a basis vector. The target lies to the left of \\(c_1\\mathbf{b}_1\\), so \\(c_2\\) must be negative. Solving \\(c_1 + 3c_2 = -1\\) and \\(2c_1 - c_2 = 5\\) gives the exact values.',
         mount: function (el, ctx) {
           injectStyle();
@@ -439,10 +439,10 @@
               ring.el.setAttribute('fill-opacity', '0.35');
               ring.el.setAttribute('stroke', GREEN);
               ring.el.setAttribute('stroke-opacity', '1');
-              ctx.note('\\([\\mathbf{v}]_B = (2,\\ -1)\\), since \\(2\\,(1,2) - (3,-1) = (-1,\\ 5)\\).');
+              ctx.note('\\([\\mathbf{v}]_B = \\begin{pmatrix}2\\\\-1\\end{pmatrix}\\), since \\(2\\,\\begin{pmatrix}1\\\\2\\end{pmatrix} - \\begin{pmatrix}3\\\\-1\\end{pmatrix} = \\begin{pmatrix}-1\\\\5\\end{pmatrix}\\).');
               ctx.solved();
             } else {
-              ctx.note('The chain ends at \\(' + texPair(sx, sy) + '\\), a distance \\(' + texNum(dist) + '\\) from the target \\((-1,\\ 5)\\).');
+              ctx.note('The chain ends at \\(' + texPair(sx, sy) + '\\), a distance \\(' + texNum(dist) + '\\) from the target \\(\\begin{pmatrix}-1\\\\5\\end{pmatrix}\\).');
             }
           }
           var box = M4.el('div', { class: 'eigen-s1-sliders' }, wrap);
@@ -461,20 +461,20 @@
         kind: 'exercise',
         title: 'Orthonormal bases',
         html: '<p>Data is often easier to read in a new basis, for example one whose first direction follows the long axis of a cloud of points. Such bases are often <em>orthonormal</em>: the basis vectors have length 1 and are perpendicular. For such a matrix \\(Q\\) the inverse is the transpose, \\(Q^{-1} = Q^{\\top}\\), so each new coordinate is a dot product, \\(c_i = \\mathbf{q}_i \\cdot \\mathbf{v}\\).</p>' +
-          '<p>Let \\(\\mathbf{q}_1 = (0.6,\\ 0.8)\\) and \\(\\mathbf{q}_2 = (-0.8,\\ 0.6)\\). What are the coordinates of \\(\\mathbf{v} = (5, 0)\\) in this basis?</p>',
+          '<p>Let \\(\\mathbf{q}_1 = \\begin{pmatrix}0.6\\\\0.8\\end{pmatrix}\\) and \\(\\mathbf{q}_2 = \\begin{pmatrix}-0.8\\\\0.6\\end{pmatrix}\\). What are the coordinates of \\(\\mathbf{v} = \\begin{pmatrix}5\\\\0\\end{pmatrix}\\) in this basis?</p>',
         hint: 'Compute the two dot products \\(\\mathbf{q}_1 \\cdot \\mathbf{v}\\) and \\(\\mathbf{q}_2 \\cdot \\mathbf{v}\\).',
         mount: function (el, ctx) {
           M4.choices(el, {
-            options: ['\\((3,\\ 4)\\)', '\\((5,\\ 0)\\)', '\\((3,\\ -4)\\)', '\\((0.6,\\ -0.8)\\)'],
+            options: ['\\(\\begin{pmatrix}3\\\\4\\end{pmatrix}\\)', '\\(\\begin{pmatrix}5\\\\0\\end{pmatrix}\\)', '\\(\\begin{pmatrix}3\\\\-4\\end{pmatrix}\\)', '\\(\\begin{pmatrix}0.6\\\\-0.8\\end{pmatrix}\\)'],
             correct: 2,
             onCorrect: function () {
-              ctx.note('\\(\\mathbf{q}_1 \\cdot \\mathbf{v} = 0.6 \\cdot 5 = 3\\) and \\(\\mathbf{q}_2 \\cdot \\mathbf{v} = -0.8 \\cdot 5 = -4\\). Check: \\(3\\,\\mathbf{q}_1 - 4\\,\\mathbf{q}_2 = (1.8 + 3.2,\\ 2.4 - 2.4) = (5,\\ 0)\\).');
+              ctx.note('\\(\\mathbf{q}_1 \\cdot \\mathbf{v} = 0.6 \\cdot 5 = 3\\) and \\(\\mathbf{q}_2 \\cdot \\mathbf{v} = -0.8 \\cdot 5 = -4\\). Check: \\(3\\,\\mathbf{q}_1 - 4\\,\\mathbf{q}_2 = \\begin{pmatrix}1.8 + 3.2\\\\2.4 - 2.4\\end{pmatrix} = \\begin{pmatrix}5\\\\0\\end{pmatrix}\\).');
               ctx.solved();
             },
             onWrong: function (i) {
               if (i === 0) ctx.wrong('The first entry of \\(\\mathbf{q}_2\\) is negative, so \\(\\mathbf{q}_2 \\cdot \\mathbf{v}\\) is negative.');
               else if (i === 1) ctx.wrong('Those are the standard coordinates. The new basis is rotated relative to the standard one.');
-              else ctx.wrong('The dot products must be taken with \\(\\mathbf{v} = (5, 0)\\), which scales the first entries by 5.');
+              else ctx.wrong('The dot products must be taken with \\(\\mathbf{v} = \\begin{pmatrix}5\\\\0\\end{pmatrix}\\), which scales the first entries by 5.');
             }
           });
         }
@@ -482,8 +482,8 @@
       {
         kind: 'exercise',
         title: 'A basis with given coordinates',
-        html: '<p>The vector \\(\\mathbf{v} = (3, 3)\\) is fixed. Drag the tips of \\(\\mathbf{b}_1\\) and \\(\\mathbf{b}_2\\) until the coordinates of \\(\\mathbf{v}\\) in the basis are \\([\\mathbf{v}]_B = (2,\\ -1)\\). Several bases satisfy the condition. \\(\\mathbf{b}_1\\) and \\(\\mathbf{b}_2\\) must not lie on one line.</p>',
-        hint: 'The condition is \\(2\\,\\mathbf{b}_1 - \\mathbf{b}_2 = (3, 3)\\). Choose any \\(\\mathbf{b}_1\\) not on the line through \\(\\mathbf{v}\\), for example \\((2, 1)\\), and set \\(\\mathbf{b}_2 = 2\\,\\mathbf{b}_1 - (3, 3)\\).',
+        html: '<p>The vector \\(\\mathbf{v} = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\) is fixed. Drag the tips of \\(\\mathbf{b}_1\\) and \\(\\mathbf{b}_2\\) until the coordinates of \\(\\mathbf{v}\\) in the basis are \\([\\mathbf{v}]_B = \\begin{pmatrix}2\\\\-1\\end{pmatrix}\\). Several bases satisfy the condition. \\(\\mathbf{b}_1\\) and \\(\\mathbf{b}_2\\) must not lie on one line.</p>',
+        hint: 'The condition is \\(2\\,\\mathbf{b}_1 - \\mathbf{b}_2 = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\). Choose any \\(\\mathbf{b}_1\\) not on the line through \\(\\mathbf{v}\\), for example \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\), and set \\(\\mathbf{b}_2 = 2\\,\\mathbf{b}_1 - \\begin{pmatrix}3\\\\3\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           injectStyle();
           var rB, rT, done = false;
@@ -501,11 +501,11 @@
               if (Math.abs(c[0] - 2) < 0.01 && Math.abs(c[1] + 1) < 0.01) {
                 done = true;
                 rB.el.classList.add('m4-pop');
-                ctx.note('\\(2\\,' + texPair(st.b1[0], st.b1[1]) + ' - ' + texPair(st.b2[0], st.b2[1]) + ' = (3,\\ 3)\\).');
+                ctx.note('\\(2\\,' + texPair(st.b1[0], st.b1[1]) + ' - ' + texPair(st.b2[0], st.b2[1]) + ' = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\).');
                 ctx.solved();
               } else {
                 var sx = 2 * st.b1[0] - st.b2[0], sy = 2 * st.b1[1] - st.b2[1];
-                ctx.note('With the current basis, \\(2\\,\\mathbf{b}_1 - \\mathbf{b}_2 = ' + texPair(sx, sy) + '\\). It must equal \\((3,\\ 3)\\).');
+                ctx.note('With the current basis, \\(2\\,\\mathbf{b}_1 - \\mathbf{b}_2 = ' + texPair(sx, sy) + '\\). It must equal \\(\\begin{pmatrix}3\\\\3\\end{pmatrix}\\).');
               }
             }
           });
@@ -514,7 +514,7 @@
           rB = readout(row);
           M4.el('span', { class: 'm4-chip', text: 'target' }, row);
           rT = readout(row);
-          rT.set('[\\mathbf{v}]_B = (2,\\ -1)');
+          rT.set('[\\mathbf{v}]_B = \\begin{pmatrix}2\\\\-1\\end{pmatrix}');
           scene.addHandle('b1', PINK, 1);
           scene.addHandle('b2', BLUE, 1);
           scene.redraw();
@@ -524,7 +524,7 @@
         kind: 'text',
         title: 'Recap',
         html: '<ul>' +
-          '<li>A basis \\(\\mathbf{b}_1, \\mathbf{b}_2\\) assigns to each vector unique coordinates \\([\\mathbf{v}]_B = (c_1, c_2)\\) with \\(\\mathbf{v} = c_1\\mathbf{b}_1 + c_2\\mathbf{b}_2\\). Changing the basis changes the coordinates, not the vector.</li>' +
+          '<li>A basis \\(\\mathbf{b}_1, \\mathbf{b}_2\\) assigns to each vector unique coordinates \\([\\mathbf{v}]_B = \\begin{pmatrix}c_1\\\\c_2\\end{pmatrix}\\) with \\(\\mathbf{v} = c_1\\mathbf{b}_1 + c_2\\mathbf{b}_2\\). Changing the basis changes the coordinates, not the vector.</li>' +
           '<li>With the basis vectors as columns of \\(B\\), the translations are \\(\\mathbf{v} = B\\,[\\mathbf{v}]_B\\) and \\([\\mathbf{v}]_B = B^{-1}\\mathbf{v}\\). The inverse exists exactly when the determinant of \\(B\\) is not zero.</li>' +
           '<li>For an orthonormal basis \\(Q\\) the inverse is the transpose, so coordinates are dot products. This makes changing to such a basis cheap, and it is used throughout machine learning.</li>' +
           '</ul>' +

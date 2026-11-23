@@ -236,7 +236,7 @@
     id: 'gen-s2',
     module: 'generalisation',
     title: 'Regularization and early stopping',
-    summary: 'Keeping a flexible model and stopping it from fitting noise, with a weight penalty or by ending training early.',
+    summary: 'Two methods keep a flexible model from fitting the noise in its data. One adds a penalty on the size of the weights, the other stops training early.',
     minutes: 16,
     steps: [
       {
@@ -294,7 +294,7 @@
         title: 'Weight decay',
         html: '<p>The same penalty is also called <b>weight decay</b>. The gradient of \\(\\lambda \\sum_k w_k^2\\) with respect to \\(w_k\\) is \\(2\\lambda w_k\\), so a gradient step becomes</p>' +
           '\\[ w \\leftarrow w - \\eta\\big(\\nabla L_{\\text{data}}(w) + 2\\lambda w\\big) = (1 - 2\\eta\\lambda)\\, w \\; - \\; \\eta\\, \\nabla L_{\\text{data}}(w). \\]' +
-          '<p>Every step first shrinks each weight by the factor \\(1 - 2\\eta\\lambda\\), slightly below 1, and then takes the ordinary step. A weight that the data does not pull on decays toward zero. Only weights that keep earning their size survive.</p>'
+          '<p>Every step first shrinks each weight by the factor \\(1 - 2\\eta\\lambda\\), slightly below 1, and then takes the ordinary step. A weight that the data does not pull on decays toward zero. Only weights that the data gradient keeps pushing away from zero stay large.</p>'
       },
       {
         kind: 'exercise',

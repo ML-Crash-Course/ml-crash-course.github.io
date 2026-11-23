@@ -618,14 +618,14 @@
     id: 'l2-s1',
     module: 'l2',
     title: 'Distributions and likelihood',
-    summary: 'A model predicts a distribution, the data are one outcome of it, and the likelihood measures how well a choice of parameters explains the observed data.',
+    summary: 'A model predicts a probability distribution, and the observed data are one outcome of it. The likelihood measures how well a choice of parameters explains these data.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Origin of loss functions',
         html: '<p>A linear model fitted to rents can be judged by the mean squared error. Probability explains why that loss contains a square.</p>' +
-          '<p>In this lesson you will distinguish a predicted distribution from an observed outcome, read the two parameters \\( \\mu \\) and \\( \\sigma \\) of a Gaussian density, and explain the difference between probability and likelihood for one and for several data points.</p>'
+          '<p>The aim is to distinguish a predicted distribution from an observed outcome, read the two parameters \\( \\mu \\) and \\( \\sigma \\) of a Gaussian density, and explain the difference between probability and likelihood for one and for several data points.</p>'
       },
       {
         kind: 'text',

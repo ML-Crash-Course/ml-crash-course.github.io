@@ -17,7 +17,10 @@
       var l = M4.el('span', { html: '\\(' + it[1] + '\\) = ' }, sp); M4.typeset(l);
       vals[it[0]] = M4.el('b', { text: '0' }, sp);
     });
-    return function (k, v) { vals[k].textContent = typeof v === 'string' ? v : M4.fmt(v, 2); };
+    return function (k, v) {
+      if (Array.isArray(v)) vals[k].innerHTML = M4.tex(M4.col(v.map(function (a) { return M4.fmt(a, 2); })));
+      else vals[k].textContent = typeof v === 'string' ? v : M4.fmt(v, 2);
+    };
   }
   function msd(xs) {
     var n = xs.length, m = 0, v = 0, i;
@@ -107,7 +110,7 @@
     var ln = p.point(1, -1, { r: 8, color: C.green });
     var rm = p.point(1, 1, { r: 8, color: C.purple });
     var set = readout(el, [['h', '\\mathbf h'], ['l', '\\mathrm{LN}(\\mathbf h)'], ['r', '\\mathrm{RMS}(\\mathbf h)']]);
-    function vs(v) { return '(' + M4.fmt(v[0], 2) + ', ' + M4.fmt(v[1], 2) + ')'; }
+    function vs(v) { return [v[0], v[1]]; }
     function upd(x, y) {
       aH.set(0, 0, x, y);
       var m = (x + y) / 2, c = [x - m, y - m], s = Math.abs(x - y) / 2;
@@ -124,7 +127,7 @@
 
   /* ---------- practice ---------- */
   var VEC3 = [[1, 3, 5], [2, 4, 9], [0, 3, 6], [1, 2, 6], [4, 5, 9], [2, 6, 7], [3, 3, 6], [0, 4, 8]];
-  function vtex(v) { return '(' + v.join(',\\ ') + ')'; }
+  function vtex(v) { return M4.col(v); }
   function gen() {
     var kind = M4.pick(['ln', 'ln', 'rms', 'bn', 'axes', 'axes', 'eval']);
     if (kind === 'ln' || kind === 'rms') {
@@ -178,7 +181,7 @@
     id: 'norm-s2',
     module: 'norm',
     title: 'Normalization layers',
-    summary: 'BatchNorm, LayerNorm, InstanceNorm and RMSNorm all standardize activations. They differ only in which numbers share a statistic.',
+    summary: 'BatchNorm, LayerNorm, InstanceNorm and RMSNorm all standardize activations. They differ in which values share a mean and a standard deviation.',
     minutes: 16,
     steps: [
       {
@@ -204,13 +207,13 @@
       {
         kind: 'explore',
         title: 'LayerNorm and RMSNorm as geometry',
-        html: '<p>Take a hidden vector with just two features, \\(\\mathbf h = (h_1, h_2)\\), and drag it. LayerNorm first subtracts the mean of the two entries. That lands on the line \\(h_1 + h_2 = 0\\) of centered vectors. Dividing by the standard deviation then pushes it to \\((1, -1)\\) or \\((-1, 1)\\), the only two centered vectors with spread 1. RMSNorm skips the centering and only rescales, so its output can point anywhere on the circle of radius \\(\\sqrt 2\\).</p>',
+        html: '<p>Take a hidden vector with two features, \\(\\mathbf h = \\begin{pmatrix}h_1\\\\h_2\\end{pmatrix}\\), and drag it. LayerNorm first subtracts the mean of the two entries. That lands on the line \\(h_1 + h_2 = 0\\) of centered vectors. Dividing by the standard deviation then pushes it to \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) or \\(\\begin{pmatrix}-1\\\\1\\end{pmatrix}\\), the only two centered vectors with spread 1. RMSNorm skips the centering and only rescales, so its output can point anywhere on the circle of radius \\(\\sqrt 2\\).</p>',
         mount: function (el) { plane2(el); }
       },
       {
         kind: 'text',
         title: 'Every output has the same length',
-        html: '<p>The picture generalizes to \\(d\\) features. RMSNorm divides by \\(\\mathrm{rms}(\\mathbf h) = \\|\\mathbf h\\|/\\sqrt d\\), so every output has length exactly \\(\\sqrt d\\). It keeps the direction of \\(\\mathbf h\\) and forgets its length. LayerNorm is RMSNorm applied after centering: it also forgets the mean, so its outputs lie on a sphere of radius \\(\\sqrt d\\) inside the subspace of centered vectors.</p>' +
+        html: '<p>The picture generalizes to \\(d\\) features. RMSNorm divides by \\(\\mathrm{rms}(\\mathbf h) = \\|\\mathbf h\\|/\\sqrt d\\), so every output has length \\(\\sqrt d\\). It keeps the direction of \\(\\mathbf h\\) and forgets its length. LayerNorm is RMSNorm applied after centering: it also forgets the mean, so its outputs lie on a sphere of radius \\(\\sqrt d\\) inside the subspace of centered vectors.</p>' +
           '<p>RMSNorm is cheaper because it computes one statistic instead of two, and in large language models it works as well as LayerNorm. Llama models use it, for example.</p>'
       },
       {

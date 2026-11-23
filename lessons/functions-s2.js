@@ -413,18 +413,18 @@
     id: 'functions-s2',
     module: 'functions',
     title: 'Exponentials',
-    summary: 'Repeated multiplication, growth and decay, the number e, and the rule that turns sums in the exponent into products.',
+    summary: 'Exponentials are repeated multiplication. They describe growth and decay, lead to the number e, and turn a sum in the exponent into a product.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>An exponential function describes a quantity that is multiplied by the same factor in every step.</p><p>In this lesson you will read \\(b^x\\) as repeated multiplication, distinguish growth from decay, explain where the number \\(e \\approx 2.718\\) comes from, and use the rule \\(e^{a+b} = e^{a} e^{b}\\).</p><p>In machine learning they turn raw scores into chances that add up to 1, for example in the softmax function at the end of this lesson.</p>'
+        html: '<p>An exponential function describes a quantity that is multiplied by the same factor in every step.</p><p>This session trains you to read \\(b^x\\) as repeated multiplication, distinguish growth from decay, explain where the number \\(e \\approx 2.718\\) comes from, and use the rule \\(e^{a+b} = e^{a} e^{b}\\).</p><p>In machine learning they turn raw scores into chances that add up to 1, for example in the softmax function at the end of this lesson.</p>'
       },
       {
         kind: 'explore',
         title: 'Repeated multiplication',
-        html: '<p>For a positive number \\(b\\), called the <em>base</em>, and a whole number \\(n\\), called the <em>exponent</em>, the power \\(b^n\\) is the result of starting at 1 and multiplying by \\(b\\) exactly \\(n\\) times. In particular \\(b^0 = 1\\) and \\(b^1 = b\\).</p><p>Each bar below is \\(b\\) times as tall as the bar to its left. Compare a base above 1 with a base below 1.</p>',
+        html: '<p>For a positive number \\(b\\), called the <em>base</em>, and a whole number \\(n\\), called the <em>exponent</em>, the power \\(b^n\\) is the result of starting at 1 and multiplying by \\(b\\) a total of \\(n\\) times. In particular \\(b^0 = 1\\) and \\(b^1 = b\\).</p><p>Each bar below is \\(b\\) times as tall as the bar to its left. Compare a base above 1 with a base below 1.</p>',
         mount: mountBars
       },
       {

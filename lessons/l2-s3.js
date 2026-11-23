@@ -105,8 +105,8 @@
           }
         } else if (k === 'a' || k === 'b') {
           ctx.wrong(want === 'a'
-            ? 'For \\(y = 1\\) the exponent of \\((1-p)\\) is \\(0\\), so only \\(p\\) survives.'
-            : 'For \\(y = 0\\) the exponent of \\(p\\) is \\(0\\), so only \\((1-p)\\) survives.');
+            ? 'For \\(y = 1\\) the exponent of \\((1-p)\\) is \\(0\\), so only \\(p\\) remains.'
+            : 'For \\(y = 0\\) the exponent of \\(p\\) is \\(0\\), so only \\((1-p)\\) remains.');
         } else {
           ctx.wrong('Substitute the value of \\(y\\) into \\(p^{y}(1-p)^{1-y}\\) first. One factor becomes \\(1\\).');
         }
@@ -364,7 +364,7 @@
     M4.button(btns, 'Middle', function () { sp.set([1 / 3, 1 / 3, 1 / 3]); ctx.note('Middle of the triangle: all three classes receive \\(\\tfrac13\\). The model has no preference.'); });
     M4.button(btns, 'Cat corner', function () { sp.set([1, 0, 0]); ctx.note('A corner: the model is certain. Cat has probability \\(1\\), the others \\(0\\).'); });
     M4.button(btns, 'Cat-dog edge', function () { sp.set([0.5, 0.5, 0]); ctx.note('Midpoint of the bottom edge: cat and dog each have \\(0.5\\), and bird has probability \\(0\\).'); });
-    M4.button(btns, 'Lecture example', function () { sp.set([0.82, 0.15, 0.03]); ctx.note('The prediction \\((0.82,\\ 0.15,\\ 0.03)\\) from the softmax step lies close to the cat corner.'); });
+    M4.button(btns, 'Lecture example', function () { sp.set([0.82, 0.15, 0.03]); ctx.note('The prediction \\(\\begin{pmatrix}0.82\\\\0.15\\\\0.03\\end{pmatrix}\\) from the softmax step lies close to the cat corner.'); });
     upd(sp.get());
   }
 
@@ -502,14 +502,14 @@
     id: 'l2-s3',
     module: 'l2',
     title: 'Classification losses',
-    summary: 'Derive binary cross-entropy and the categorical loss from likelihood, locate softmax outputs on the simplex, and read the loss as surprise.',
+    summary: 'The binary and categorical cross-entropy losses follow from the likelihood. Softmax outputs lie on the probability simplex, and the loss can be read as surprise.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'From regression to classification',
         html: '<p>A Gaussian assumption about the data turned the negative log-likelihood into the mean squared error. The same recipe applies to classification, where the output is a class instead of a number.</p>' +
-          '<p>In this lesson you will derive the binary cross-entropy from the Bernoulli distribution, convert scores into probabilities with the softmax, place a three-class prediction on the simplex, compute the categorical loss \\(-\\log q_y\\), and interpret that loss as surprise.</p>'
+          '<p>This session trains you to derive the binary cross-entropy from the Bernoulli distribution, convert scores into probabilities with the softmax, place a three-class prediction on the simplex, compute the categorical loss \\(-\\log q_y\\), and interpret that loss as surprise.</p>'
       },
       {
         kind: 'text',
@@ -558,7 +558,7 @@
       {
         kind: 'exercise',
         title: 'Training on the simplex',
-        html: '<p>Let \\(q\\) denote the predicted distribution. The model outputs \\(q = (0.82,\\ 0.15,\\ 0.03)\\) for a photo that shows a dog, so it would wrongly answer cat. Training changes the prediction so that \\(-\\log q_{\\text{dog}}\\) shrinks.</p>' +
+        html: '<p>Let \\(q\\) denote the predicted distribution. The model outputs \\(q = \\begin{pmatrix}0.82\\\\0.15\\\\0.03\\end{pmatrix}\\) for a photo that shows a dog, so it would wrongly answer cat. Training changes the prediction so that \\(-\\log q_{\\text{dog}}\\) shrinks.</p>' +
           '<p>Drag the prediction until the loss for the true class dog is below \\(0.20\\).</p>',
         hint: 'A loss below 0.20 requires q_dog above e^(−0.20) ≈ 0.82. Move the point into the shaded region at the dog corner.',
         mount: mountSimplexTrain

@@ -141,7 +141,7 @@
     id: 'eigen-s3',
     module: 'eigen',
     title: 'Finding eigenvalues',
-    summary: 'Eigenvalues are the values of λ for which A − λI collapses the plane. For a 2×2 matrix they are the roots of a quadratic.',
+    summary: 'Eigenvalues are the values of λ for which A − λI collapses the plane. For a 2×2 matrix they are the roots of a quadratic equation.',
     minutes: 12,
     steps: [
       {
@@ -149,7 +149,7 @@
         title: 'A procedure for eigenvalues',
         html:
           '<p>An eigenvector of a matrix \\(A\\) is a non-zero vector \\(v\\) that \\(A\\) only stretches: \\(Av=\\lambda v\\), where the number \\(\\lambda\\) is the eigenvalue. Such vectors can be spotted by eye, but a procedure exists that finds every eigenvalue of a \\(2\\times 2\\) matrix.</p>' +
-          '<p>In this lesson you will test a candidate \\(\\lambda\\) with a determinant, write down the characteristic polynomial of a \\(2\\times 2\\) matrix, solve it, and explain why a rotation has no real eigenvalues.</p>'
+          '<p>The goals are to test a candidate \\(\\lambda\\) with a determinant, write down the characteristic polynomial of a \\(2\\times 2\\) matrix, solve it, and explain why a rotation has no real eigenvalues.</p>'
       },
       {
         kind: 'text',
@@ -459,7 +459,7 @@
         kind: 'exercise',
         title: 'A matrix with given eigenvalues',
         html:
-          '<p>The matrix \\(A=\\begin{pmatrix}a&2\\\\1&d\\end{pmatrix}\\) has two fixed entries and two adjustable diagonal entries \\(a\\) and \\(d\\). Choose \\(a\\) and \\(d\\) so that the eigenvalues of \\(A\\) are exactly \\(1\\) and \\(4\\), marked by the rings on the axis. The solid curve is the characteristic polynomial of the current matrix and the dashed curve is the target.</p>',
+          '<p>The matrix \\(A=\\begin{pmatrix}a&2\\\\1&d\\end{pmatrix}\\) has two fixed entries and two adjustable diagonal entries \\(a\\) and \\(d\\). Choose \\(a\\) and \\(d\\) so that the eigenvalues of \\(A\\) are \\(1\\) and \\(4\\), marked by the rings on the axis. The solid curve is the characteristic polynomial of the current matrix and the dashed curve is the target.</p>',
         hint: 'The eigenvalues must add up to the trace, so \\(a+d=5\\), and multiply to the determinant, so \\(ad-2=4\\).',
         mount: function (el, ctx) {
           var w = wrap(el);

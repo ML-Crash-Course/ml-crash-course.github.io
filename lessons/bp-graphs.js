@@ -276,7 +276,7 @@
 
   var steps = [{
     kind: 'text', title: 'Reading and drawing graphs',
-    html: '<p>Before you can backpropagate through a formula, you need to see its graph. These levels train exactly that step: going from a formula to the graph and back, and reading off the structure that backpropagation cares about.</p>' +
+    html: '<p>Before you can backpropagate through a formula, you need to see its graph. These levels train that step: going from a formula to the graph and back, and reading off the structure that backpropagation cares about.</p>' +
       '<p>Every problem is generated fresh. The wrong options differ from the right one by a single change, such as a different gate, two swapped inputs, or brackets in another place, so look closely.</p>' +
       D.levelList('bp-graphs', LEVELS.map(function (l) { return l[0]; })) +
       '<p class="m4-note">When the graphs feel natural, move on to <a href="#/l/bp-drill">Backpropagation practice</a>, where you compute every value and gradient yourself.</p>'
@@ -285,5 +285,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: l[2], n: l[3], key: 'bp-graphs:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'bp-graphs', module: 'backprop', title: 'Reading and drawing graphs', summary: 'Seven levels that train the step from a formula to its computational graph and back.', minutes: 20, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'bp-graphs', module: 'backprop', title: 'Reading and drawing graphs', summary: 'Exercises on translating a formula into its computational graph and back, arranged in seven levels.', minutes: 20, free: true, drill: true, steps: steps });
 })();

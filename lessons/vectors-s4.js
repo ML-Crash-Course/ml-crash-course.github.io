@@ -33,7 +33,7 @@
     return '\\begin{pmatrix}' + fmt(x) + '\\\\' + fmt(y) + '\\end{pmatrix}';
   }
   function pairTex(x, y) {
-    return '(' + fmt(x) + ',\\,' + fmt(y) + ')';
+    return vecTex(x, y);
   }
   function setArrow(a, x1, y1, x2, y2) {
     var d = Math.hypot(x2 - x1, y2 - y1);
@@ -150,21 +150,21 @@
     var root = wrap(el);
     M4.choices(root, {
       options: [
-        '\\( (4,\\,1) \\)',
-        '\\( (11,\\,1) \\)',
-        '\\( (8,\\,3) \\)',
-        '\\( (11,\\,7) \\)'
+        '\\( \\begin{pmatrix}4\\\\1\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}11\\\\1\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}8\\\\3\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}11\\\\7\\end{pmatrix} \\)'
       ],
       correct: 1,
       onCorrect: function () {
-        ctx.note('\\( 2(1,2)+3(3,-1)=(2,4)+(9,-3)=(11,1) \\).');
+        ctx.note('\\( 2(1,2)+3(3,-1)=\\begin{pmatrix}2\\\\4\\end{pmatrix}+\\begin{pmatrix}9\\\\-3\\end{pmatrix}=\\begin{pmatrix}11\\\\1\\end{pmatrix} \\).');
         ctx.solved();
       },
       onWrong: function (i) {
         var msg = [
           'That is \\( \\mathbf{v}+\\mathbf{w} \\). The scalars 2 and 3 have not been applied.',
           '',
-          'Scale first: \\( 2\\mathbf{v}=(2,4) \\) and \\( 3\\mathbf{w}=(9,-3) \\), then add component by component.',
+          'Scale first: \\( 2\\mathbf{v}=\\begin{pmatrix}2\\\\4\\end{pmatrix} \\) and \\( 3\\mathbf{w}=\\begin{pmatrix}9\\\\-3\\end{pmatrix} \\), then add component by component.',
           'The second component of \\( 3\\mathbf{w} \\) is \\( -3 \\), not \\( +3 \\).'
         ][i];
         ctx.wrong(msg);
@@ -207,7 +207,7 @@
           ring.setAttribute('fill-opacity', 0.45);
           ring.setAttribute('stroke-dasharray', 'none');
           ring.setAttribute('r', 20);
-          ctx.note('\\( 2\\mathbf{v}+3\\mathbf{w}=(4,2)+(-3,3)=(1,5) \\).');
+          ctx.note('\\( 2\\mathbf{v}+3\\mathbf{w}=\\begin{pmatrix}4\\\\2\\end{pmatrix}+\\begin{pmatrix}-3\\\\3\\end{pmatrix}=\\begin{pmatrix}1\\\\5\\end{pmatrix} \\).');
           ctx.solved();
         }
       } else if (!done) {
@@ -309,7 +309,7 @@
           ctx.note('\\( \\mathbf{w}=' + fmt(k) + '\\,\\mathbf{v} \\), so every combination lies on the line through \\( \\mathbf{v} \\).');
           ctx.solved();
         } else {
-          ctx.wrong('Here \\( v_1w_2-v_2w_1=' + fmt(D) + '\\neq 0 \\), so \\( \\mathbf{w} \\) is not a multiple of \\( \\mathbf{v}=(2,1) \\).');
+          ctx.wrong('Here \\( v_1w_2-v_2w_1=' + fmt(D) + '\\neq 0 \\), so \\( \\mathbf{w} \\) is not a multiple of \\( \\mathbf{v}=\\begin{pmatrix}2\\\\1\\end{pmatrix} \\).');
         }
       }
     });
@@ -381,22 +381,22 @@
     var root = wrap(el);
     M4.choices(root, {
       options: [
-        '\\( (3,\\,6) \\)',
-        '\\( (0,\\,0) \\)',
-        '\\( (2,\\,1) \\)',
-        '\\( (-1,\\,-2) \\)'
+        '\\( \\begin{pmatrix}3\\\\6\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}0\\\\0\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}2\\\\1\\end{pmatrix} \\)',
+        '\\( \\begin{pmatrix}-1\\\\-2\\end{pmatrix} \\)'
       ],
       correct: 2,
       onCorrect: function () {
-        ctx.note('Both vectors lie on the line \\( y=2x \\), so every mix of them does too. \\( (2,1) \\) is not on that line. The matrices module returns to this idea: multiplying by a matrix mixes its columns in exactly this way.');
+        ctx.note('Both vectors lie on the line \\( y=2x \\), so every mix of them does too. \\( \\begin{pmatrix}2\\\\1\\end{pmatrix} \\) is not on that line. The matrices module returns to this idea: multiplying by a matrix mixes its columns in this way.');
         ctx.solved();
       },
       onWrong: function (i) {
         var msg = [
-          'Reachable: \\( x_1=1,\\ x_2=1 \\) gives \\( (1,2)+(2,4)=(3,6) \\).',
+          'Reachable: \\( x_1=1,\\ x_2=1 \\) gives \\( \\begin{pmatrix}1\\\\2\\end{pmatrix}+\\begin{pmatrix}2\\\\4\\end{pmatrix}=\\begin{pmatrix}3\\\\6\\end{pmatrix} \\).',
           'Reachable: \\( x_1=x_2=0 \\) gives the zero vector.',
           '',
-          'Reachable: \\( x_1=-1,\\ x_2=0 \\) gives \\( (-1,-2) \\).'
+          'Reachable: \\( x_1=-1,\\ x_2=0 \\) gives \\( \\begin{pmatrix}-1\\\\-2\\end{pmatrix} \\).'
         ][i];
         ctx.wrong(msg);
       }
@@ -453,7 +453,7 @@
           ring.setAttribute('fill-opacity', 0.45);
           ring.setAttribute('stroke-dasharray', 'none');
           ring.setAttribute('r', 20);
-          ctx.note('\\( 1\\cdot(1,2)+(-2)\\cdot(3,1)=(1,2)+(-6,-2)=(-5,0) \\), so \\( a=1 \\) and \\( b=-2 \\).');
+          ctx.note('\\( 1\\cdot(1,2)+(-2)\\cdot(3,1)=\\begin{pmatrix}1\\\\2\\end{pmatrix}+\\begin{pmatrix}-6\\\\-2\\end{pmatrix}=\\begin{pmatrix}-5\\\\0\\end{pmatrix} \\), so \\( a=1 \\) and \\( b=-2 \\).');
           ctx.solved();
         }
       } else if (!done && moves.length) {
@@ -488,36 +488,36 @@
     id: 'vectors-s4',
     module: 'vectors',
     title: 'Linear combinations and span',
-    summary: 'Scaling and adding two vectors, reaching target points, and deciding whether two vectors span the plane or only a line.',
+    summary: 'Scaling and addition combine into linear combinations. Two vectors reach either a single line or the whole plane, depending on their directions.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>Two operations on vectors were introduced earlier: multiplying a vector by a number and adding two vectors. Combining them gives a linear combination.</p><p>In this lesson you will compute a linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\), find the numbers \\(a\\) and \\(b\\) that reach a given target point, and decide whether two vectors can reach every point of the plane or only the points of a single line.</p>'
+        html: '<p>Two operations on vectors were introduced earlier: multiplying a vector by a number and adding two vectors. Combining them gives a linear combination.</p><p>The goals are to compute a linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\), find the numbers \\(a\\) and \\(b\\) that reach a given target point, and decide whether two vectors can reach every point of the plane or only the points of a single line.</p>'
       },
       {
         kind: 'text',
         title: 'Linear combinations',
-        html: '<p>Let \\( \\mathbf{v}=(v_1,v_2) \\) and \\( \\mathbf{w}=(w_1,w_2) \\) be two vectors in the plane and let \\(a\\) and \\(b\\) be real numbers, called <em>coefficients</em> or <em>scalars</em>. The vector</p>\\[ a\\mathbf{v}+b\\mathbf{w}=(a v_1+b w_1,\\; a v_2+b w_2) \\]<p>is called a <em>linear combination</em> of \\( \\mathbf{v} \\) and \\( \\mathbf{w} \\). Geometrically, \\( \\mathbf{v} \\) is stretched by the factor \\(a\\), \\( \\mathbf{w} \\) is stretched by the factor \\(b\\), and the two results are placed tip to tail. A negative coefficient reverses the direction of the arrow.</p>'
+        html: '<p>Let \\( \\mathbf{v}=\\begin{pmatrix}v_1\\\\v_2\\end{pmatrix} \\) and \\( \\mathbf{w}=\\begin{pmatrix}w_1\\\\w_2\\end{pmatrix} \\) be two vectors in the plane and let \\(a\\) and \\(b\\) be real numbers, called <em>coefficients</em> or <em>scalars</em>. The vector</p>\\[ a\\mathbf{v}+b\\mathbf{w}=\\begin{pmatrix}a v_1+b w_1\\\\a v_2+b w_2\\end{pmatrix} \\]<p>is called a <em>linear combination</em> of \\( \\mathbf{v} \\) and \\( \\mathbf{w} \\). Geometrically, \\( \\mathbf{v} \\) is stretched by the factor \\(a\\), \\( \\mathbf{w} \\) is stretched by the factor \\(b\\), and the two results are placed tip to tail. A negative coefficient reverses the direction of the arrow.</p>'
       },
       {
         kind: 'explore',
         title: 'Scaling and adding',
-        html: '<p>Here \\( \\mathbf{v}=(2,1) \\) and \\( \\mathbf{w}=(-1,2) \\). The sliders set the coefficients \\(a\\) and \\(b\\). The blue arrow is \\( a\\mathbf{v} \\), the orange arrow is \\( b\\mathbf{w} \\) attached to its tip, and the green arrow is the linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\). The dashed lines complete the parallelogram, which shows that the order of the two steps does not matter.</p>',
+        html: '<p>Here \\( \\mathbf{v}=\\begin{pmatrix}2\\\\1\\end{pmatrix} \\) and \\( \\mathbf{w}=\\begin{pmatrix}-1\\\\2\\end{pmatrix} \\). The sliders set the coefficients \\(a\\) and \\(b\\). The blue arrow is \\( a\\mathbf{v} \\), the orange arrow is \\( b\\mathbf{w} \\) attached to its tip, and the green arrow is the linear combination \\( a\\mathbf{v}+b\\mathbf{w} \\). The dashed lines complete the parallelogram, which shows that the order of the two steps does not matter.</p>',
         mount: mountCombine
       },
       {
         kind: 'exercise',
         title: 'Computing a combination',
-        html: '<p>Let \\( \\mathbf{v}=(1,2) \\) and \\( \\mathbf{w}=(3,-1) \\). Which vector equals \\( 2\\mathbf{v}+3\\mathbf{w} \\)?</p>',
+        html: '<p>Let \\( \\mathbf{v}=\\begin{pmatrix}1\\\\2\\end{pmatrix} \\) and \\( \\mathbf{w}=\\begin{pmatrix}3\\\\-1\\end{pmatrix} \\). Which vector equals \\( 2\\mathbf{v}+3\\mathbf{w} \\)?</p>',
         hint: 'Compute \\( 2\\mathbf{v} \\) and \\( 3\\mathbf{w} \\) separately, then add the first components and the second components.',
         mount: mountCompute
       },
       {
         kind: 'exercise',
         title: 'Reaching a target',
-        html: '<p>Let \\( \\mathbf{v}=(2,1) \\) and \\( \\mathbf{w}=(-1,1) \\). Set the coefficients \\(a\\) and \\(b\\) so that the black point \\( a\\mathbf{v}+b\\mathbf{w} \\) lands on the target \\( (1,5) \\). The value below shows the remaining distance.</p>',
+        html: '<p>Let \\( \\mathbf{v}=\\begin{pmatrix}2\\\\1\\end{pmatrix} \\) and \\( \\mathbf{w}=\\begin{pmatrix}-1\\\\1\\end{pmatrix} \\). Set the coefficients \\(a\\) and \\(b\\) so that the black point \\( a\\mathbf{v}+b\\mathbf{w} \\) lands on the target \\( \\begin{pmatrix}1\\\\5\\end{pmatrix} \\). The value below shows the remaining distance.</p>',
         hint: 'The components give two equations: \\( 2a-b=1 \\) and \\( a+b=5 \\). Adding them eliminates \\(b\\).',
         mount: mountReach
       },
@@ -535,8 +535,8 @@
       {
         kind: 'exercise',
         title: 'A collapsed span',
-        html: '<p>The vector \\( \\mathbf{v}=(2,1) \\) is fixed. Drag \\( \\mathbf{w} \\) to a non-zero position for which the span of \\( \\mathbf{v} \\) and \\( \\mathbf{w} \\) is only a line, then release.</p>',
-        hint: 'Choose \\( \\mathbf{w} \\) as a multiple of \\( \\mathbf{v} \\), for example \\( 2\\mathbf{v}=(4,2) \\) or \\( -\\mathbf{v}=(-2,-1) \\).',
+        html: '<p>The vector \\( \\mathbf{v}=\\begin{pmatrix}2\\\\1\\end{pmatrix} \\) is fixed. Drag \\( \\mathbf{w} \\) to a non-zero position for which the span of \\( \\mathbf{v} \\) and \\( \\mathbf{w} \\) is only a line, then release.</p>',
+        hint: 'Choose \\( \\mathbf{w} \\) as a multiple of \\( \\mathbf{v} \\), for example \\( 2\\mathbf{v}=\\begin{pmatrix}4\\\\2\\end{pmatrix} \\) or \\( -\\mathbf{v}=\\begin{pmatrix}-2\\\\-1\\end{pmatrix} \\).',
         mount: mountCollapse
       },
       {
@@ -549,14 +549,14 @@
       {
         kind: 'exercise',
         title: 'What a mix can reach',
-        html: '<p>Many machine learning systems build their outputs by mixing a few fixed vectors. With two fixed vectors \\( \\mathbf{w}_1 \\) and \\( \\mathbf{w}_2 \\), the system picks two numbers \\( x_1, x_2 \\) and outputs \\( x_1\\mathbf{w}_1+x_2\\mathbf{w}_2 \\). Every output is a linear combination of the two vectors, so the outputs it can ever produce form their span.</p><p>Suppose \\( \\mathbf{w}_1=(1,2) \\) and \\( \\mathbf{w}_2=(2,4) \\). Which output can this system <em>not</em> produce, whatever numbers it picks?</p>',
-        hint: 'Since \\( \\mathbf{w}_2=2\\mathbf{w}_1 \\), every output is a multiple of \\( (1,2) \\). Look for the option that is not.',
+        html: '<p>Many machine learning systems build their outputs by mixing a few fixed vectors. With two fixed vectors \\( \\mathbf{w}_1 \\) and \\( \\mathbf{w}_2 \\), the system picks two numbers \\( x_1, x_2 \\) and outputs \\( x_1\\mathbf{w}_1+x_2\\mathbf{w}_2 \\). Every output is a linear combination of the two vectors, so the outputs it can ever produce form their span.</p><p>Suppose \\( \\mathbf{w}_1=\\begin{pmatrix}1\\\\2\\end{pmatrix} \\) and \\( \\mathbf{w}_2=\\begin{pmatrix}2\\\\4\\end{pmatrix} \\). Which output can this system <em>not</em> produce, whatever numbers it picks?</p>',
+        hint: 'Since \\( \\mathbf{w}_2=2\\mathbf{w}_1 \\), every output is a multiple of \\( \\begin{pmatrix}1\\\\2\\end{pmatrix} \\). Look for the option that is not.',
         mount: mountLayer
       },
       {
         kind: 'exercise',
         title: 'Finding the coefficients',
-        html: '<p>Let \\( \\mathbf{v}=(1,2) \\) and \\( \\mathbf{w}=(3,1) \\). Starting at the origin, each button adds or subtracts one copy of a vector. Reach the target \\( (-5,0) \\). The counters show the resulting integer coefficients \\(a\\) and \\(b\\).</p>',
+        html: '<p>Let \\( \\mathbf{v}=\\begin{pmatrix}1\\\\2\\end{pmatrix} \\) and \\( \\mathbf{w}=\\begin{pmatrix}3\\\\1\\end{pmatrix} \\). Starting at the origin, each button adds or subtracts one copy of a vector. Reach the target \\( \\begin{pmatrix}-5\\\\0\\end{pmatrix} \\). The counters show the resulting integer coefficients \\(a\\) and \\(b\\).</p>',
         hint: 'Solve \\( a+3b=-5 \\) and \\( 2a+b=0 \\). The second equation gives \\( b=-2a \\). Substitute it into the first.',
         mount: mountWalk
       },

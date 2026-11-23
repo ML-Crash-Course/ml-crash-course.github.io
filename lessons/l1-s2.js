@@ -155,8 +155,8 @@
         tX.set(x / 2 - 0.45 * y / n, y / 2 + 0.45 * x / n - 0.1, 'x');
         tAx.set(clamp(ax + 0.5 * ax / na, -4.6, 4.6), clamp(ay + 0.5 * ay / na - 0.1, -4.7, 4.6), 'Ax');
       } else { tX.set(0.4, 0.4, 'x'); tAx.set(-0.5, -0.5, 'Ax'); }
-      rX.textContent = 'x = (' + fmt(x) + ', ' + fmt(y) + ')';
-      rAx.textContent = 'Ax = (' + fmt(ax) + ', ' + fmt(ay) + ')';
+      rX.innerHTML = M4.tex('\\mathbf{x} = ' + M4.col([fmt(x), fmt(y)]));
+      rAx.innerHTML = M4.tex('A\\mathbf{x} = ' + M4.col([fmt(ax), fmt(ay)]));
       rN.textContent = '‖x‖ = ' + n.toFixed(2) + '   ‖Ax‖ = ' + na.toFixed(2);
       if (!exercise) {
         if (n === 0) ctx.note('The zero vector is mapped to the zero vector by every matrix.');
@@ -171,7 +171,7 @@
       if (x === y) {
         done = true;
         ghost.el.setAttribute('opacity', '0.9');
-        ctx.note('\\(A\\mathbf{x} = (' + fmt(3 * x) + ', ' + fmt(3 * y) + ') = 3\\,\\mathbf{x}\\). Every non-zero vector on the dashed line is an eigenvector with eigenvalue 3.');
+        ctx.note('\\(A\\mathbf{x} = ' + M4.col([fmt(3 * x), fmt(3 * y)]) + ' = 3\\,\\mathbf{x}\\). Every non-zero vector on the dashed line is an eigenvector with eigenvalue 3.');
         ctx.solved();
       } else if (x === -y) {
         ctx.note('Here \\(A\\mathbf{x} = \\mathbf{x}\\), so this is an eigenvector with eigenvalue 1. The task asks for eigenvalue 3.');
@@ -463,13 +463,13 @@
     id: 'l1-s2',
     module: 'l1',
     title: 'What machine learning is',
-    summary: 'How the course is organised, which mathematics it assumes, and how machine learning, deep learning and NLP relate.',
+    summary: 'How the course is organised, which mathematics it assumes, and how machine learning, deep learning and natural language processing relate to each other.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>The course has a fixed organisation and starts from a few definitions.</p><p>In this lesson you will state how the course is split and how a week is structured, check the three mathematical prerequisites on small examples, apply the exam-admission rule, and place a method correctly among machine learning, deep learning and natural language processing (NLP).</p>'
+        html: '<p>The course has a fixed organisation and starts from a few definitions.</p><p>The first part explains how the course is split and how a week is structured. Small examples then check the three mathematical prerequisites. The exam admission rule follows, and the last part places methods among machine learning, deep learning and natural language processing (NLP).</p>'
       },
       {
         kind: 'exercise',
@@ -503,14 +503,14 @@
       {
         kind: 'explore',
         title: 'Linear algebra',
-        html: '<p>The first prerequisite is linear algebra: vectors and matrices, how to multiply them and what the product means, vector spaces, norms and eigenvalues. The figure shows a vector \\(\\mathbf{x} = (x_1, x_2)\\) and its image under the matrix \\(A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}\\), that is \\(A\\mathbf{x} = (2x_1 + x_2,\\; x_1 + 2x_2)\\). The norm \\(\\lVert \\mathbf{x} \\rVert = \\sqrt{x_1^2 + x_2^2}\\) is the length of the arrow.</p><p>Drag the tip of \\(\\mathbf{x}\\) and observe how the direction and length of \\(A\\mathbf{x}\\) change.</p>',
+        html: '<p>The first prerequisite is linear algebra: vectors and matrices, how to multiply them and what the product means, vector spaces, norms and eigenvalues. The figure shows a vector \\(\\mathbf{x} = \\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}\\) and its image under the matrix \\(A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}\\), that is \\(A\\mathbf{x} = \\begin{pmatrix}2x_1 + x_2\\\\x_1 + 2x_2\\end{pmatrix}\\). The norm \\(\\lVert \\mathbf{x} \\rVert = \\sqrt{x_1^2 + x_2^2}\\) is the length of the arrow.</p><p>Drag the tip of \\(\\mathbf{x}\\) and observe how the direction and length of \\(A\\mathbf{x}\\) change.</p>',
         mount: function (el, ctx) { eigenWidget(el, ctx, false); }
       },
       {
         kind: 'exercise',
         title: 'An eigenvector',
         html: '<p>A non-zero vector \\(\\mathbf{x}\\) is an eigenvector of \\(A\\) with eigenvalue \\(\\lambda\\) if \\(A\\mathbf{x} = \\lambda\\,\\mathbf{x}\\): the matrix only rescales it. For \\(A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 2 \\end{pmatrix}\\), drag \\(\\mathbf{x}\\) to an eigenvector with eigenvalue \\(\\lambda = 3\\).</p>',
-        hint: 'The condition \\(2x_1 + x_2 = 3x_1\\) simplifies to \\(x_2 = x_1\\). Any non-zero vector with equal components works, for example \\((1, 1)\\).',
+        hint: 'The condition \\(2x_1 + x_2 = 3x_1\\) simplifies to \\(x_2 = x_1\\). Any non-zero vector with equal components works, for example \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\).',
         mount: function (el, ctx) { eigenWidget(el, ctx, true); }
       },
       {
@@ -571,7 +571,7 @@
         kind: 'exercise',
         title: 'Homework and exam admission',
         html: '<p>Homework is assigned weekly. Each assignment is released on a Tuesday and is due on the Friday of the following week, so consecutive assignments overlap. Each is worth 10 to 20 points, and admission to the exam requires at least 50% of all homework points in total, not 50% of each assignment. The exam grade is 100% of the final grade. Homework counts only for admission.</p><p>The four maxima below are illustrative. Set the points so that the student is admitted even though at least one homework is below half of its own maximum, then press Check.</p>',
-        hint: 'The total must reach 30 of 60. For example 20, 10, 0 and 0 points: the last two assignments are below 50%, yet the total is exactly 30.',
+        hint: 'The total must reach 30 of 60. For example 20, 10, 0 and 0 points: the last two assignments are below 50%, yet the total is 30.',
         mount: function (el, ctx) { admissionWidget(el, ctx); }
       },
       {

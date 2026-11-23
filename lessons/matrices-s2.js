@@ -247,7 +247,7 @@
     var x1 = 1.5, x2 = 1, raf = 0, anim = null, auto = false;
     function draw() {
       var b = sc.update(x1, x2);
-      ro.textContent = 'Ax = ' + fmt(x1) + '·(2, 1) + ' + par(x2) + '·(−1, 2) = (' + fmt(b[0]) + ', ' + fmt(b[1]) + ')';
+      ro.innerHTML = M4.tex('A\\mathbf{x} = ' + fmt(x1) + M4.col([2, 1]) + ' + ' + par(x2) + M4.col([-1, 2]) + ' = ' + M4.col([fmt(b[0]), fmt(b[1])]));
     }
     var ctl = M4.el('div', { style: 'width:100%;max-width:520px' }, wrap);
     var sl1 = M4.slider(ctl, { min: -2, max: 2, step: 0.25, value: x1, label: 'x₁', format: fmt, onInput: function (v) { if (auto) return; stop(); x1 = +v; draw(); } });
@@ -283,14 +283,14 @@
     var x1 = 1, x2 = 1, done = false;
     function draw() {
       var b = sc.update(x1, x2);
-      ro.textContent = 'Ax = (' + fmt(b[0]) + ', ' + fmt(b[1]) + ')   target b = (1, 5)';
+      ro.innerHTML = M4.tex('A\\mathbf{x} = ' + M4.col([fmt(b[0]), fmt(b[1])]) + ' \\qquad \\text{target } \\mathbf{b} = ' + M4.col([1, 5]));
       var d = Math.sqrt(Math.pow(b[0] - target[0], 2) + Math.pow(b[1] - target[1], 2));
       if (d < 1e-6) {
         if (!done) {
           done = true;
           sc.ring.setAttribute('fill', C.green);
           sc.ring.setAttribute('stroke-dasharray', 'none');
-          ctx.note('\\(2\\,\\mathbf{a}_1 + 3\\,\\mathbf{a}_2 = \\mathbf{b}\\), so \\(\\mathbf{x} = (2, 3)\\) solves \\(A\\mathbf{x} = \\mathbf{b}\\).');
+          ctx.note('\\(2\\,\\mathbf{a}_1 + 3\\,\\mathbf{a}_2 = \\mathbf{b}\\), so \\(\\mathbf{x} = \\begin{pmatrix}2\\\\3\\end{pmatrix}\\) solves \\(A\\mathbf{x} = \\mathbf{b}\\).');
           ctx.solved();
         }
       } else if (!done) {
@@ -322,8 +322,8 @@
     function update(x, y) {
       var o = calc(x, y);
       inp.set(0, 0, x, y); out.set(0, 0, o[0], o[1]);
-      r1.textContent = 'x = (' + fmt(x) + ', ' + fmt(y) + ')';
-      r2.textContent = 'Ax = (' + fmt(x) + ' − ' + par(y) + ', ' + fmt(x) + ' + ' + par(y) + ') = (' + fmt(o[0]) + ', ' + fmt(o[1]) + ')';
+      r1.innerHTML = M4.tex('\\mathbf{x} = ' + M4.col([fmt(x), fmt(y)]));
+      r2.innerHTML = M4.tex('A\\mathbf{x} = ' + M4.col([fmt(x) + ' - ' + par(y), fmt(x) + ' + ' + par(y)]) + ' = ' + M4.col([fmt(o[0]), fmt(o[1])]));
       return o;
     }
     function finish(x, y) {
@@ -417,7 +417,7 @@
         var i = +slot.dataset.row;
         if (tok.dataset.value !== slot.dataset.value) {
           sendHome(tok, tray);
-          ctx.wrong('Entry ' + (i + 1) + ' is row ' + (i + 1) + ' of A, (' + fmt(A[i][0]) + ', ' + fmt(A[i][1]) + '), dotted with x = (2, 3). Keep the order of the entries.');
+          ctx.wrong('Entry ' + (i + 1) + ' is row ' + (i + 1) + ' of \\(A\\), \\(\\begin{pmatrix}' + fmt(A[i][0]).replace('−', '-') + ' & ' + fmt(A[i][1]).replace('−', '-') + '\\end{pmatrix}\\), dotted with \\(\\mathbf{x} = ' + M4.col([2, 3]) + '\\). Keep the order of the entries.');
           return;
         }
         consume(tok, tray);
@@ -442,14 +442,14 @@
     id: 'matrices-s2',
     module: 'matrices',
     title: 'Matrix times vector',
-    summary: 'Two ways to compute the product of a matrix and a vector: dot products with the rows, and a weighted sum of the columns.',
+    summary: 'A matrix times a vector can be computed in two ways, as dot products with the rows or as a weighted sum of the columns.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Rows and columns',
         html: '<p>A matrix \\(A\\) moves every point of the plane. The arithmetic behind this computes the output \\(A\\mathbf{x}\\) for a given input vector \\(\\mathbf{x}\\).</p>' +
-          '<p>In this lesson you will compute \\(A\\mathbf{x}\\) entry by entry using the rows of \\(A\\), interpret the same product as a weighted sum of the columns of \\(A\\), and use the product to compute several scores at once.</p>'
+          '<p>By the end you can compute \\(A\\mathbf{x}\\) entry by entry using the rows of \\(A\\), interpret the same product as a weighted sum of the columns of \\(A\\), and use the product to compute several scores at once.</p>'
       },
       {
         kind: 'text',
@@ -494,7 +494,7 @@
       {
         kind: 'exercise',
         title: 'Reaching a target with columns',
-        html: '<p>The columns are \\(\\mathbf{a}_1 = (2, 1)\\) and \\(\\mathbf{a}_2 = (-1, 1)\\). Set the weights \\(x_1\\) and \\(x_2\\) so that the combination \\(x_1\\mathbf{a}_1 + x_2\\mathbf{a}_2\\) ends exactly on the target \\(\\mathbf{b} = (1, 5)\\).</p>',
+        html: '<p>The columns are \\(\\mathbf{a}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) and \\(\\mathbf{a}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\). Set the weights \\(x_1\\) and \\(x_2\\) so that the combination \\(x_1\\mathbf{a}_1 + x_2\\mathbf{a}_2\\) ends on the target \\(\\mathbf{b} = \\begin{pmatrix}1\\\\5\\end{pmatrix}\\).</p>',
         hint: 'The second coordinates require x₁ + x₂ = 5 and the first require 2x₁ − x₂ = 1. Adding the two equations gives 3x₁ = 6.',
         mount: mountColTarget
       },

@@ -10,9 +10,12 @@
       var l = M4.el('span', { html: '\\(' + it[1] + '\\) = ' }, s); M4.typeset(l);
       vals[it[0]] = M4.el('b', { text: '0' }, s);
     });
-    return function (k, v) { vals[k].textContent = typeof v === 'string' ? v : M4.fmt(v, 2); };
+    return function (k, v) {
+      if (Array.isArray(v)) vals[k].innerHTML = M4.tex(M4.col(v.map(function (a) { return M4.fmt(a, 2); })));
+      else vals[k].textContent = typeof v === 'string' ? v : M4.fmt(v, 2);
+    };
   }
-  function vstr(v) { return '(' + v.map(function (a) { return M4.fmt(a, 2); }).join(', ') + ')'; }
+  function vstr(v) { return v.slice(); }
 
   /* f(x) = a.x : straight contour lines, constant gradient */
   function mountLinear(el) {
@@ -155,7 +158,7 @@
     id: 'mv-s5',
     module: 'multivariable',
     title: 'Vector and matrix derivatives',
-    summary: 'Gradients with respect to vectors and matrices, the Jacobian of a vector function, and the outer product rule for derivatives with respect to a matrix.',
+    summary: 'Derivatives extend to vector and matrix arguments through the gradient with respect to a vector, the Jacobian of a vector function and the outer product rule for derivatives with respect to a matrix.',
     minutes: 25,
     steps: [
       {
@@ -206,18 +209,18 @@
               if (t === 0) {
                 var a = [M4.randNZ(-4, 4), M4.randNZ(-4, 4)], c = M4.randNZ(-2, 2), g = [a[0] + 2 * c * x[0], a[1] + 2 * c * x[1]];
                 return {
-                  q: '<p>' + T('f(\\mathbf x) = \\mathbf a^\\top\\mathbf x + ' + c + '\\,\\lVert\\mathbf x\\rVert^2') + ' with ' + T('\\mathbf a = (' + a.join(', ') + ')') + '. Compute ' + T('\\partial f/\\partial x_' + j) + ' at ' + T('\\mathbf x = (' + x.join(', ') + ')') + '.</p>',
+                  q: '<p>' + T('f(\\mathbf x) = \\mathbf a^\\top\\mathbf x + ' + c + '\\,\\lVert\\mathbf x\\rVert^2') + ' with ' + T('\\mathbf a = ' + M4.col(a)) + '. Compute ' + T('\\partial f/\\partial x_' + j) + ' at ' + T('\\mathbf x = ' + M4.col(x)) + '.</p>',
                   answer: g[j - 1],
-                  explain: T('\\nabla f = \\mathbf a + ' + 2 * c + '\\mathbf x = (' + g.join(', ') + ')') + '.'
+                  explain: T('\\nabla f = \\mathbf a + ' + 2 * c + '\\mathbf x = ' + M4.col(g)) + '.'
                 };
               }
               var A = [[M4.rand(-3, 3), M4.rand(-3, 3)], [M4.rand(-3, 3), M4.rand(-3, 3)]];
               var S = [[2 * A[0][0], A[0][1] + A[1][0]], [A[0][1] + A[1][0], 2 * A[1][1]]];
               var gg = [S[0][0] * x[0] + S[0][1] * x[1], S[1][0] * x[0] + S[1][1] * x[1]];
               return {
-                q: '<p>' + T('f(\\mathbf x) = \\mathbf x^\\top A\\mathbf x') + ' with ' + T('A = \\begin{pmatrix}' + A[0].join(' & ') + '\\\\' + A[1].join(' & ') + '\\end{pmatrix}') + '. Compute ' + T('\\partial f/\\partial x_' + j) + ' at ' + T('\\mathbf x = (' + x.join(', ') + ')') + '.</p>',
+                q: '<p>' + T('f(\\mathbf x) = \\mathbf x^\\top A\\mathbf x') + ' with ' + T('A = \\begin{pmatrix}' + A[0].join(' & ') + '\\\\' + A[1].join(' & ') + '\\end{pmatrix}') + '. Compute ' + T('\\partial f/\\partial x_' + j) + ' at ' + T('\\mathbf x = ' + M4.col(x)) + '.</p>',
                 answer: gg[j - 1],
-                explain: T('A + A^\\top = \\begin{pmatrix}' + S[0].join(' & ') + '\\\\' + S[1].join(' & ') + '\\end{pmatrix}') + ', so ' + T('\\nabla f = (A + A^\\top)\\mathbf x = (' + gg.join(', ') + ')') + '.'
+                explain: T('A + A^\\top = \\begin{pmatrix}' + S[0].join(' & ') + '\\\\' + S[1].join(' & ') + '\\end{pmatrix}') + ', so ' + T('\\nabla f = (A + A^\\top)\\mathbf x = ' + M4.col(gg)) + '.'
               };
             }
           });
@@ -245,11 +248,11 @@
         kind: 'text',
         title: 'Derivatives with respect to a matrix',
         html: '<p>Now let a scalar function \\(L\\) depend on a matrix \\(W \\in \\mathbb R^{m \\times n}\\). Its gradient again has the shape of the variable: \\(\\partial L/\\partial W\\) is an \\(m \\times n\\) matrix whose entry \\((i, j)\\) is \\(\\partial L/\\partial W_{ij}.\\)</p>' +
-          '<p>Suppose \\(L\\) depends on \\(W\\) and \\(\\mathbf b\\) only through \\(\\mathbf z = W\\mathbf x + \\mathbf b\\), and that its gradient \\(\\boldsymbol\\delta = \\partial L/\\partial \\mathbf z\\) is known. Write \\(z_k = \\sum_l W_{kl}x_l + b_k\\). The entry \\(W_{ij}\\) only appears in \\(z_i\\), with factor \\(x_j\\), and the Kronecker delta says exactly that: \\(\\partial z_k/\\partial W_{ij} = \\delta_{ki}\\, x_j\\). The chain rule sums over all \\(z_k\\):</p>' +
+          '<p>Suppose \\(L\\) depends on \\(W\\) and \\(\\mathbf b\\) only through \\(\\mathbf z = W\\mathbf x + \\mathbf b\\), and that its gradient \\(\\boldsymbol\\delta = \\partial L/\\partial \\mathbf z\\) is known. Write \\(z_k = \\sum_l W_{kl}x_l + b_k\\). The entry \\(W_{ij}\\) only appears in \\(z_i\\), with factor \\(x_j\\), and the Kronecker delta says that: \\(\\partial z_k/\\partial W_{ij} = \\delta_{ki}\\, x_j\\). The chain rule sums over all \\(z_k\\):</p>' +
           '\\[ \\frac{\\partial L}{\\partial W_{ij}} = \\sum_k \\frac{\\partial L}{\\partial z_k}\\, \\delta_{ki}\\, x_j = \\frac{\\partial L}{\\partial z_i}\\, x_j. \\]' +
           '<p>Do not confuse the two deltas. The Kronecker delta \\(\\delta_{ki}\\) has two indices and is always 0 or 1. The gradient \\(\\delta_i = \\partial L/\\partial z_i\\) has one index. With that notation</p>' +
           '\\[ \\frac{\\partial L}{\\partial W_{ij}} = \\delta_i\\, x_j, \\qquad \\frac{\\partial L}{\\partial W} = \\boldsymbol\\delta\\, \\mathbf x^\\top, \\qquad \\frac{\\partial L}{\\partial \\mathbf b} = \\boldsymbol\\delta, \\qquad \\frac{\\partial L}{\\partial \\mathbf x} = W^\\top \\boldsymbol\\delta. \\]' +
-          '<p>The gradient with respect to \\(W\\) is the <b>outer product</b> of the known gradient \\(\\boldsymbol\\delta\\) and the input \\(\\mathbf x\\). The gradient with respect to \\(\\mathbf x\\) multiplies \\(\\boldsymbol\\delta\\) by the transpose \\(W^\\top\\). Later in the course, neural networks compute all their gradients with exactly these two rules.</p>'
+          '<p>The gradient with respect to \\(W\\) is the <b>outer product</b> of the known gradient \\(\\boldsymbol\\delta\\) and the input \\(\\mathbf x\\). The gradient with respect to \\(\\mathbf x\\) multiplies \\(\\boldsymbol\\delta\\) by the transpose \\(W^\\top\\). Later in the course, neural networks compute all their gradients with these two rules.</p>'
       },
       {
         kind: 'explore',
@@ -297,7 +300,7 @@
               var W = [[M4.rand(-3, 3), M4.rand(-3, 3), M4.rand(-3, 3)], [M4.rand(-3, 3), M4.rand(-3, 3), M4.rand(-3, 3)]];
               var x = [M4.randNZ(-3, 3), M4.randNZ(-3, 3), M4.randNZ(-3, 3)], d = [M4.randNZ(-2, 2), M4.randNZ(-2, 2)];
               var Wt = '\\begin{pmatrix}' + W[0].join(' & ') + '\\\\' + W[1].join(' & ') + '\\end{pmatrix}';
-              var given = '<p>' + T('W = ' + Wt) + ', ' + T('\\mathbf x = (' + x.join(', ') + ')^\\top') + ', ' + T('\\boldsymbol\\delta = (' + d.join(', ') + ')^\\top') + '. ';
+              var given = '<p>' + T('W = ' + Wt) + ', ' + T('\\mathbf x = ' + M4.col(x)) + ', ' + T('\\boldsymbol\\delta = ' + M4.col(d)) + '. ';
               if (M4.rand(0, 1) === 0) {
                 var i = M4.rand(1, 2), j = M4.rand(1, 3);
                 return {

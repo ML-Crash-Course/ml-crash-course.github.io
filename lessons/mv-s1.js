@@ -65,7 +65,7 @@
     id: 'mv-s1',
     module: 'multivariable',
     title: 'The gradient on a surface',
-    summary: 'Partial derivatives as slopes along the axes, the gradient as the vector that collects them, and why it points straight uphill.',
+    summary: 'Partial derivatives are slopes along the coordinate axes. Collected into a vector they form the gradient, which points in the direction of steepest ascent.',
     minutes: 20,
     steps: [
       {
@@ -99,7 +99,7 @@
       {
         kind: 'text',
         title: 'The gradient and the uphill direction',
-        html: '<p>Move a small distance \\(\\mathbf h = (h_1, h_2)\\) away from a point. To first order the height changes by</p>' +
+        html: '<p>Move a small distance \\(\\mathbf h = \\begin{pmatrix}h_1\\\\h_2\\end{pmatrix}\\) away from a point. To first order the height changes by</p>' +
           '\\[ f(x + h_1, y + h_2) - f(x, y) \\approx \\frac{\\partial f}{\\partial x} h_1 + \\frac{\\partial f}{\\partial y} h_2 = \\nabla f \\cdot \\mathbf h. \\]' +
           '<p>For steps of a fixed length, the dot product \\(\\nabla f \\cdot \\mathbf h = \\lVert \\nabla f \\rVert \\, \\lVert \\mathbf h \\rVert \\cos\\theta\\) is largest when \\(\\mathbf h\\) points along \\(\\nabla f\\) (\\(\\theta = 0\\)), most negative when it points the opposite way, and zero when \\(\\mathbf h\\) is perpendicular to \\(\\nabla f\\). Three facts follow:</p>' +
           '<ol><li>\\(\\nabla f\\) points in the direction of steepest ascent.</li><li>\\(-\\nabla f\\) points in the direction of steepest descent. Gradient descent steps this way.</li><li>Along a contour line the height does not change, so the gradient is perpendicular to the contour lines.</li></ol>' +
@@ -156,7 +156,7 @@
                 var tri = M4.pick([[3, 4], [6, 8], [5, 12], [8, 6], [4, 3]]);
                 gx = tri[0] * M4.pick([1, -1]); gy = tri[1] * M4.pick([1, -1]);
                 return {
-                  q: '<p>At some point the gradient is \\(\\nabla f = (' + gx + ', ' + gy + ')\\). What is the slope of the surface in the steepest uphill direction, \\(\\lVert \\nabla f \\rVert\\)?</p>',
+                  q: '<p>At some point the gradient is \\(\\nabla f = \\begin{pmatrix}' + gx + '\\\\' + gy + '\\end{pmatrix}\\). What is the slope of the surface in the steepest uphill direction, \\(\\lVert \\nabla f \\rVert\\)?</p>',
                   answer: Math.hypot(gx, gy), explain: '\\(\\sqrt{' + M4.sn(gx) + '^2 + ' + M4.sn(gy) + '^2} = ' + Math.hypot(gx, gy) + '\\).'
                 };
               }
@@ -165,7 +165,7 @@
               return {
                 q: '<p>Let \\(f(x, y) = ' + f + '\\). Which vector points in the direction of steepest <b>descent</b> at \\((' + p + ', ' + q + ')\\)?</p>',
                 options: order.map(function (i) { return opts[i]; }), answer: order.indexOf(0),
-                explain: '\\(\\nabla f = (' + 2 * a + 'x, ' + 2 * b + 'y) = (' + gx + ', ' + gy + ')\\), and steepest descent is \\(-\\nabla f\\). The other two candidates run along the contour line.'
+                explain: '\\(\\nabla f = \\begin{pmatrix}' + 2 * a + 'x\\\\' + 2 * b + 'y\\end{pmatrix} = \\begin{pmatrix}' + gx + '\\\\' + gy + '\\end{pmatrix}\\), and steepest descent is \\(-\\nabla f\\). The other two candidates run along the contour line.'
               };
             }
           });

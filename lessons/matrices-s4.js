@@ -135,14 +135,14 @@
     id: 'matrices-s4',
     module: 'matrices',
     title: 'Determinant and inverse',
-    summary: 'The determinant measures how a matrix scales area and whether it flips orientation. A matrix can be undone exactly when its determinant is not zero.',
+    summary: 'The determinant measures how a matrix scales areas and whether it flips orientation. A matrix has an inverse when its determinant is not zero.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'A single number for a map',
-        html: '<p>A \\(2 \\times 2\\) matrix \\(A\\) moves every point of the plane, and its columns are the places where the basis vectors \\((1,0)\\) and \\((0,1)\\) land. The <b>determinant</b> \\(\\det A\\) is a single number that records how much the map scales areas and whether it flips the plane over.</p>' +
-          '<p>In this lesson you will read the determinant from a picture, compute it from the entries, recognise when a map cannot be undone, and build the <b>inverse</b> matrix \\(A^{-1}\\) that undoes it.</p>'
+        html: '<p>A \\(2 \\times 2\\) matrix \\(A\\) moves every point of the plane, and its columns are the places where the basis vectors \\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\) and \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\) land. The <b>determinant</b> \\(\\det A\\) is a single number that records how much the map scales areas and whether it flips the plane over.</p>' +
+          '<p>You will learn to read the determinant from a picture, compute it from the entries, recognise when a map cannot be undone, and build the <b>inverse</b> matrix \\(A^{-1}\\) that undoes it.</p>'
       },
       {
         kind: 'explore',
@@ -160,7 +160,7 @@
       {
         kind: 'exercise',
         title: 'An area of 6',
-        html: '<p>The first column is fixed at \\((2, 0)\\). Drag the tip of the second column so that the map scales areas by a factor of exactly \\(6\\) while keeping the orientation, that is, \\(\\det A = 6\\).</p>',
+        html: '<p>The first column is fixed at \\(\\begin{pmatrix}2\\\\0\\end{pmatrix}\\). Drag the tip of the second column so that the map scales areas by a factor of \\(6\\) while keeping the orientation, that is, \\(\\det A = 6\\).</p>',
         hint: 'A parallelogram has area base times height. The base has length 2, so the tip of the second column must be at height 3. Its sideways position does not matter.',
         mount: function (el, ctx) {
           var done = false;
@@ -270,7 +270,7 @@
         kind: 'exercise',
         title: 'Determinant zero',
         html: '<p>The matrix is \\( A = \\begin{pmatrix} 2 & k \\\\ 1 & 1.5 \\end{pmatrix} \\), where \\(k\\) is a number set by the slider. Choose \\(k\\) so that the two columns lie on the same line through the origin. The parallelogram then has area \\(0\\) and the whole plane is squashed onto that line. Press Check when the area has vanished.</p>',
-        hint: 'The determinant is 2 times 1.5 minus k times 1, that is 3 minus k. It is zero when the second column is a multiple of the first column (2, 1).',
+        hint: 'The determinant is 2 times 1.5 minus k times 1, that is 3 minus k. It is zero when the second column is a multiple of the first column \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           var done = false, k = 0;
           var w = colsWidget(el, {
@@ -288,7 +288,7 @@
             if (Math.abs(d) < 1e-9) {
               done = true; w.locked = true;
               w.para.el.setAttribute('stroke', GREEN);
-              ctx.note('With \\(k = 3\\) the second column is \\((3, 1.5) = 1.5 \\cdot (2, 1)\\), so \\(\\det A = 3 - 3 = 0\\). Every point lands on one line.');
+              ctx.note('With \\(k = 3\\) the second column is \\(\\begin{pmatrix}3\\\\1.5\\end{pmatrix} = 1.5 \\cdot \\begin{pmatrix}2\\\\1\\end{pmatrix}\\), so \\(\\det A = 3 - 3 = 0\\). Every point lands on one line.');
               ctx.solved();
             } else {
               ctx.wrong('The area is still ' + fmt(Math.abs(d)) + '. The columns do not yet point along the same line.');
@@ -383,9 +383,9 @@
       {
         kind: 'exercise',
         title: 'Input from output',
-        html: '<p>Let \\( A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 1 \\end{pmatrix} \\). The purple arrow is an input vector \\(\\mathbf{x}\\) and the orange arrow is its output \\(A\\mathbf{x}\\). Drag the tip of \\(\\mathbf{x}\\) until the output lands on the target \\(\\mathbf{b} = (4, 3)\\), marked by the ring.</p>' +
+        html: '<p>Let \\( A = \\begin{pmatrix} 2 & 1 \\\\ 1 & 1 \\end{pmatrix} \\). The purple arrow is an input vector \\(\\mathbf{x}\\) and the orange arrow is its output \\(A\\mathbf{x}\\). Drag the tip of \\(\\mathbf{x}\\) until the output lands on the target \\(\\mathbf{b} = \\begin{pmatrix}4\\\\3\\end{pmatrix}\\), marked by the ring.</p>' +
           '<p>The vector found this way is \\(A^{-1}\\mathbf{b}\\): applying the inverse to an output returns the input that produced it.</p>',
-        hint: 'Here det A = 2 - 1 = 1, so the inverse has rows (1, -1) and (-1, 2). Apply it to (4, 3): the first entry is 4 - 3, the second is -4 + 6.',
+        hint: 'Here \\(\\det A = 2 - 1 = 1\\), so \\(A^{-1} = \\begin{pmatrix}1 & -1\\\\-1 & 2\\end{pmatrix}\\). Applied to \\(\\begin{pmatrix}4\\\\3\\end{pmatrix}\\), the first entry is \\(4 - 3\\) and the second is \\(-4 + 6\\).',
         mount: function (el, ctx) {
           injectStyle();
           var done = false;
@@ -402,13 +402,13 @@
           var row = M4.el('div', { class: 'm4-row' }, wrap);
           var rX = M4.el('span', { class: 'm4-readout', style: 'color:' + PURPLE }, row);
           var rO = M4.el('span', { class: 'm4-readout', style: 'color:' + ORANGE }, row);
-          var rB = M4.el('span', { class: 'm4-readout', text: 'target b = (4, 3)' }, row);
+          var rB = M4.el('span', { class: 'm4-readout', html: M4.tex('\\text{target } \\mathbf{b} = ' + M4.col([4, 3])) }, row);
           function update() {
             var q = out();
             arX.set(0, 0, x[0], x[1]); arO.set(0, 0, q[0], q[1]);
             tO.set(q[0] + 0.45, q[1] - 0.35, 'Ax');
-            rX.textContent = 'x = (' + fmt(x[0]) + ', ' + fmt(x[1]) + ')';
-            rO.textContent = 'Ax = (' + fmt(q[0]) + ', ' + fmt(q[1]) + ')';
+            rX.innerHTML = M4.tex('\\mathbf{x} = ' + M4.col([fmt(x[0]), fmt(x[1])]));
+            rO.innerHTML = M4.tex('A\\mathbf{x} = ' + M4.col([fmt(q[0]), fmt(q[1])]));
           }
           var h = p.handle(x[0], x[1], {
             color: PURPLE, snap: 0.5,
@@ -430,7 +430,7 @@
                 ctx.solved();
               } else {
                 var dx = 4 - q[0], dy = 3 - q[1];
-                ctx.note('The output misses the target by (' + fmt(dx) + ', ' + fmt(dy) + '). Moving the input one unit to the right moves the output by the first column, (2, 1). One unit up moves it by the second column, (1, 1).');
+                ctx.note('The output misses the target by \\(' + M4.col([fmt(dx), fmt(dy)]) + '\\). Moving the input one unit to the right moves the output by the first column, \\(' + M4.col([2, 1]) + '\\). One unit up moves it by the second column, \\(' + M4.col([1, 1]) + '\\).');
               }
             }
           });
@@ -453,7 +453,7 @@
             ],
             correct: 1,
             onCorrect: function () {
-              ctx.note('\\(\\det W = 1 \\cdot 4 - 2 \\cdot 2 = 0\\). For example \\((2, 0)\\) and \\((0, 1)\\) are both sent to \\((2, 4)\\), so the information about which one was the input is lost.');
+              ctx.note('\\(\\det W = 1 \\cdot 4 - 2 \\cdot 2 = 0\\). For example \\(\\begin{pmatrix}2\\\\0\\end{pmatrix}\\) and \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\) are both sent to \\(\\begin{pmatrix}2\\\\4\\end{pmatrix}\\), so the information about which one was the input is lost.');
               ctx.solved();
             },
             onWrong: function (i) {
@@ -467,7 +467,7 @@
       {
         kind: 'exercise',
         title: 'Area and orientation together',
-        html: '<p>The first column is fixed at \\((1, 2)\\). Place the second column so that the map multiplies areas by \\(3\\) <em>and</em> flips orientation, that is, \\(\\det A = -3\\). The condition is checked when the handle is released.</p>',
+        html: '<p>The first column is fixed at \\(\\begin{pmatrix}1\\\\2\\end{pmatrix}\\). Place the second column so that the map multiplies areas by \\(3\\) <em>and</em> flips orientation, that is, \\(\\det A = -3\\). The condition is checked when the handle is released.</p>',
         hint: 'With second column (p, q) the determinant is 1 times q minus p times 2. For a negative determinant the second column must lie clockwise from the first. For example, try points with q = 2p - 3.',
         mount: function (el, ctx) {
           var done = false;

@@ -53,7 +53,7 @@
       return o;
     });
   }
-  function vec(v) { return '(' + L.f2(v[0]) + ', ' + L.f2(v[1]) + ')'; }
+  function vec(v) { return M4.tex(M4.col([L.f2(v[0]), L.f2(v[1])])); }
 
   /* ---------- word order ---------- */
   var WV = { dog: [1, 0.2], bites: [0.1, 1], man: [0.9, -0.3] };
@@ -252,7 +252,7 @@
     id: 'emb-s4',
     module: 'language',
     title: 'Inside a transformer',
-    summary: 'Positions, the causal mask, several heads and the residual stream turn attention into a language model.',
+    summary: 'Positional information, the causal mask, multiple attention heads and the residual stream turn attention into a complete transformer language model.',
     minutes: 20,
     steps: [
       {
@@ -299,7 +299,7 @@
             gen: function () {
               var n = M4.pick([4, 5, 7, 8, 10, 12]);
               return {
-                q: 'A sequence has \\(' + n + '\\) tokens. How many scores survive the mask?',
+                q: 'A sequence has \\(' + n + '\\) tokens. How many scores remain after the mask?',
                 answer: n * (n + 1) / 2, tol: 0.01,
                 hint: 'Row \\(i\\) keeps \\(i\\) scores. Add up \\(1 + 2 + \\dots + n\\).',
                 explain: '\\(1 + 2 + \\dots + ' + n + ' = ' + n + ' \\cdot ' + (n + 1) + ' / 2 = ' + n * (n + 1) / 2 + '\\), a bit more than half of the \\(' + n * n + '\\) scores.'

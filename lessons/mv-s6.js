@@ -163,7 +163,7 @@
       'A^\\top\\mathbf x': 'The sum runs over the first index of ' + T('A') + '. Since ' + T('A_{ki} = (A^\\top)_{ik}') + ', this is row ' + T('i') + ' of ' + T('A^\\top') + ' times ' + T('\\mathbf x') + '.',
       'A\\mathbf y': 'The sum runs over the second index of ' + T('A') + ', next to ' + T('y_k') + '.',
       'A^\\top\\mathbf y': 'The sum runs over the first index of ' + T('A') + ', so ' + T('A') + ' is transposed.',
-      'AB': 'The summed index ' + T('k') + ' sits on the inside, ' + T('A_{ik}B_{kj}') + ', exactly as in a matrix product.',
+      'AB': 'The summed index ' + T('k') + ' sits on the inside, ' + T('A_{ik}B_{kj}') + ', as in a matrix product.',
       'A^\\top B': 'Write ' + T('A_{ki} = (A^\\top)_{ik}') + ' to bring ' + T('k') + ' to the inside: ' + T('(A^\\top)_{ik}B_{kj}') + '.',
       'AB^\\top': 'Write ' + T('B_{jk} = (B^\\top)_{kj}') + ' to bring ' + T('k') + ' to the inside: ' + T('A_{ik}(B^\\top)_{kj}') + '.',
       'BA': 'Here ' + T('B') + ' comes first and the summed index sits on the inside, ' + T('B_{ik}A_{kj}') + '.',
@@ -188,7 +188,7 @@
           '<p>' + T('A = ' + pm(A)) + ', ' + T('\\mathbf b = ' + col(b)) + ', ' + T('\\mathbf x = ' + col(x)) + '. Compute ' + T('\\partial f/\\partial x_' + j) + '.</p>',
         hint: 'First compute \\(\\mathbf r\\). Then the derivative of \\(r_i\\) with respect to \\(x_' + j + '\\) is \\(A_{i' + j + '}\\).',
         answer: g[j - 1],
-        explain: T('\\mathbf r = (' + r.join(', ') + ')') + '. By sums, ' + T('\\partial f/\\partial x_' + j + ' = \\sum_i 2r_iA_{i' + j + '} = 2(' + sn(r[0]) + '\\cdot ' + sn(A[0][j - 1]) + ' + ' + sn(r[1]) + '\\cdot ' + sn(A[1][j - 1]) + ') = ' + g[j - 1]) + '. By rules, ' + T('\\nabla f = 2A^\\top\\mathbf r = (' + g.join(', ') + ')') + '.'
+        explain: T('\\mathbf r = ' + M4.col(r)) + '. By sums, ' + T('\\partial f/\\partial x_' + j + ' = \\sum_i 2r_iA_{i' + j + '} = 2(' + sn(r[0]) + '\\cdot ' + sn(A[0][j - 1]) + ' + ' + sn(r[1]) + '\\cdot ' + sn(A[1][j - 1]) + ') = ' + g[j - 1]) + '. By rules, ' + T('\\nabla f = 2A^\\top\\mathbf r = ' + M4.col(g)) + '.'
       };
     }
     var a = rvec(2, -3, 3), c = rvec(2, -3, 3), ax = dot(a, x), cx = dot(c, x);
@@ -240,7 +240,7 @@
       q: '<p>' + T('f(W) = ' + f) + ' with ' + T('W = ' + pm(W2)) + ', ' + T('\\mathbf x = ' + col(x)) + (t === 2 ? ', ' + T('\\mathbf y = ' + col(y)) : '') + '.</p><p>Compute ' + T('\\partial f/\\partial W_{' + i + k + '}') + '.</p>',
       hint: 'Only output ' + i + ' of \\(W\\mathbf x\\) contains \\(W_{' + i + k + '}\\), with coefficient \\(x_' + k + '\\).',
       answer: ans,
-      explain: T('W\\mathbf x = (' + z.join(', ') + ')') + (t === 2 ? ', so ' + T('W\\mathbf x - \\mathbf y = (' + e.join(', ') + ')') : '') + '. Entry ' + T('(' + i + ', ' + k + ')') + ' of ' + T(t === 2 ? '2(W\\mathbf x - \\mathbf y)\\mathbf x^\\top' : '2W\\mathbf x\\mathbf x^\\top') + ' is ' + T('2\\cdot ' + sn(e[i - 1]) + '\\cdot ' + sn(x[k - 1]) + ' = ' + ans) + '.'
+      explain: T('W\\mathbf x = ' + M4.col(z)) + (t === 2 ? ', so ' + T('W\\mathbf x - \\mathbf y = ' + M4.col(e)) : '') + '. Entry ' + T('(' + i + ', ' + k + ')') + ' of ' + T(t === 2 ? '2(W\\mathbf x - \\mathbf y)\\mathbf x^\\top' : '2W\\mathbf x\\mathbf x^\\top') + ' is ' + T('2\\cdot ' + sn(e[i - 1]) + '\\cdot ' + sn(x[k - 1]) + ' = ' + ans) + '.'
     };
   }
 
@@ -257,7 +257,7 @@
     id: 'mv-s6',
     module: 'multivariable',
     title: 'Two ways to differentiate',
-    summary: 'Differentiate functions of vectors and matrices twice: once by writing them out as sums over indices, once with a short table of matrix rules.',
+    summary: 'Functions of vectors and matrices can be differentiated in two ways, by writing them as sums over indices or with a short table of matrix rules.',
     minutes: 30,
     steps: [
       {
@@ -286,7 +286,7 @@
         kind: 'explore',
         title: 'Where one variable hides in a quadratic form',
         html: '<p>Write \\(f(\\mathbf x) = \\mathbf x^\\top A\\mathbf x = \\sum_i\\sum_k A_{ik}x_ix_k\\) as a grid of nine terms, with term \\((i, k)\\) in row \\(i\\) and column \\(k\\). Pick a variable \\(x_j\\).</p>' +
-          '<p>Only the terms that contain \\(x_j\\) survive the derivative, and they form a cross: row \\(j\\) and column \\(j\\). The row gives \\((A\\mathbf x)_j\\) and the column gives \\((A^\\top\\mathbf x)_j\\).</p>',
+          '<p>Only the terms that contain \\(x_j\\) remain after differentiation, and they form a cross: row \\(j\\) and column \\(j\\). The row gives \\((A\\mathbf x)_j\\) and the column gives \\((A^\\top\\mathbf x)_j\\).</p>',
         mount: mountTermGrid
       },
       {

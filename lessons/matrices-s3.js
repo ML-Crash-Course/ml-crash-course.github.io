@@ -128,7 +128,7 @@
     id: 'matrices-s3',
     module: 'matrices',
     title: 'Matrix multiplication',
-    summary: 'Multiplying two matrices row by column, the shape rule, and why the product means doing one linear map after another.',
+    summary: 'Two matrices can be multiplied when their shapes are compatible. The product corresponds to applying one linear map after the other.',
     minutes: 12,
     steps: [
       // 1 ------------------------------------------------------------
@@ -137,7 +137,7 @@
         title: 'The product of two matrices',
         html:
           '<p>A matrix can multiply a vector, and it can also multiply another matrix.</p>' +
-          '<p>In this lesson you will compute each entry of a product \\(AB\\) from a row of \\(A\\) and a column of \\(B\\), ' +
+          '<p>The aim is to compute each entry of a product \\(AB\\) from a row of \\(A\\) and a column of \\(B\\), ' +
           'decide from the shapes whether a product exists, and read \\(AB\\) as the single linear map that applies \\(B\\) first and \\(A\\) second.</p>' +
           '<p>The order of the factors matters: in general \\(AB\\) and \\(BA\\) are different matrices.</p>'
       },
@@ -150,7 +150,7 @@
           'is obtained from row \\(i\\) of \\(A\\) and column \\(j\\) of \\(B\\): multiply the entries pairwise and add the results.</p>' +
           '\\[(AB)_{ij} = \\sum_{k} A_{ik}\\,B_{kj}\\]' +
           '<p>For example, with \\(A = ' + bm([[2, 1], [0, 3]]) + '\\) and \\(B = ' + bm([[1, 4], [2, 1]]) + '\\), the top-left entry uses row 1 of \\(A\\), ' +
-          'which is \\((2,\\,1)\\), and column 1 of \\(B\\), which is \\((1,\\,2)\\): \\(2\\cdot 1 + 1\\cdot 2 = 4\\).</p>'
+          'which is \\((2,\\,1)\\), and column 1 of \\(B\\), which is \\(\\begin{pmatrix}1\\\\2\\end{pmatrix}\\): \\(2\\cdot 1 + 1\\cdot 2 = 4\\).</p>'
       },
       // 3 ------------------------------------------------------------
       {

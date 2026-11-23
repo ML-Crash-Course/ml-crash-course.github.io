@@ -463,14 +463,14 @@
     id: 'l2-s2',
     module: 'l2',
     title: 'From likelihood to loss',
-    summary: 'The negative log-likelihood turns a product of probabilities into a loss. For a coin it gives heads over flips, and for Gaussian noise it gives the mean squared error.',
+    summary: 'The negative log-likelihood turns a product of probabilities into a loss function. For a coin it gives the fraction of heads as the best estimate, and for Gaussian noise it gives the mean squared error.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: '<p>A model assigns a probability to every observed data point. These probabilities combine into a single number, the <em>negative log-likelihood</em>, which is the loss that is minimised in machine learning.</p>' +
-          '<p>In this lesson you will (1) write the likelihood of independent data as a product and its logarithm as a sum, (2) find the maximum-likelihood estimate of a coin by setting a derivative to zero, (3) explain why the squared error leads to the mean and the absolute error to the median, and (4) derive the mean squared error from the assumption of Gaussian noise.</p>'
+          '<p>Along the way you practise how to (1) write the likelihood of independent data as a product and its logarithm as a sum, (2) find the maximum-likelihood estimate of a coin by setting a derivative to zero, (3) explain why the squared error leads to the mean and the absolute error to the median, and (4) derive the mean squared error from the assumption of Gaussian noise.</p>'
       },
       {
         kind: 'explore',
@@ -527,7 +527,7 @@
       {
         kind: 'exercise',
         title: 'The estimate for a coin',
-        html: '<p>Solving \\(\\tfrac{6}{p} - \\tfrac{2}{1 - p} = 0\\) gives the maximum-likelihood estimate \\(\\hat p = \\tfrac{6}{8} = 0.75\\). In general, for \\(h\\) heads in \\(n\\) flips the same calculation gives \\(\\hat p = h / n\\): the intuitive estimate is the result of minimising a loss exactly, with calculus.</p>' +
+        html: '<p>Solving \\(\\tfrac{6}{p} - \\tfrac{2}{1 - p} = 0\\) gives the maximum-likelihood estimate \\(\\hat p = \\tfrac{6}{8} = 0.75\\). In general, for \\(h\\) heads in \\(n\\) flips the same calculation gives \\(\\hat p = h / n\\): the intuitive estimate is the result of minimising a loss with calculus.</p>' +
           '<p>A different coin is flipped 20 times and shows 7 heads. Enter the value of \\(p\\) that maximises \\(L(p) = p^{7}(1 - p)^{13}\\).</p>',
         hint: 'The derivative of the log-likelihood is \\(\\tfrac{7}{p} - \\tfrac{13}{1 - p}\\). It is zero when \\(7(1 - p) = 13p\\).',
         mount: function (el, ctx) {

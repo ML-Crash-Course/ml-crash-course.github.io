@@ -81,7 +81,7 @@
     id: 'emb-s3',
     module: 'language',
     title: 'Attention',
-    summary: 'Each word builds its new vector as a weighted average of the other words, with weights from dot products.',
+    summary: 'Attention computes a new vector for each word as a weighted average of the vectors of the other words. The weights come from dot products between them.',
     minutes: 15,
     steps: [
       {
@@ -117,7 +117,7 @@
               var s1 = q[0] * k1[0] + q[1] * k1[1], s2 = q[0] * k2[0] + q[1] * k2[1];
               var a = Math.exp(s1) / (Math.exp(s1) + Math.exp(s2));
               return {
-                q: '\\(q = (' + q.join(', ') + ')\\), \\(k_1 = (' + k1.join(', ') + ')\\), \\(k_2 = (' + k2.join(', ') + ')\\). What is \\(a_1\\)?',
+                q: '\\(q = ' + M4.col(q) + '\\), \\(k_1 = ' + M4.col(k1) + '\\), \\(k_2 = ' + M4.col(k2) + '\\). What is \\(a_1\\)?',
                 answer: a, tol: 0.011,
                 hint: 'With two scores, \\(a_1 = e^{s_1} / (e^{s_1} + e^{s_2})\\).',
                 explain: 'The scores are \\(s_1 = ' + s1 + '\\) and \\(s_2 = ' + s2 + '\\), so \\(a_1 = 1 / (1 + e^{' + (s2 - s1) + '}) \\approx ' + a.toFixed(2) + '\\).'

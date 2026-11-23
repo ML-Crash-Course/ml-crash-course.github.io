@@ -129,7 +129,7 @@
       while (c >= tr[2]) c = 1;
       var comp = M4.rand(0, 1), val = tr[comp] * c / tr[2];
       return {
-        q: 'The gradient is \\(\\mathbf g = (' + tr[0] + ', ' + tr[1] + ')\\). After clipping its norm to \\(c = ' + c + '\\), what is the ' + (comp ? 'second' : 'first') + ' component?',
+        q: 'The gradient is \\(\\mathbf g = ' + M4.col(tr) + '\\). After clipping its norm to \\(c = ' + c + '\\), what is the ' + (comp ? 'second' : 'first') + ' component?',
         answer: val,
         hint: 'Compute \\(\\|\\mathbf g\\|\\) first, then scale the whole vector by \\(c / \\|\\mathbf g\\|\\).',
         explain: '\\(\\|\\mathbf g\\| = ' + tr[2] + '\\), so every component is multiplied by \\(' + c + '/' + tr[2] + '\\): \\(' + tr[comp] + ' \\cdot ' + c + '/' + tr[2] + ' = ' + M4.fmt(val, 3) + '\\).'
@@ -170,7 +170,7 @@
     id: 'opt-s2',
     module: 'optimizers',
     title: 'Weight decay, clipping and schedules',
-    summary: 'Three additions that almost every training run uses: shrinking the weights, bounding the size of a step, and changing the learning rate over time.',
+    summary: 'Weight decay, gradient clipping and learning rate schedules appear in almost every training run.',
     minutes: 16,
     steps: [
       {
@@ -185,7 +185,7 @@
       {
         kind: 'explore',
         title: 'The shifted minimum',
-        html: '<p>The ellipses are level sets of a loss with minimum \\(\\mathbf w^*\\), steep along \\(w_1\\) (curvature \\(3\\)) and flat along \\(w_2\\) (curvature \\(0.5\\)). The green point is the minimum of the penalized loss \\(\\tilde L\\), and the faint green curve is its path as \\(\\lambda\\) grows. Increase \\(\\lambda\\) and compare how much of each coordinate survives.</p>',
+        html: '<p>The ellipses are level sets of a loss with minimum \\(\\mathbf w^*\\), steep along \\(w_1\\) (curvature \\(3\\)) and flat along \\(w_2\\) (curvature \\(0.5\\)). The green point is the minimum of the penalized loss \\(\\tilde L\\), and the faint green curve is its path as \\(\\lambda\\) grows. Increase \\(\\lambda\\) and compare how much of each coordinate remains.</p>',
         mount: function (el) {
           decayScene(el);
           M4.el('p', { class: 'm4-cap', html: 'The dark ellipse is the level set of \\(L\\) through the green point, the dashed circle the level set of \\(\\|\\mathbf w\\|\\). At the penalized minimum the two touch.' }, el);

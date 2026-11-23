@@ -561,14 +561,14 @@
     id: ID,
     module: 'calculus',
     title: 'Derivative rules',
-    summary: 'Power, sum and product rules, and the derivatives of the exponential and the logarithm.',
+    summary: 'Rules for differentiating powers, sums and products, together with the derivatives of the exponential and the logarithm.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Limits and rules',
         html: '<p>The derivative \\(f\'(x)\\) of a function \\(f\\) is the slope of its tangent at \\(x\\). Computing it from the limit definition each time is slow, so a small set of rules is used instead.</p>' +
-          '<p>In this lesson you will differentiate powers, sums and products, state the derivatives of \\(e^x\\) and \\(\\ln x\\), and recognise a function from the graph of its derivative.</p>'
+          '<p>By the end you can differentiate powers, sums and products, state the derivatives of \\(e^x\\) and \\(\\ln x\\), and recognise a function from the graph of its derivative.</p>'
       },
       {
         kind: 'explore',

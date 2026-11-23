@@ -195,7 +195,7 @@
     id: 'opt-s1',
     module: 'optimizers',
     title: 'Stochastic gradients',
-    summary: 'Gradients computed on mini-batches are cheap and noisy. Batch size and learning rate together decide how much of that noise reaches the parameters.',
+    summary: 'Gradients computed on mini-batches are cheap but noisy. Batch size and learning rate together determine how much of that noise reaches the parameters.',
     minutes: 16,
     steps: [
       {

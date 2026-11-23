@@ -288,6 +288,10 @@
     return s || '0';
   };
   // signed number for TeX: "(-3)" style when it follows an operator
+  /* column vector as TeX: M4.col([1, 2]) gives a pmatrix with the entries stacked */
+  M4.col = function (arr) {
+    return '\\begin{pmatrix}' + arr.map(function (v) { return String(v).replace(/\u2212/g, '-'); }).join('\\\\') + '\\end{pmatrix}';
+  };
   M4.sn = function (v) { return v < 0 ? '(' + v + ')' : String(v); };
   M4.practice = function (parent, ctx, o) {
     var need = o.n || 3, streak = 0, total = 0, prob = null, locked = false, finished = false;

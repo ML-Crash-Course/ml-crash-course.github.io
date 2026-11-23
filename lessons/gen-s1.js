@@ -223,7 +223,7 @@
     id: 'gen-s1',
     module: 'generalisation',
     title: 'Overfitting and validation',
-    summary: 'Why a model that fits its training data perfectly can still predict badly, and how a held out set detects it.',
+    summary: 'A model that fits its training data perfectly can still make poor predictions on new data. A held out validation set makes this visible.',
     minutes: 17,
     steps: [
       {

@@ -601,7 +601,7 @@
     id: 'optimisation-s1',
     module: 'optimisation',
     title: 'Loss landscapes and minima',
-    summary: 'A loss is a function of the parameters. Training means finding parameters where it is small.',
+    summary: 'A loss is a function of the parameters of a model. Training a model means finding parameters for which the loss is small.',
     minutes: 10,
     steps: [
       {
@@ -609,7 +609,7 @@
         title: 'Learning goals',
         html:
           '<p>A model has adjustable numbers called <b>parameters</b>, and a <b>loss</b> is a single number that measures how badly the model fits the data for a given choice of parameters. ' +
-          'In this lesson you will read a loss as a function of its parameters, distinguish local from global minima, recognise a convex loss, and minimise a simple loss manually.</p>' +
+          'The aim is to read a loss as a function of its parameters, distinguish local from global minima, recognise a convex loss, and minimise a simple loss manually.</p>' +
           '<p>Throughout, \\(\\theta\\) denotes a parameter and \\(L(\\theta)\\) the loss at that parameter value.</p>'
       },
       {

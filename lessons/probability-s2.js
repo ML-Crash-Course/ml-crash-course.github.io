@@ -536,19 +536,19 @@
     id: 'probability-s2',
     module: 'probability',
     title: 'Expectation and variance',
-    summary: 'The mean as the balance point of a distribution, variance as its spread, and the linearity that makes both easy to compute.',
+    summary: 'The mean is the balance point of a distribution and the variance measures its spread. Linearity of expectation makes both easy to compute.',
     minutes: 16,
     steps: [
       {
         kind: 'text',
         title: 'Summaries of a distribution',
         html: '<p>A distribution assigns a probability \\(p(x)\\) to every value \\(x\\) that a random variable \\(X\\) can take. Two numbers summarise it: the <b>expectation</b>, which states where the distribution is centred, and the <b>variance</b>, which states how widely it is spread.</p>' +
-          '<p>In this lesson you will compute both for a discrete distribution, interpret the expectation as a balance point, and use the rules for \\(aX + b\\) and for sums of random variables.</p>'
+          '<p>After this lesson you should be able to compute both for a discrete distribution, interpret the expectation as a balance point, and use the rules for \\(aX + b\\) and for sums of random variables.</p>'
       },
       {
         kind: 'explore',
         title: 'The expectation as a balance point',
-        html: '<p>The expectation of \\(X\\) is the probability-weighted average of its values: \\[\\mathbb{E}[X] = \\sum_x x\\,p(x).\\] If each probability is drawn as a weight standing on a beam at position \\(x\\), the beam balances exactly at \\(\\mathbb{E}[X]\\). Drag the white handles to change the weights. The numbers above the bars are the probabilities after rescaling so that they sum to 1, and the pivot follows the expectation.</p>',
+        html: '<p>The expectation of \\(X\\) is the probability-weighted average of its values: \\[\\mathbb{E}[X] = \\sum_x x\\,p(x).\\] If each probability is drawn as a weight standing on a beam at position \\(x\\), the beam balances at \\(\\mathbb{E}[X]\\). Drag the white handles to change the weights. The numbers above the bars are the probabilities after rescaling so that they sum to 1, and the pivot follows the expectation.</p>',
         mount: function (el, ctx) { beam(el, ctx, { weights: [0.2, 0.2, 0.2, 0.2, 0.2], editable: true }); }
       },
       {
@@ -567,7 +567,7 @@
           table(el, [0, 1, 2], [0.5, 0.3, 0.2]);
           M4.numberInput(el, {
             answer: 0.7, tolerance: 0.005, placeholder: '0.0', label: 'E[X] =',
-            onCorrect: function () { ctx.note('\\(0 \\cdot 0.5 + 1 \\cdot 0.3 + 2 \\cdot 0.2 = 0.7\\). The expectation need not be a value that \\(X\\) can actually take.'); ctx.solved(); },
+            onCorrect: function () { ctx.note('\\(0 \\cdot 0.5 + 1 \\cdot 0.3 + 2 \\cdot 0.2 = 0.7\\). The expectation need not be a value that \\(X\\) can take.'); ctx.solved(); },
             onWrong: function (v) {
               if (Math.abs(v - 1) < 0.005) ctx.wrong('1 is the plain average of the values 0, 1, 2. Each value must be weighted by its probability.');
               else if (Math.abs(v) < 0.005) ctx.wrong('0 is the most probable value, not the probability-weighted average.');
@@ -624,7 +624,7 @@
       {
         kind: 'explore',
         title: 'The loss as an expectation',
-        html: '<p>Training aims for a small <b>expected loss</b> \\(\\mathbb{E}[L]\\), the average loss over all examples the model could ever see. Nobody can compute it exactly, so each training step estimates it by the average loss of a small random batch of \\(n\\) examples, called a <b>mini-batch</b>. By linearity the expectation of that average is exactly \\(\\mathbb{E}[L]\\), and for independent examples its standard deviation is \\(\\sigma/\\sqrt{n}\\), where \\(\\sigma\\) is the standard deviation of a single loss. Here a single loss is 0, 1, 2 or 4 with probabilities 0.4, 0.3, 0.2, 0.1. The histogram collects mini-batch averages.</p>',
+        html: '<p>Training aims for a small <b>expected loss</b> \\(\\mathbb{E}[L]\\), the average loss over all examples the model could ever see. Nobody can compute it exactly, so each training step estimates it by the average loss of a small random batch of \\(n\\) examples, called a <b>mini-batch</b>. By linearity the expectation of that average is \\(\\mathbb{E}[L]\\), and for independent examples its standard deviation is \\(\\sigma/\\sqrt{n}\\), where \\(\\sigma\\) is the standard deviation of a single loss. Here a single loss is 0, 1, 2 or 4 with probabilities 0.4, 0.3, 0.2, 0.1. The histogram collects mini-batch averages.</p>',
         mount: function (el, ctx) { batchExplore(el, ctx); }
       },
       {

@@ -31,7 +31,7 @@
     M4.el('span', { html: M4.tex(texLabel) }, pill);
     var val = M4.el('span', { class: 'vectors-s3-val', text: '' }, pill);
     if (color) val.style.color = color;
-    return { el: pill, set: function (t) { val.textContent = t; } };
+    return { el: pill, set: function (t) { val.textContent = t; }, tex: function (t) { val.innerHTML = M4.tex(t); } };
   }
 
   function circle(p, r, stroke, opts) {
@@ -93,7 +93,7 @@
     id: 'vectors-s3',
     module: 'vectors',
     title: 'Length and distance',
-    summary: 'Norms measure the size of a vector, distances compare two vectors, and cosine similarity compares their directions.',
+    summary: 'Norms measure the length of a vector, distances compare two vectors, and cosine similarity compares their directions.',
     minutes: 10,
     steps: [
       // 1
@@ -101,7 +101,7 @@
         kind: 'text',
         title: 'Measuring vectors',
         html:
-          '<p>A vector \\(\\mathbf{v} = (v_1, v_2)\\) has a size as well as a direction. Two ways of measuring size are the \\(L_2\\) norm and the \\(L_1\\) norm, and uses them to define unit vectors and the distance between two vectors.</p>' +
+          '<p>A vector \\(\\mathbf{v} = \\begin{pmatrix}v_1\\\\v_2\\end{pmatrix}\\) has a size as well as a direction. Two ways of measuring size are the \\(L_2\\) norm and the \\(L_1\\) norm, and uses them to define unit vectors and the distance between two vectors.</p>' +
           '<p>It closes with cosine similarity, which compares the directions of two vectors while ignoring their lengths. After the session it should be possible to compute each of these quantities on paper and to read them off a picture.</p>'
       },
       // 2
@@ -128,7 +128,7 @@
             arrow.set(0, 0, x, y);
             l1.set(x / 2, y >= 0 ? -0.5 : 0.5, 'v₁');
             l2.set(x + (x >= 0 ? 0.55 : -0.55), y / 2, 'v₂');
-            rv.set('(' + f1(x) + ', ' + f1(y) + ')');
+            rv.tex(M4.col([f1(x), f1(y)]));
             rs.set(f2(x * x + y * y));
             rn.set(f2(Math.sqrt(x * x + y * y)));
           }
@@ -141,7 +141,7 @@
         kind: 'exercise',
         title: 'A vector of length 5',
         html:
-          '<p>Drag the tip of the arrow so that \\(\\lVert \\mathbf{v} \\rVert_2 = 5\\) exactly. The tip snaps to whole-number coordinates, and there are several correct positions.</p>',
+          '<p>Drag the tip of the arrow so that \\(\\lVert \\mathbf{v} \\rVert_2 = 5\\). The tip snaps to whole-number coordinates, and there are several correct positions.</p>',
         hint: 'The squares of the two components must add up to \\(25\\). Both \\(5^2 + 0^2\\) and \\(3^2 + 4^2\\) do.',
         mount: function (el, ctx) {
           injectCss();
@@ -155,7 +155,7 @@
           var done = false;
           function update(x, y) {
             arrow.set(0, 0, x, y);
-            rv.set('(' + f1(x) + ', ' + f1(y) + ')');
+            rv.tex(M4.col([f1(x), f1(y)]));
             rn.set(f2(Math.sqrt(x * x + y * y)));
           }
           function check(x, y) {
@@ -202,7 +202,7 @@
             circ.setR(n);
             route.set([[0, 0], [x, 0], [x, y]]);
             arrow.set(0, 0, x, y);
-            rv.set('(' + f1(x) + ', ' + f1(y) + ')');
+            rv.tex(M4.col([f1(x), f1(y)]));
             r1.set(f2(a));
             r2.set(f2(n));
           }
@@ -216,7 +216,7 @@
         kind: 'exercise',
         title: 'Computing an L1 norm',
         html:
-          '<p>The vector \\(\\mathbf{w} = (-3, 4)\\) is drawn below. Enter its \\(L_1\\) norm \\(\\lVert \\mathbf{w} \\rVert_1\\).</p>',
+          '<p>The vector \\(\\mathbf{w} = \\begin{pmatrix}-3\\\\4\\end{pmatrix}\\) is drawn below. Enter its \\(L_1\\) norm \\(\\lVert \\mathbf{w} \\rVert_1\\).</p>',
         hint: 'Take the absolute value of each component before adding: \\(|-3| + |4|\\).',
         mount: function (el, ctx) {
           injectCss();
@@ -244,7 +244,7 @@
         kind: 'exercise',
         title: 'Normalising to a unit vector',
         html:
-          '<p>A <em>unit vector</em> is a vector whose \\(L_2\\) norm is \\(1\\). Multiplying a vector by a positive number \\(c\\) keeps its direction and multiplies its length by \\(c\\), so \\(\\lVert c\\,\\mathbf{v} \\rVert_2 = c\\,\\lVert \\mathbf{v} \\rVert_2\\). For \\(\\mathbf{v} = (3, 4)\\), set the scale \\(c\\) so that \\(c\\,\\mathbf{v}\\) is a unit vector, then press Check.</p>',
+          '<p>A <em>unit vector</em> is a vector whose \\(L_2\\) norm is \\(1\\). Multiplying a vector by a positive number \\(c\\) keeps its direction and multiplies its length by \\(c\\), so \\(\\lVert c\\,\\mathbf{v} \\rVert_2 = c\\,\\lVert \\mathbf{v} \\rVert_2\\). For \\(\\mathbf{v} = \\begin{pmatrix}3\\\\4\\end{pmatrix}\\), set the scale \\(c\\) so that \\(c\\,\\mathbf{v}\\) is a unit vector, then press Check.</p>',
         hint: 'The length of \\(\\mathbf{v}\\) is \\(5\\). The required scale is \\(c = 1 / \\lVert \\mathbf{v} \\rVert_2\\).',
         mount: function (el, ctx) {
           injectCss();
@@ -262,7 +262,7 @@
           function update(v) {
             c = v;
             arrow.set(0, 0, 3 * c, 4 * c);
-            rc.set('(' + f2(3 * c) + ', ' + f2(4 * c) + ')');
+            rc.tex(M4.col([f2(3 * c), f2(4 * c)]));
             rn.set(f2(5 * c));
           }
           M4.slider(el, {
@@ -278,7 +278,7 @@
               unit.el.setAttribute('stroke-dasharray', '');
               unit.el.setAttribute('fill', GREEN);
               unit.el.setAttribute('fill-opacity', 0.1);
-              ctx.note('\\(c = \\tfrac{1}{5}\\) gives \\(\\hat{\\mathbf{v}} = (0.6, 0.8)\\), and \\(0.6^2 + 0.8^2 = 1\\). In general \\(\\hat{\\mathbf{v}} = \\mathbf{v} / \\lVert \\mathbf{v} \\rVert_2\\).');
+              ctx.note('\\(c = \\tfrac{1}{5}\\) gives \\(\\hat{\\mathbf{v}} = \\begin{pmatrix}0.6\\\\0.8\\end{pmatrix}\\), and \\(0.6^2 + 0.8^2 = 1\\). In general \\(\\hat{\\mathbf{v}} = \\mathbf{v} / \\lVert \\mathbf{v} \\rVert_2\\).');
               ctx.solved();
             } else {
               ctx.wrong('The scaled vector has length ' + f2(5 * c) + ', which is ' + (5 * c > 1 ? 'greater' : 'less') + ' than 1.');
@@ -292,8 +292,8 @@
         kind: 'exercise',
         title: 'Distance between two vectors',
         html:
-          '<p>The distance between two vectors \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) is the norm of their difference. With the \\(L_2\\) norm this is the Euclidean distance \\(\\lVert \\mathbf{u} - \\mathbf{v} \\rVert_2\\), the length of the straight segment between the two tips. With the \\(L_1\\) norm it is \\(\\lVert \\mathbf{u} - \\mathbf{v} \\rVert_1\\). For \\(\\mathbf{u} = (1, 2)\\) and \\(\\mathbf{v} = (4, 6)\\), drag the correct value into each slot.</p>',
-        hint: 'First compute the difference \\(\\mathbf{v} - \\mathbf{u} = (3, 4)\\), then take its norms. The third slot concerns \\(\\mathbf{u}\\) alone.',
+          '<p>The distance between two vectors \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) is the norm of their difference. With the \\(L_2\\) norm this is the Euclidean distance \\(\\lVert \\mathbf{u} - \\mathbf{v} \\rVert_2\\), the length of the straight segment between the two tips. With the \\(L_1\\) norm it is \\(\\lVert \\mathbf{u} - \\mathbf{v} \\rVert_1\\). For \\(\\mathbf{u} = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(\\mathbf{v} = \\begin{pmatrix}4\\\\6\\end{pmatrix}\\), drag the correct value into each slot.</p>',
+        hint: 'First compute the difference \\(\\mathbf{v} - \\mathbf{u} = \\begin{pmatrix}3\\\\4\\end{pmatrix}\\), then take its norms. The third slot concerns \\(\\mathbf{u}\\) alone.',
         mount: function (el, ctx) {
           injectCss();
           var p = M4.plane(el, { xmin: -1, xmax: 7, ymin: -1, ymax: 7, width: 440, height: 440 });
@@ -321,7 +321,7 @@
             if (want === '7') return 'The L1 distance adds the absolute differences |3| + |4|.';
             return 'This slot asks for the L1 norm of u = (1, 2) alone.';
           }, function () {
-            ctx.note('The difference is \\((3, 4)\\): Euclidean distance \\(5\\), \\(L_1\\) distance \\(7\\), and \\(\\lVert \\mathbf{u} \\rVert_1 = 1 + 2 = 3\\).');
+            ctx.note('The difference vector is \\(\\begin{pmatrix}3\\\\4\\end{pmatrix}\\). Its Euclidean length is \\(5\\) and its \\(L_1\\) length is \\(7\\). For \\(\\mathbf{u}\\) itself, \\(\\lVert \\mathbf{u} \\rVert_1 = 1 + 2 = 3\\).');
           });
         }
       },
@@ -381,7 +381,7 @@
         kind: 'exercise',
         title: 'Cosine similarity zero',
         html:
-          '<p>The vector \\(\\mathbf{u} = (4, 2)\\) is fixed. Drag the tip of \\(\\mathbf{v}\\) to a position where the cosine similarity of \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) is exactly \\(0\\). The tip snaps to whole-number coordinates, and \\(\\mathbf{v}\\) must not be the zero vector.</p>',
+          '<p>The vector \\(\\mathbf{u} = \\begin{pmatrix}4\\\\2\\end{pmatrix}\\) is fixed. Drag the tip of \\(\\mathbf{v}\\) to a position where the cosine similarity of \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) is \\(0\\). The tip snaps to whole-number coordinates, and \\(\\mathbf{v}\\) must not be the zero vector.</p>',
         hint: 'The cosine similarity is zero exactly when \\(\\mathbf{u} \\cdot \\mathbf{v} = 4 v_1 + 2 v_2 = 0\\), that is, when \\(v_2 = -2 v_1\\).',
         mount: function (el, ctx) {
           injectCss();
@@ -402,7 +402,7 @@
           }
           function update(x, y) {
             av.set(0, 0, x, y);
-            rv.set('(' + f1(x) + ', ' + f1(y) + ')');
+            rv.tex(M4.col([f1(x), f1(y)]));
             rd.set(f1(4 * x + 2 * y));
             var cs = cosOf(x, y);
             rc.set(cs === null ? 'undefined' : f2(cs));
@@ -441,8 +441,8 @@
         kind: 'exercise',
         title: 'Nearest neighbours under two measures',
         html:
-          '<p>A query vector \\(\\mathbf{q} = (2, 1)\\) is compared with three stored vectors \\(\\mathbf{a} = (4, 2)\\), \\(\\mathbf{b} = (1, 2)\\) and \\(\\mathbf{c} = (-1, 1)\\). Drag the vector with the smallest Euclidean distance to \\(\\mathbf{q}\\) into the first slot, and the vector with the largest cosine similarity to \\(\\mathbf{q}\\) into the second slot.</p>',
-        hint: 'The differences from \\(\\mathbf{q}\\) are \\((2, 1)\\), \\((-1, 1)\\) and \\((-3, 0)\\). Compare their lengths. For cosine similarity, look for the vector that points in the same direction as \\(\\mathbf{q}\\).',
+          '<p>A query vector \\(\\mathbf{q} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) is compared with three stored vectors \\(\\mathbf{a} = \\begin{pmatrix}4\\\\2\\end{pmatrix}\\), \\(\\mathbf{b} = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(\\mathbf{c} = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\). Drag the vector with the smallest Euclidean distance to \\(\\mathbf{q}\\) into the first slot, and the vector with the largest cosine similarity to \\(\\mathbf{q}\\) into the second slot.</p>',
+        hint: 'The differences from \\(\\mathbf{q}\\) are \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\), \\(\\begin{pmatrix}-1\\\\1\\end{pmatrix}\\) and \\(\\begin{pmatrix}-3\\\\0\\end{pmatrix}\\). Compare their lengths. For cosine similarity, look for the vector that points in the same direction as \\(\\mathbf{q}\\).',
         mount: function (el, ctx) {
           injectCss();
           var p = M4.plane(el, { xmin: -3, xmax: 5, ymin: -3, ymax: 5, width: 460, height: 460 });

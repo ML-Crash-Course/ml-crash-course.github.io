@@ -197,7 +197,7 @@
     id: 'mle-s1',
     module: 'mle',
     title: 'Maximum likelihood estimators',
-    summary: 'One recipe gives the estimator for every common distribution: write the log-likelihood, differentiate, and solve for the point where the slope is zero.',
+    summary: 'The same procedure gives the maximum likelihood estimate for every common distribution. One writes down the log-likelihood, differentiates it and finds the point where the derivative is zero.',
     minutes: 22,
     steps: [
       {

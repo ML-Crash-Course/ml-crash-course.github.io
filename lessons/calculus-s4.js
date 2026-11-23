@@ -105,7 +105,7 @@
     id: 'calculus-s4',
     module: 'calculus',
     title: 'Partial derivatives and the gradient',
-    summary: 'Read functions of two variables as contour maps, differentiate one variable at a time, and assemble the gradient, the direction of steepest ascent.',
+    summary: 'A function of two variables can be drawn as a contour map. Its partial derivatives combine into the gradient, which points in the direction of steepest ascent.',
     minutes: 12,
     steps: [
       {
@@ -113,7 +113,7 @@
         title: 'Learning goals',
         html:
           '<p>Machine-learning models depend on many inputs at once, so the derivative has to be extended from functions of one input to a function \\(f(x,y)\\) of two variables.</p>' +
-          '<p>In this lesson you will read a contour map, compute the partial derivatives \\(\\partial f/\\partial x\\) and \\(\\partial f/\\partial y\\), and combine them into the gradient \\(\\nabla f\\), a vector that is perpendicular to the contours and points uphill.</p>'
+          '<p>Along the way you practise how to read a contour map, compute the partial derivatives \\(\\partial f/\\partial x\\) and \\(\\partial f/\\partial y\\), and combine them into the gradient \\(\\nabla f\\), a vector that is perpendicular to the contours and points uphill.</p>'
       },
 
       {
@@ -354,7 +354,7 @@
         kind: 'explore',
         title: 'The gradient',
         html:
-          '<p>The <em>gradient</em> collects the partial derivatives into one vector, \\(\\nabla f=\\left(\\dfrac{\\partial f}{\\partial x},\\dfrac{\\partial f}{\\partial y}\\right)\\). For \\(' + F_TEX + '\\) it equals \\(\\nabla f=(\\tfrac12 x,\\;y)\\).</p>' +
+          '<p>The <em>gradient</em> collects the partial derivatives into one vector, \\(\\nabla f=\\left(\\dfrac{\\partial f}{\\partial x},\\dfrac{\\partial f}{\\partial y}\\right)\\). For \\(' + F_TEX + '\\) it equals \\(\\nabla f=\\begin{pmatrix}\\tfrac12 x\\\\y\\end{pmatrix}\\).</p>' +
           '<p>Drag the point. The purple arrow is \\(\\nabla f\\) drawn from the point. The orange line is tangent to the contour. The gradient is always perpendicular to the contour, points toward greater heights, and is longer where the contours are closer together.</p>',
         mount: function (el, ctx) {
           var cp = contourPlane(el), p = cp.p;
@@ -376,7 +376,7 @@
               tan.set(x - 1.7 * tx, y - 1.7 * ty, x + 1.7 * tx, y + 1.7 * ty);
               corner.set([[x + k * tx, y + k * ty], [x + k * tx + k * ux, y + k * ty + k * uy], [x + k * ux, y + k * uy]]);
             }
-            out[0].textContent = '∇f = (' + fmt(gx) + ', ' + fmt(gy) + ')';
+            out[0].innerHTML = M4.tex('\\nabla f = ' + M4.col([fmt(gx), fmt(gy)]));
             out[1].textContent = '|∇f| = ' + fmt(n);
             out[2].textContent = 'f = ' + fmt(f(x, y));
           }
@@ -390,7 +390,7 @@
         title: 'Gradient practice',
         html:
           '<p>For \\(' + F_TEX + '\\), the point \\(P=(-2,1)\\) is marked in black. Drag the tip of the purple arrow so that the arrow, starting at \\(P\\), equals \\(\\nabla f(P)\\) at true length.</p>',
-        hint: 'Use \\(\\nabla f=(\\tfrac12 x,\\;y)\\) with \\(x=-2\\), \\(y=1\\). The first component is the horizontal displacement of the tip from \\(P\\), the second the vertical displacement.',
+        hint: 'Use \\(\\nabla f=\\begin{pmatrix}\\tfrac12 x\\\\y\\end{pmatrix}\\) with \\(x=-2\\), \\(y=1\\). The first component is the horizontal displacement of the tip from \\(P\\), the second the vertical displacement.',
         mount: function (el, ctx) {
           var cp = contourPlane(el), p = cp.p, done = false;
           var P = [-2, 1], G = [-1, 1], tip = { x: 0.5, y: 2.5 };
@@ -402,7 +402,7 @@
           function show(x, y) {
             tip.x = x; tip.y = y;
             arrow.set(P[0], P[1], x, y);
-            out[0].textContent = 'arrow = (' + fmt(x - P[0], 1) + ', ' + fmt(y - P[1], 1) + ')';
+            out[0].innerHTML = M4.tex('\\text{arrow} = ' + M4.col([fmt(x - P[0], 1), fmt(y - P[1], 1)]));
           }
           var s = settle(ctx, function () { return tip.x + ',' + tip.y; }, function () {
             if (done) return;
@@ -413,10 +413,10 @@
               done = true;
               recolor(arrow.el, C.green);
               out[0].classList.add(PRE + 'done');
-              ctx.note('\\(\\nabla f(-2,1)=(\\tfrac12\\cdot(-2),\\,1)=(-1,1)\\). The arrow crosses the contour through \\(P\\) at a right angle and points away from the minimum at the origin.');
+              ctx.note('\\(\\nabla f(-2,1)=\\begin{pmatrix}\\tfrac12\\cdot(-2)\\\\1\\end{pmatrix}=\\begin{pmatrix}-1\\\\1\\end{pmatrix}\\). The arrow crosses the contour through \\(P\\) at a right angle and points away from the minimum at the origin.');
               ctx.solved();
             } else if (Math.abs(cross) < 0.01 && dot > 0) {
-              ctx.note('The direction is correct, but the length is not. The components must equal the partial derivatives exactly.');
+              ctx.note('The direction is correct, but the length is not. The components must equal the partial derivatives.');
             } else if (dot < 0) {
               ctx.note('This arrow points toward lower heights. The gradient points uphill, away from the centre of the contours.');
             } else if (!ex && ey) {
@@ -442,7 +442,7 @@
         html:
           '<p>Moving from a point in a unit direction \\(\\mathbf u\\) changes \\(f\\) at the rate \\(\\nabla f\\cdot\\mathbf u\\). This rate is largest when \\(\\mathbf u\\) points along \\(\\nabla f\\), zero along the contour, and most negative opposite to \\(\\nabla f\\).</p>' +
           '<p>At \\(P=(2,1)\\) on the map of \\(' + F_TEX + '\\), rotate the blue arrow until the rate of change is as negative as possible, and hold it there.</p>',
-        hint: 'The steepest descent direction is perpendicular to the contour through \\(P\\) and points toward lower heights. Here \\(\\nabla f(P)=(1,1)\\), so the rate cannot go below \\(-\\sqrt2\\approx-1.41\\).',
+        hint: 'The steepest descent direction is perpendicular to the contour through \\(P\\) and points toward lower heights. Here \\(\\nabla f(P)=\\begin{pmatrix}1\\\\1\\end{pmatrix}\\), so the rate cannot go below \\(-\\sqrt2\\approx-1.41\\).',
         mount: function (el, ctx) {
           var cp = contourPlane(el), p = cp.p, done = false;
           var P = [2, 1], G = [fx(2), fy(1)], R = 1.6;
@@ -462,7 +462,7 @@
             var dx = x - P[0], dy = y - P[1], n = Math.sqrt(dx * dx + dy * dy);
             if (n > 0.15) { u.x = dx / n; u.y = dy / n; }
             arrow.set(P[0], P[1], P[0] + R * u.x, P[1] + R * u.y);
-            out[0].textContent = 'u = (' + fmt(u.x) + ', ' + fmt(u.y) + ')';
+            out[0].innerHTML = M4.tex('\\mathbf{u} = ' + M4.col([fmt(u.x), fmt(u.y)]));
             out[1].textContent = 'rate ∇f·u = ' + fmt(rate());
           }
           var s = settle(ctx, function () { return u.x.toFixed(3) + ',' + u.y.toFixed(3); }, function () {
@@ -501,8 +501,8 @@
         title: 'One step of gradient descent',
         html:
           '<p>Training a model means choosing weights that make a loss small. Read the map as a loss \\(L(w_1,w_2)=\\tfrac14 w_1^2+\\tfrac12 w_2^2\\), with \\(w_1\\) horizontal and \\(w_2\\) vertical. <em>Gradient descent</em> repeatedly replaces the weight vector \\(\\mathbf w\\) by \\(\\mathbf w-\\eta\\,\\nabla L(\\mathbf w)\\), where the learning rate \\(\\eta\\) sets the step size.</p>' +
-          '<p>The current weights are \\(\\mathbf w=(4,-2)\\) and \\(\\eta=0.5\\). Drag the green point to the weights after one update.</p>',
-        hint: 'First \\(\\nabla L=(\\tfrac12 w_1,\\;w_2)=(2,-2)\\) at \\((4,-2)\\). Multiply by \\(\\eta=0.5\\) to get \\((1,-1)\\), then subtract this from \\((4,-2)\\).',
+          '<p>The current weights are \\(\\mathbf w=\\begin{pmatrix}4\\\\-2\\end{pmatrix}\\) and \\(\\eta=0.5\\). Drag the green point to the weights after one update.</p>',
+        hint: 'First \\(\\nabla L=\\begin{pmatrix}\\tfrac12 w_1\\\\w_2\\end{pmatrix}=\\begin{pmatrix}2\\\\-2\\end{pmatrix}\\) at \\(\\begin{pmatrix}4\\\\-2\\end{pmatrix}\\). Multiply by \\(\\eta=0.5\\) to get \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\), then subtract this from \\(\\begin{pmatrix}4\\\\-2\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           var cp = contourPlane(el), p = cp.p, done = false, timers = [];
           var W = [4, -2], T = [3, -1], pos = { x: W[0], y: W[1] };
@@ -515,7 +515,7 @@
           function show(x, y) {
             pos.x = x; pos.y = y;
             step.set(W[0], W[1], x, y);
-            out[0].textContent = 'new w = (' + fmt(x, 1) + ', ' + fmt(y, 1) + ')';
+            out[0].innerHTML = M4.tex('\\text{new } \\mathbf{w} = ' + M4.col([fmt(x, 1), fmt(y, 1)]));
             out[1].textContent = 'L = ' + fmt(f(x, y)) + '  (was ' + fmt(f(W[0], W[1])) + ')';
           }
           function trail() {
@@ -537,7 +537,7 @@
             if (at(T[0], T[1])) {
               done = true;
               out[1].classList.add(PRE + 'done');
-              ctx.note('\\((4,-2)-0.5\\,(2,-2)=(3,-1)\\). The loss falls from \\(6\\) to \\(2.75\\). Repeating the update traces a path toward the minimum at the origin.');
+              ctx.note('\\(\\begin{pmatrix}4\\\\-2\\end{pmatrix}-0.5\\,\\begin{pmatrix}2\\\\-2\\end{pmatrix}=\\begin{pmatrix}3\\\\-1\\end{pmatrix}\\). The loss falls from \\(6\\) to \\(2.75\\). Repeating the update traces a path toward the minimum at the origin.');
               trail();
               ctx.solved();
             } else if (at(2, 0)) {
@@ -547,9 +547,9 @@
             } else if (at(6, -4)) {
               ctx.note('This is \\(\\mathbf w+\\nabla L\\). The update subtracts the gradient and scales it by \\(\\eta=0.5\\).');
             } else if (f(x, y) >= f(W[0], W[1])) {
-              ctx.note('The loss here is \\(' + f(x, y).toFixed(2) + '\\), not lower than the starting value \\(6\\). The step must go against the gradient \\((2,-2)\\).');
+              ctx.note('The loss here is \\(' + f(x, y).toFixed(2) + '\\), not lower than the starting value \\(6\\). The step must go against the gradient \\(\\begin{pmatrix}2\\\\-2\\end{pmatrix}\\).');
             } else {
-              ctx.note('The loss decreased to \\(' + f(x, y).toFixed(2) + '\\), but this is not the gradient descent update. The displacement must equal \\(-\\eta\\nabla L=-0.5\\,(2,-2)\\).');
+              ctx.note('The loss decreased to \\(' + f(x, y).toFixed(2) + '\\), but this is not the gradient descent update. The displacement must equal \\(-\\eta\\nabla L=-0.5\\,\\begin{pmatrix}2\\\\-2\\end{pmatrix}\\).');
             }
           });
           p.handle(W[0], W[1], {
@@ -568,7 +568,7 @@
           '<ul>' +
           '<li>A function \\(f(x,y)\\) can be read as a contour map: each contour joins points of equal height, and closely spaced contours indicate a steep surface.</li>' +
           '<li>The partial derivative \\(\\partial f/\\partial x\\) is the ordinary derivative with \\(y\\) held constant, and equals the slope of the slice of the surface along \\(x\\). \\(\\partial f/\\partial y\\) is defined likewise.</li>' +
-          '<li>The gradient \\(\\nabla f=(\\partial f/\\partial x,\\;\\partial f/\\partial y)\\) is perpendicular to the contours and points in the direction of steepest ascent. Gradient descent trains models by stepping along \\(-\\nabla L\\).</li>' +
+          '<li>The gradient \\(\\nabla f=\\begin{pmatrix}\\partial f/\\partial x\\\\\\partial f/\\partial y\\end{pmatrix}\\) is perpendicular to the contours and points in the direction of steepest ascent. Gradient descent trains models by stepping along \\(-\\nabla L\\).</li>' +
           '</ul>'
       }
     ]

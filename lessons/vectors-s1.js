@@ -27,7 +27,7 @@
     return String(r);
   }
   function vt(name, x, y) {
-    return '\\mathbf{' + name + '} = (' + fmt(x) + ',\\ ' + fmt(y) + ')';
+    return '\\mathbf{' + name + '} = \\begin{pmatrix}' + fmt(x) + '\\\\' + fmt(y) + '\\end{pmatrix}';
   }
   function wrap(el) {
     injectStyle();
@@ -58,7 +58,7 @@
     title: 'Learning goals',
     html:
       '<p>A <b>vector</b> is a quantity with a direction and a length, drawn as an arrow. In the plane it is recorded by two numbers, its <b>components</b>.</p>' +
-      '<p>In this lesson you will read the components of an arrow, add two vectors by placing them tip to tail, and stretch or flip a vector by multiplying it with a number.</p>'
+      '<p>You will see how to read the components of an arrow, how two vectors are added by placing them tip to tail, and how multiplying by a number stretches or flips a vector.</p>'
   });
 
   /* 2 ------------------------------------------------------------------ */
@@ -66,7 +66,7 @@
     kind: 'explore',
     title: 'Components',
     html:
-      '<p>Write \\(\\mathbf{v} = (v_1, v_2)\\) for the arrow that moves \\(v_1\\) units horizontally and \\(v_2\\) units vertically. The number \\(v_1\\) is the horizontal component and \\(v_2\\) is the vertical component. Negative values point left or down.</p>' +
+      '<p>Write \\(\\mathbf{v} = \\begin{pmatrix}v_1\\\\v_2\\end{pmatrix}\\) for the arrow that moves \\(v_1\\) units horizontally and \\(v_2\\) units vertically. The number \\(v_1\\) is the horizontal component and \\(v_2\\) is the vertical component. Negative values point left or down.</p>' +
       '<p>Drag the tip of the arrow. The dashed segments show the two components.</p>',
     mount: function (el) {
       var w = wrap(el);
@@ -95,7 +95,7 @@
   steps.push({
     kind: 'exercise',
     title: 'Vectors from components',
-    html: '<p>Drag the tip so that the arrow represents \\(\\mathbf{v} = (3, -2)\\). Release the tip to have the arrow checked.</p>',
+    html: '<p>Drag the tip so that the arrow represents \\(\\mathbf{v} = \\begin{pmatrix}3\\\\-2\\end{pmatrix}\\). Release the tip to have the arrow checked.</p>',
     hint: 'The first component counts steps to the right, the second counts steps upward. A second component of \\(-2\\) means two steps down.',
     mount: function (el, ctx) {
       var w = wrap(el);
@@ -114,7 +114,7 @@
           if (done) { return; }
           if (v[0] === 3 && v[1] === -2) {
             done = true; ring.el.setAttribute('opacity', 0.3);
-            ctx.note('The arrow moves 3 units right and 2 units down, so \\(\\mathbf{v} = (3, -2)\\).');
+            ctx.note('The arrow moves 3 units right and 2 units down, so \\(\\mathbf{v} = \\begin{pmatrix}3\\\\-2\\end{pmatrix}\\).');
             ctx.solved();
           } else if (v[0] !== 3) {
             ctx.wrong('The horizontal component is ' + fmt(v[0]) + '; it should be 3.');
@@ -144,18 +144,18 @@
       p.text(2.2, 3.4, '(2, 3)', { fill: INK, size: 16, weight: 600 });
       var box = M4.el('div', { style: 'width:100%' }, w);
       M4.choices(box, {
-        options: ['\\((2, 3)\\)', '\\((4, 2)\\)', '\\((-2, 1)\\)', '\\((0, 4)\\)'],
+        options: ['\\(\\begin{pmatrix}2\\\\3\\end{pmatrix}\\)', '\\(\\begin{pmatrix}4\\\\2\\end{pmatrix}\\)', '\\(\\begin{pmatrix}-2\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}0\\\\4\\end{pmatrix}\\)'],
         correct: 1,
         onCorrect: function () {
           p.line(-2, 1, 2, 1, { stroke: ORANGE, width: 4, dash: '7 6' });
           p.line(2, 1, 2, 3, { stroke: PURPLE, width: 4, dash: '7 6' });
-          ctx.note('\\((2 - (-2),\\ 3 - 1) = (4, 2)\\): four units right, two units up.');
+          ctx.note('\\(\\begin{pmatrix}2 - (-2)\\\\3 - 1\\end{pmatrix} = \\begin{pmatrix}4\\\\2\\end{pmatrix}\\): four units right, two units up.');
           ctx.solved();
         },
         onWrong: function (i) {
           var m = ['That is the position of the tip, not the displacement from tail to tip.', '',
             'That is the position of the tail, not the displacement from tail to tip.',
-            'That adds the coordinates. The components are differences: tip minus tail.'][i];
+            'That adds the coordinates. Each component is the tip coordinate minus the tail coordinate.'][i];
           ctx.wrong(m);
         }
       });
@@ -167,7 +167,8 @@
     kind: 'explore',
     title: 'Tip-to-tail addition',
     html:
-      '<p>To add \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\), place the tail of \\(\\mathbf{b}\\) at the tip of \\(\\mathbf{a}\\). The sum \\(\\mathbf{a} + \\mathbf{b}\\) runs from the tail of \\(\\mathbf{a}\\) to the tip of \\(\\mathbf{b}\\), and its components are \\((a_1 + b_1,\\ a_2 + b_2)\\).</p>' +
+      '<p>To add \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\), place the tail of \\(\\mathbf{b}\\) at the tip of \\(\\mathbf{a}\\). The sum \\(\\mathbf{a} + \\mathbf{b}\\) runs from the tail of \\(\\mathbf{a}\\) to the tip of \\(\\mathbf{b}\\), and its components are the sums of the components of \\(\\mathbf{a}\\) and \\(\\mathbf{b}\\):</p>' +
+      '\\[ \\mathbf{a} + \\mathbf{b} = \\begin{pmatrix}a_1\\\\a_2\\end{pmatrix} + \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix} = \\begin{pmatrix}a_1 + b_1\\\\a_2 + b_2\\end{pmatrix} \\]' +
       '<p>Drag both tips. The faint arrows show the other order, \\(\\mathbf{b}\\) first and then \\(\\mathbf{a}\\), which ends at the same point.</p>',
     mount: function (el, ctx) {
       var w = wrap(el);
@@ -192,7 +193,7 @@
         var q = labelPos(0, 0, a[0], a[1], -0.5); la.set(q[0], q[1] - 0.15, 'a');
         q = labelPos(a[0], a[1], s[0], s[1], -0.5); lb.set(q[0], q[1] - 0.15, 'b');
         ra.set(vt('a', a[0], a[1])); rb.set(vt('b', b[0], b[1]));
-        rs.set('\\mathbf{a}+\\mathbf{b} = (' + fmt(s[0]) + ',\\ ' + fmt(s[1]) + ')');
+        rs.set('\\mathbf{a}+\\mathbf{b} = ' + M4.col([fmt(s[0]), fmt(s[1])]));
       }
       function clamp(v) { return Math.max(-6, Math.min(6, v)); }
       hb = p.handle(a[0] + b[0], a[1] + b[1], {
@@ -232,8 +233,8 @@
   steps.push({
     kind: 'exercise',
     title: 'The sum of two vectors',
-    html: '<p>The vectors \\(\\mathbf{a} = (2, 1)\\) and \\(\\mathbf{b} = (1, 3)\\) are both drawn from the origin. Drag the green tip so that the green arrow is \\(\\mathbf{a} + \\mathbf{b}\\), then release.</p>',
-    hint: 'Imagine sliding \\(\\mathbf{b}\\) so that its tail sits on the tip of \\(\\mathbf{a}\\), or add the components: \\((2 + 1,\\ 1 + 3)\\).',
+    html: '<p>The vectors \\(\\mathbf{a} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}1\\\\3\\end{pmatrix}\\) are both drawn from the origin. Drag the green tip so that the green arrow is \\(\\mathbf{a} + \\mathbf{b}\\), then release.</p>',
+    hint: 'Imagine sliding \\(\\mathbf{b}\\) so that its tail sits on the tip of \\(\\mathbf{a}\\), or add the components: \\(\\begin{pmatrix}2\\\\1\\end{pmatrix} + \\begin{pmatrix}1\\\\3\\end{pmatrix} = \\begin{pmatrix}2 + 1\\\\1 + 3\\end{pmatrix}\\).',
     mount: function (el, ctx) {
       var w = wrap(el);
       var p = mkPlane(w, 5);
@@ -246,7 +247,7 @@
       var row = M4.el('div', { class: 'm4-row' }, w);
       readout(row, BLUE).set(vt('a', 2, 1)); readout(row, ORANGE).set(vt('b', 1, 3));
       var rs = readout(row, GREEN);
-      function draw() { ar.set(0, 0, s[0], s[1]); rs.set('\\text{green} = (' + fmt(s[0]) + ',\\ ' + fmt(s[1]) + ')'); }
+      function draw() { ar.set(0, 0, s[0], s[1]); rs.set('\\text{green} = ' + M4.col([fmt(s[0]), fmt(s[1])])); }
       p.handle(s[0], s[1], {
         color: GREEN, snap: 1,
         onDrag: function (x, y) { if (!done) { s = [x, y]; draw(); } },
@@ -256,7 +257,7 @@
             done = true;
             fade(p.arrow(2, 1, 3, 4, { stroke: ORANGE, width: 3 }), 0.45);
             fade(p.arrow(1, 3, 3, 4, { stroke: BLUE, width: 3 }), 0.45);
-            ctx.note('\\(\\mathbf{a} + \\mathbf{b} = (2 + 1,\\ 1 + 3) = (3, 4)\\). The faint copies complete the parallelogram.');
+            ctx.note('\\(\\mathbf{a} + \\mathbf{b} = \\begin{pmatrix}2\\\\1\\end{pmatrix} + \\begin{pmatrix}1\\\\3\\end{pmatrix} = \\begin{pmatrix}2 + 1\\\\1 + 3\\end{pmatrix} = \\begin{pmatrix}3\\\\4\\end{pmatrix}\\). The faint copies complete the parallelogram.');
             ctx.solved();
           } else if (s[0] !== 3) {
             ctx.wrong('The first component should be 2 + 1. The green arrow has ' + fmt(s[0]) + '.');
@@ -274,7 +275,8 @@
     kind: 'explore',
     title: 'Scalar multiplication',
     html:
-      '<p>A plain number is called a <b>scalar</b>. Multiplying a vector \\(\\mathbf{a}\\) by a scalar \\(c\\) multiplies each component: \\(c\\,\\mathbf{a} = (c\\,a_1,\\ c\\,a_2)\\).</p>' +
+      '<p>A plain number is called a <b>scalar</b>. Multiplying a vector \\(\\mathbf{a}\\) by a scalar \\(c\\) multiplies each component:</p>' +
+      '\\[ c\\,\\mathbf{a} = c\\,\\begin{pmatrix}a_1\\\\a_2\\end{pmatrix} = \\begin{pmatrix}c\\,a_1\\\\c\\,a_2\\end{pmatrix} \\]' +
       '<p>Move the slider and drag the tip of \\(\\mathbf{a}\\). The arrow \\(c\\,\\mathbf{a}\\) stays on the dashed line through \\(\\mathbf{a}\\). Its length is scaled by \\(|c|\\), and a negative \\(c\\) reverses its direction.</p>',
     mount: function (el) {
       var w = wrap(el);
@@ -293,7 +295,7 @@
         ca.el.setAttribute('opacity', Math.abs(c) < 0.01 ? 0 : 0.75);
         aa.set(0, 0, a[0], a[1]);
         ra.set(vt('a', a[0], a[1]));
-        rc.set(fmt(c) + '\\,\\mathbf{a} = (' + fmt(c * a[0]) + ',\\ ' + fmt(c * a[1]) + ')');
+        rc.set(fmt(c) + '\\,\\mathbf{a} = ' + M4.col([fmt(c * a[0]), fmt(c * a[1])]));
         rl.set('\\text{length ratio } ' + fmt(Math.abs(c)));
       }
       p.handle(a[0], a[1], { color: BLUE, snap: 0.5, onDrag: function (x, y) { a = [x, y]; draw(); } });
@@ -307,7 +309,7 @@
   steps.push({
     kind: 'exercise',
     title: 'The scalar factor',
-    html: '<p>Let \\(\\mathbf{a} = (2, 1)\\). The faint arrow is the target \\(\\mathbf{t} = (-3, -1.5)\\). Move the slider until \\(c\\,\\mathbf{a}\\) coincides with the target.</p>',
+    html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\). The faint arrow is the target \\(\\mathbf{t} = \\begin{pmatrix}-3\\\\-1.5\\end{pmatrix}\\). Move the slider until \\(c\\,\\mathbf{a}\\) coincides with the target.</p>',
     hint: 'The target points opposite to \\(\\mathbf{a}\\), so \\(c\\) is negative. Compare first components: \\(c \\cdot 2 = -3\\).',
     mount: function (el, ctx) {
       var w = wrap(el);
@@ -321,11 +323,11 @@
       p.text(1.1, 1.0, 'a', { fill: BLUE, size: 20, weight: 700 });
       var row = M4.el('div', { class: 'm4-row' }, w);
       var rc = readout(row, ORANGE);
-      readout(row, MUTED).set('\\mathbf{t} = (-3,\\ -1.5)');
+      readout(row, MUTED).set('\\mathbf{t} = \\begin{pmatrix}-3\\\\-1.5\\end{pmatrix}');
       function draw() {
         ca.set(0, 0, c * a[0], c * a[1]);
         ca.el.setAttribute('opacity', Math.abs(c) < 0.01 ? 0 : 1);
-        rc.set(fmt(c) + '\\,\\mathbf{a} = (' + fmt(c * a[0]) + ',\\ ' + fmt(c * a[1]) + ')');
+        rc.set(fmt(c) + '\\,\\mathbf{a} = ' + M4.col([fmt(c * a[0]), fmt(c * a[1])]));
       }
       var sl = M4.el('div', { style: 'width:100%;max-width:520px' }, w);
       var sld = M4.slider(sl, {
@@ -337,7 +339,7 @@
             done = true;
             tg.el.setAttribute('opacity', 0.35);
             if (sld && sld.input) { sld.input.disabled = true; }
-            ctx.note('\\(-1.5 \\cdot (2, 1) = (-3, -1.5)\\): the direction is reversed and the length is multiplied by 1.5.');
+            ctx.note('\\(-1.5 \\cdot \\begin{pmatrix}2\\\\1\\end{pmatrix} = \\begin{pmatrix}-3\\\\-1.5\\end{pmatrix}\\): the direction is reversed and the length is multiplied by 1.5.');
             ctx.solved();
           } else if (c >= 0) {
             ctx.note('With \\(c \\ge 0\\) the arrow cannot point opposite to \\(\\mathbf{a}\\).');
@@ -356,8 +358,8 @@
   steps.push({
     kind: 'exercise',
     title: 'Addition and scaling combined',
-    html: '<p>Let \\(\\mathbf{a} = (1, 2)\\) and \\(\\mathbf{b} = (3, -1)\\). Drag the correct numbers into the two slots so that the column holds the components of \\(2\\,\\mathbf{a} + \\mathbf{b}\\), first component on top. Tap a filled slot to empty it.</p>',
-    hint: 'First scale: \\(2\\,\\mathbf{a} = (2, 4)\\). Then add \\(\\mathbf{b}\\) component by component.',
+    html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}3\\\\-1\\end{pmatrix}\\). Drag the correct numbers into the two slots so that the column holds the components of \\(2\\,\\mathbf{a} + \\mathbf{b}\\), first component on top. Tap a filled slot to empty it.</p>',
+    hint: 'First scale: \\(2\\,\\mathbf{a} = \\begin{pmatrix}2\\\\4\\end{pmatrix}\\). Then add \\(\\mathbf{b}\\) component by component.',
     mount: function (el, ctx) {
       var w = wrap(el);
       var done = false;
@@ -385,7 +387,7 @@
           done = true;
           vec.classList.add('m4-pop');
           slots.forEach(function (s) { s.style.borderColor = GREEN; s.style.color = GREEN; });
-          ctx.note('\\(2\\,\\mathbf{a} + \\mathbf{b} = (2 + 3,\\ 4 - 1) = (5, 3)\\).');
+          ctx.note('\\(2\\,\\mathbf{a} + \\mathbf{b} = \\begin{pmatrix}2 + 3\\\\4 - 1\\end{pmatrix} = \\begin{pmatrix}5\\\\3\\end{pmatrix}\\).');
           ctx.solved();
         } else {
           var msg = (x === '3' && y === '5')
@@ -422,7 +424,7 @@
     html:
       '<p>A machine learning system is controlled by a list of adjustable numbers. Later in the course they are called <b>weights</b>, and they are collected in one vector \\(\\mathbf{w}\\). Here it has two components. Real systems have millions, and the rules are the same.</p>' +
       '<p>Learning means improving \\(\\mathbf{w}\\) a little at a time. Each improvement replaces \\(\\mathbf{w}\\) by \\(\\mathbf{w} + \\Delta\\mathbf{w}\\), where the change \\(\\Delta\\mathbf{w}\\) is itself a vector, added tip to tail.</p>' +
-      '<p>Usually the change is a direction vector \\(\\mathbf{d}\\) scaled by a small number \\(c\\), so \\(\\Delta\\mathbf{w} = c\\,\\mathbf{d}\\). One improvement step therefore uses exactly the two operations of this lesson, a scalar multiplication followed by a vector addition. Later modules show how the direction is chosen.</p>'
+      '<p>Usually the change is a direction vector \\(\\mathbf{d}\\) scaled by a small number \\(c\\), so \\(\\Delta\\mathbf{w} = c\\,\\mathbf{d}\\). One improvement step therefore uses the two operations of this lesson, a scalar multiplication followed by a vector addition. Later modules show how the direction is chosen.</p>'
   });
 
   /* 11 ----------------------------------------------------------------- */
@@ -430,7 +432,7 @@
     kind: 'exercise',
     title: 'The missing update',
     html:
-      '<p>The current weights are \\(\\mathbf{w} = (3, 1)\\) and the desired weights are marked by the ring at \\((1, 4)\\). Drag the tip of the orange arrow \\(\\Delta\\mathbf{w}\\), drawn from the origin, until \\(\\mathbf{w} + \\Delta\\mathbf{w}\\) ends in the ring, then release.</p>' +
+      '<p>The current weights are \\(\\mathbf{w} = \\begin{pmatrix}3\\\\1\\end{pmatrix}\\) and the desired weights are marked by the ring at \\((1, 4)\\). Drag the tip of the orange arrow \\(\\Delta\\mathbf{w}\\), drawn from the origin, until \\(\\mathbf{w} + \\Delta\\mathbf{w}\\) ends in the ring, then release.</p>' +
       '<p>The dashed copy of \\(\\Delta\\mathbf{w}\\) is attached to the tip of \\(\\mathbf{w}\\) and the green arrow shows the current sum.</p>',
     hint: 'The update is the displacement from the tip of \\(\\mathbf{w}\\) to the target: target minus \\(\\mathbf{w}\\), component by component.',
     mount: function (el, ctx) {
@@ -454,8 +456,8 @@
         var s = [a[0] + b[0], a[1] + b[1]];
         sum.set(0, 0, s[0], s[1]); copy.set(a[0], a[1], s[0], s[1]);
         ab.set(0, 0, b[0], b[1]); tip.set(s[0], s[1]);
-        rb.set('\\Delta\\mathbf{w} = (' + fmt(b[0]) + ',\\ ' + fmt(b[1]) + ')');
-        rs.set('\\mathbf{w}+\\Delta\\mathbf{w} = (' + fmt(s[0]) + ',\\ ' + fmt(s[1]) + ')');
+        rb.set('\\Delta\\mathbf{w} = ' + M4.col([fmt(b[0]), fmt(b[1])]));
+        rs.set('\\mathbf{w}+\\Delta\\mathbf{w} = ' + M4.col([fmt(s[0]), fmt(s[1])]));
       }
       p.handle(b[0], b[1], {
         color: ORANGE, snap: 1,
@@ -467,7 +469,7 @@
             done = true;
             ring.el.setAttribute('fill-opacity', 0.4);
             ring.el.removeAttribute('stroke-dasharray');
-            ctx.note('\\(\\Delta\\mathbf{w} = (1 - 3,\\ 4 - 1) = (-2, 3)\\), and \\((3, 1) + (-2, 3) = (1, 4)\\).');
+            ctx.note('\\(\\Delta\\mathbf{w} = \\begin{pmatrix}1 - 3\\\\4 - 1\\end{pmatrix} = \\begin{pmatrix}-2\\\\3\\end{pmatrix}\\), and \\(\\begin{pmatrix}3\\\\1\\end{pmatrix} + \\begin{pmatrix}-2\\\\3\\end{pmatrix} = \\begin{pmatrix}1\\\\4\\end{pmatrix}\\).');
             ctx.solved();
           } else {
             var dx = t[0] - s[0], dy = t[1] - s[1], parts = [];
@@ -486,18 +488,20 @@
     kind: 'text',
     title: 'Recap',
     html:
-      '<ul>' +
-      '<li>A vector \\(\\mathbf{v} = (v_1, v_2)\\) is a displacement: \\(v_1\\) units horizontally and \\(v_2\\) units vertically, equal to tip minus tail wherever the arrow is drawn.</li>' +
-      '<li>Addition places arrows tip to tail and adds components: \\(\\mathbf{a} + \\mathbf{b} = (a_1 + b_1,\\ a_2 + b_2)\\). The order does not matter.</li>' +
-      '<li>Scalar multiplication \\(c\\,\\mathbf{a} = (c\\,a_1,\\ c\\,a_2)\\) scales the length by \\(|c|\\) and reverses the direction when \\(c\\) is negative. An update \\(\\mathbf{w} + c\\,\\mathbf{d}\\) of the weights combines both operations.</li>' +
-      '</ul>'
+      '<p>A vector is a displacement. Its components say how many units it moves horizontally and vertically, and they equal tip minus tail wherever the arrow is drawn.</p>' +
+      '\\[ \\mathbf{v} = \\begin{pmatrix}v_1\\\\v_2\\end{pmatrix} \\]' +
+      '<p>Two vectors are added by placing them tip to tail, which adds their components. The order does not matter.</p>' +
+      '\\[ \\begin{pmatrix}a_1\\\\a_2\\end{pmatrix} + \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix} = \\begin{pmatrix}a_1 + b_1\\\\a_2 + b_2\\end{pmatrix} \\]' +
+      '<p>Multiplying by a scalar \\(c\\) scales the length by \\(|c|\\) and reverses the direction when \\(c\\) is negative.</p>' +
+      '\\[ c\\,\\begin{pmatrix}a_1\\\\a_2\\end{pmatrix} = \\begin{pmatrix}c\\,a_1\\\\c\\,a_2\\end{pmatrix} \\]' +
+      '<p>An update \\(\\mathbf{w} + c\\,\\mathbf{d}\\) of the weights combines both operations.</p>'
   });
 
   M4.lesson({
     id: 'vectors-s1',
     module: 'vectors',
     title: 'Vectors as arrows',
-    summary: 'Read components, add vectors tip to tail and scale them with a number, by dragging arrows in the plane.',
+    summary: 'Vectors are arrows in the plane. Their components can be read off the arrow, two vectors can be added, and a vector can be multiplied by a number.',
     minutes: 9,
     steps: steps
   });

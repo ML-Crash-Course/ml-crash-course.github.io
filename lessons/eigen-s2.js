@@ -37,7 +37,7 @@
     if (parseFloat(s) === 0) s = (0).toFixed(n === undefined ? 2 : n);
     return s.replace('-', '−');
   }
-  function vecStr(v, n) { return '(' + fmt(v[0], n) + ', ' + fmt(v[1], n) + ')'; }
+  function vecStr(v, n) { return M4.col([fmt(v[0], n), fmt(v[1], n)]); }
   function matTex(A) {
     return '\\begin{bmatrix}' + A[0][0] + ' & ' + A[0][1] + ' \\\\ ' + A[1][0] + ' & ' + A[1][1] + '\\end{bmatrix}';
   }
@@ -115,7 +115,7 @@
       pair.update(v, w, aligned, 6);
       rAng.textContent = 'angle between v and Av: ' + fmt(ang, 1) + '°';
       rStr.textContent = '|Av| / |v| = ' + fmt(len(w));
-      rAv.textContent = 'Av = ' + vecStr(w);
+      rAv.innerHTML = M4.tex('A\\mathbf{v} = ' + vecStr(w));
       if (opts.onChange) opts.onChange(api, aligned);
     }
     api.setV = function (nv) {
@@ -235,7 +235,7 @@
     id: 'eigen-s2',
     module: 'eigen',
     title: 'Eigenvectors',
-    summary: 'Directions that a matrix only stretches, and the stretch factor attached to each of them.',
+    summary: 'Some directions are only stretched by a matrix, not rotated. These are its eigenvectors, and the stretch factor of each is its eigenvalue.',
     minutes: 13,
     steps: [
       // 1
@@ -244,7 +244,7 @@
         title: 'Invariant directions',
         html:
           '<p>A matrix \\(A\\) sends each vector \\(\\mathbf{v}\\) to a new vector \\(A\\mathbf{v}\\). In general the output points in a different direction from the input.</p>' +
-          '<p>For most matrices there are a few special directions in which the output stays on the same line as the input.</p><p>In this lesson you will locate such directions by eye, state the definition of an eigenvector and an eigenvalue, and test whether a given vector is an eigenvector.</p>'
+          '<p>For most matrices there are a few special directions in which the output stays on the same line as the input.</p><p>After this lesson you should be able to locate such directions by eye, state the definition of an eigenvector and an eigenvalue, and test whether a given vector is an eigenvector.</p>'
       },
       // 1b
       {
@@ -257,7 +257,7 @@
           var sc = warpScene(el, A1, {
             colorize: true,
             onEnd: function () {
-              ctx.note('Four arrows turn. The four along the diagonals never leave their lines: along \\((1, 1)\\) they grow to 3 times their length, along \\((1, -1)\\) they keep their length. These are the special directions of \\(A\\).');
+              ctx.note('Four arrows turn. The four along the diagonals never leave their lines: along \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) they grow to 3 times their length, along \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) they keep their length. These are the special directions of \\(A\\).');
             }
           });
           ctx.onCleanup(sc.stop);
@@ -278,17 +278,17 @@
           sc.render();
           var box = M4.el('div', { style: 'width:100%' }, sc.wrap);
           M4.choices(box, {
-            options: ['\\((1, 0)\\) and \\((0, 1)\\)', '\\((1, 0)\\) and \\((1, -1)\\)', '\\((1, 1)\\) and \\((1, -1)\\)', '\\((0, 1)\\) and \\((1, 1)\\)'],
+            options: ['\\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\) and \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\) and \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\) and \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\)'],
             correct: 1,
             onCorrect: function () {
               wo.colorize = true;
               sc.render();
-              ctx.solved('\\(A(1, 0) = (3, 0)\\) and \\(A(1, -1) = (2, -2)\\): both stay on their lines, stretched by 3 and by 2. The vertical arrows tip to the right, since \\(A(0, 1) = (1, 2)\\).');
+              ctx.solved('\\(A(1, 0) = \\begin{pmatrix}3\\\\0\\end{pmatrix}\\) and \\(A(1, -1) = \\begin{pmatrix}2\\\\-2\\end{pmatrix}\\): both stay on their lines, stretched by 3 and by 2. The vertical arrows tip to the right, since \\(A(0, 1) = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\).');
             },
             onWrong: function (k) {
               if (k === 0) ctx.wrong('The horizontal arrows stay put, but the vertical ones lean over: \\(A(0, 1) = (1, 2)\\).');
-              else if (k === 2) ctx.wrong('\\(A(1, 1) = (4, 2)\\), which is not on the line through \\((1, 1)\\).');
-              else ctx.wrong('\\(A(0, 1) = (1, 2)\\) leaves the vertical line. Look again at the horizontal arrows.');
+              else if (k === 2) ctx.wrong('\\(A(1, 1) = \\begin{pmatrix}4\\\\2\\end{pmatrix}\\), which is not on the line through \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\).');
+              else ctx.wrong('\\(A(0, 1) = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) leaves the vertical line. Look again at the horizontal arrows.');
             }
           });
         }
@@ -380,7 +380,7 @@
         kind: 'exercise',
         title: 'Eigenvalue from a picture',
         html:
-          '<p>The vector \\(\\mathbf{v} = (1, 1)\\) is an eigenvector of the matrix below. Compute \\(A\\mathbf{v}\\) and enter the eigenvalue \\(\\lambda\\).</p>',
+          '<p>The vector \\(\\mathbf{v} = \\begin{pmatrix}1\\\\1\\end{pmatrix}\\) is an eigenvector of the matrix below. Compute \\(A\\mathbf{v}\\) and enter the eigenvalue \\(\\lambda\\).</p>',
         hint: 'Each component of \\(A\\mathbf{v}\\) is a row of \\(A\\) times \\(\\mathbf{v}\\): the first is \\(4\\cdot 1 + 1\\cdot 1\\).',
         mount: function (el, ctx) {
           var wrap = wrapEl(el);
@@ -391,7 +391,7 @@
           M4.numberInput(wrap, {
             answer: 5, tolerance: 0.01, placeholder: '?', label: 'λ =',
             onCorrect: function () {
-              ctx.note('\\(A\\mathbf{v} = (5, 5) = 5\\,(1, 1)\\), so \\(\\lambda = 5\\).');
+              ctx.note('\\(A\\mathbf{v} = \\begin{pmatrix}5\\\\5\\end{pmatrix} = 5\\,\\begin{pmatrix}1\\\\1\\end{pmatrix}\\), so \\(\\lambda = 5\\).');
               ctx.solved();
             },
             onWrong: function () {
@@ -405,7 +405,7 @@
         kind: 'exercise',
         title: 'Stretch factors',
         html:
-          '<p>Here \\(\\mathbf{v} = (1, -1)\\) (blue) and its image \\(A\\mathbf{v}\\) (pink) lie on one line. The wide purple arrow shows \\(\\lambda\\mathbf{v}\\) for the value of \\(\\lambda\\) on the slider. Set \\(\\lambda\\) so that \\(\\lambda\\mathbf{v}\\) coincides with \\(A\\mathbf{v}\\), then check.</p>',
+          '<p>Here \\(\\mathbf{v} = \\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) (blue) and its image \\(A\\mathbf{v}\\) (pink) lie on one line. The wide purple arrow shows \\(\\lambda\\mathbf{v}\\) for the value of \\(\\lambda\\) on the slider. Set \\(\\lambda\\) so that \\(\\lambda\\mathbf{v}\\) coincides with \\(A\\mathbf{v}\\), then check.</p>',
         hint: 'The pink arrow points opposite to the blue one and has the same length.',
         mount: function (el, ctx) {
           var wrap = wrapEl(el);
@@ -422,11 +422,11 @@
           p.text(-1.5, 0.65, 'Av', { fill: C.pink, size: 20, weight: 700 });
           var row = M4.el('div', { class: 'm4-row' }, wrap);
           var r1 = M4.el('span', { class: 'm4-readout' }, row);
-          M4.el('span', { class: 'm4-readout', text: 'Av = ' + vecStr(w, 1) }, row);
+          M4.el('span', { class: 'm4-readout', html: M4.tex('A\\mathbf{v} = ' + vecStr(w, 1)) }, row);
           var lam = 2;
           function render() {
             setArrow(ghost, lam * v[0], lam * v[1]);
-            r1.textContent = 'λv = ' + vecStr([lam * v[0], lam * v[1]], 1);
+            r1.innerHTML = M4.tex('\\lambda\\mathbf{v} = ' + vecStr([lam * v[0], lam * v[1]], 1));
           }
           var box = M4.el('div', { style: 'width:100%;max-width:520px' }, wrap);
           M4.slider(box, {
@@ -437,7 +437,7 @@
           M4.button(wrap, 'Check', function () {
             if (Math.abs(lam + 1) < 0.01) {
               ghost.el.setAttribute('opacity', '0.6');
-              ctx.note('\\(A\\mathbf{v} = (-1, 1) = -1\\cdot(1, -1)\\). The eigenvalue is \\(-1\\): the vector is reversed, not rotated off its line.');
+              ctx.note('\\(A\\mathbf{v} = \\begin{pmatrix}-1\\\\1\\end{pmatrix} = -1\\cdot(1, -1)\\). The eigenvalue is \\(-1\\): the vector is reversed, not rotated off its line.');
               ctx.solved();
             } else if (lam > 0) {
               ctx.wrong('With a positive λ the purple arrow points the same way as v, but Av points the opposite way.');
@@ -529,14 +529,14 @@
         html:
           '<p>For the matrix below, drag each vector into the box that describes it. Compute \\(A\\mathbf{v}\\) for each vector and compare it with \\(\\mathbf{v}\\).</p>' +
           '<p>Any non-zero multiple of an eigenvector is again an eigenvector with the same eigenvalue, since \\(A(c\\mathbf{v}) = c\\,A\\mathbf{v} = \\lambda\\,(c\\mathbf{v})\\).</p>',
-        hint: 'For \\(\\mathbf{v} = (2, 2)\\): \\(A\\mathbf{v} = (2\\cdot 2 + 1\\cdot 2,\\; 1\\cdot 2 + 2\\cdot 2) = (6, 6)\\).',
+        hint: 'For \\(\\mathbf{v} = \\begin{pmatrix}2\\\\2\\end{pmatrix}\\): \\(A\\mathbf{v} = \\begin{pmatrix}2\\cdot 2 + 1\\cdot 2\\\\1\\cdot 2 + 2\\cdot 2\\end{pmatrix} = \\begin{pmatrix}6\\\\6\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           var wrap = wrapEl(el);
           matrixHeader(wrap, A1);
           var data = [
-            { tex: '(1,\\,0)', slot: 2, msg: 'A(1, 0) = (2, 1). Is (2, 1) a multiple of (1, 0)?', ok: '\\(A(1,0) = (2,1)\\) is not a multiple of \\((1,0)\\).' },
-            { tex: '(2,\\,2)', slot: 0, msg: 'A(2, 2) = (6, 6). Compare this with (2, 2).', ok: '\\(A(2,2) = (6,6) = 3\\,(2,2)\\).' },
-            { tex: '(1,\\,-1)', slot: 1, msg: 'A(1, −1) = (1, −1). Compare this with (1, −1).', ok: '\\(A(1,-1) = (1,-1) = 1\\,(1,-1)\\).' }
+            { tex: '\\begin{pmatrix}1\\\\0\\end{pmatrix}', slot: 2, msg: '\\(A\\begin{pmatrix}1\\\\0\\end{pmatrix} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\). Is \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\) a multiple of \\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\)?', ok: '\\(A\\begin{pmatrix}1\\\\0\\end{pmatrix} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) is not a multiple of \\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\).' },
+            { tex: '\\begin{pmatrix}2\\\\2\\end{pmatrix}', slot: 0, msg: '\\(A\\begin{pmatrix}2\\\\2\\end{pmatrix} = \\begin{pmatrix}6\\\\6\\end{pmatrix}\\). Compare this with \\(\\begin{pmatrix}2\\\\2\\end{pmatrix}\\).', ok: '\\(A\\begin{pmatrix}2\\\\2\\end{pmatrix} = \\begin{pmatrix}6\\\\6\\end{pmatrix} = 3\\begin{pmatrix}2\\\\2\\end{pmatrix}\\).' },
+            { tex: '\\begin{pmatrix}1\\\\-1\\end{pmatrix}', slot: 1, msg: '\\(A\\begin{pmatrix}1\\\\-1\\end{pmatrix} = \\begin{pmatrix}1\\\\-1\\end{pmatrix}\\). Compare this with \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\).', ok: '\\(A\\begin{pmatrix}1\\\\-1\\end{pmatrix} = \\begin{pmatrix}1\\\\-1\\end{pmatrix} = 1 \\cdot \\begin{pmatrix}1\\\\-1\\end{pmatrix}\\).' }
           ];
           var tray = M4.el('div', { class: 'eigen-s2-tray' }, wrap);
           var tokens = data.map(function (d) {
@@ -574,7 +574,7 @@
                 tok.classList.add('m4-pop');
                 placed++;
                 if (placed === data.length) {
-                  ctx.note('All three are sorted. \\((2,2)\\) is a multiple of \\((1,1)\\) and shares its eigenvalue 3.');
+                  ctx.note('All three are sorted. \\(\\begin{pmatrix}2\\\\2\\end{pmatrix}\\) is a multiple of \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and shares its eigenvalue 3.');
                   ctx.solved();
                 } else {
                   ctx.note(d.ok);
@@ -616,14 +616,14 @@
           }
           var box = M4.el('div', { style: 'width:100%' }, wrap);
           M4.choices(box, {
-            options: ['\\((1, 0)\\)', '\\((1, 1)\\)', '\\((1, -1)\\)', '\\((0, 1)\\)'],
+            options: ['\\(\\begin{pmatrix}1\\\\0\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\)', '\\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\)'],
             correct: 1,
             onCorrect: function () {
               p.arrow(0, 0, 2 * s3 * h, 2 * s3 * h, { stroke: C.pink, width: 6 });
               p.arrow(0, 0, 2 * h, -2 * h, { stroke: C.orange, width: 6 });
               p.text(3.4, 2.2, 'λ = 3', { fill: C.pink, size: 18, weight: 700 });
               p.text(2.6, -1.6, 'λ = 1', { fill: C.orange, size: 18, weight: 700 });
-              ctx.note('\\(\\Sigma(1,1) = (3,3)\\): spread 3 along \\((1,1)\\). Along \\((1,-1)\\) the spread is only 1. Each arrow has length twice the square root of its eigenvalue.');
+              ctx.note('\\(\\Sigma(1,1) = \\begin{pmatrix}3\\\\3\\end{pmatrix}\\): spread 3 along \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\). Along \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) the spread is only 1. Each arrow has length twice the square root of its eigenvalue.');
               ctx.solved();
             },
             onWrong: function (k) {
@@ -660,8 +660,8 @@
             var zero = v[0] === 0 && v[1] === 0;
             var aligned = !zero && (v[0] * w[1] - v[1] * w[0]) === 0;
             pair.update(zero ? [1e-3, 0] : v, zero ? [1e-3, 0] : w, aligned, 15);
-            rV.textContent = 'v = ' + vecStr(v, 0);
-            rAv.textContent = 'Av = ' + vecStr(w, 0);
+            rV.innerHTML = M4.tex('\\mathbf{v} = ' + vecStr(v, 0));
+            rAv.innerHTML = M4.tex('A\\mathbf{v} = ' + vecStr(w, 0));
           }
           function place(x, y) {
             v = [clamp(x), clamp(y)];
@@ -680,7 +680,7 @@
                 return;
               }
               if (v[0] * w[1] - v[1] * w[0] !== 0) {
-                ctx.note('\\(A\\mathbf{v} = ' + '(' + w[0] + ', ' + w[1] + ')\\) is not a multiple of \\(\\mathbf{v} = (' + v[0] + ', ' + v[1] + ')\\). The angle between them is ' + angleDeg(v, w).toFixed(1) + '°.');
+                ctx.note('\\(A\\mathbf{v} = ' + M4.col([w[0], w[1]]) + '\\) is not a multiple of \\(\\mathbf{v} = ' + M4.col([v[0], v[1]]) + '\\). The angle between them is ' + angleDeg(v, w).toFixed(1) + '°.');
                 return;
               }
               var lam = Math.round((w[0] * v[0] + w[1] * v[1]) / (v[0] * v[0] + v[1] * v[1]));
@@ -689,7 +689,7 @@
               chip.classList.add('eigen-s2-done');
               chip.textContent = 'λ = ' + lam + ': found';
               if (found[4] && found[1]) {
-                ctx.note('Both found: \\(A(1,1) = 4\\,(1,1)\\) and \\(A(2,-1) = (2,-1)\\), together with their multiples.');
+                ctx.note('Both found: \\(A(1,1) = 4\\,\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(A(2,-1) = \\begin{pmatrix}2\\\\-1\\end{pmatrix}\\), together with their multiples.');
                 ctx.solved();
               } else {
                 ctx.note('\\(A\\mathbf{v} = ' + lam + '\\,\\mathbf{v}\\). Now find an eigenvector with eigenvalue ' + (lam === 4 ? 1 : 4) + ', which lies on a different line.');

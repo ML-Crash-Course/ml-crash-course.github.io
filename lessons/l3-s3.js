@@ -159,7 +159,7 @@
     id: 'l3-s3',
     module: 'l3',
     title: 'Saddles, momentum and adaptive steps',
-    summary: 'Why gradient descent stalls at saddle points, why flat minima are preferred, and how momentum, AdaGrad and RMSProp change the update rule.',
+    summary: 'Gradient descent slows down near saddle points and tends to prefer flat minima. Momentum, AdaGrad and RMSProp modify the update rule to deal with these effects.',
     minutes: 14,
     steps: [
       /* 1 */
@@ -168,7 +168,7 @@
         title: 'Learning goals',
         html:
           R`<p>Plain gradient descent updates the parameters \( \theta \) by \( \theta \leftarrow \theta - \eta \nabla L(\theta) \), where \( L \) is the loss and \( \eta \) is the learning rate. Real loss landscapes contain saddle points and minima of different sharpness, and three modifications of the update rule cope with them.</p>` +
-          R`<p>In this lesson you will classify a point with zero gradient from the signs of the Hessian eigenvalues, explain why a large learning rate favours flat minima, and compute the updates of momentum, AdaGrad and RMSProp on paper.</p>`
+          R`<p>By the end you can classify a point with zero gradient from the signs of the Hessian eigenvalues, explain why a large learning rate favours flat minima, and compute the updates of momentum, AdaGrad and RMSProp on paper.</p>`
       },
 
       /* 2 */
@@ -251,7 +251,7 @@
         kind: 'explore',
         title: 'The plateau at a saddle',
         html:
-          R`<p>The loss shown here has a saddle point at the origin and two minima at \( (0, \pm 1) \). Gradient descent starts on the left, almost exactly on the ridge that leads into the saddle. Near the saddle the gradient is close to zero, so the loss curve stays flat for many steps and training looks converged although it is not.</p>` +
+          R`<p>The loss shown here has a saddle point at the origin and two minima at \( (0, \pm 1) \). Gradient descent starts on the left, very close to the ridge that leads into the saddle. Near the saddle the gradient is close to zero, so the loss curve stays flat for many steps and training looks converged although it is not.</p>` +
           R`<p>Stochastic gradient descent uses a noisy estimate of the gradient. Run both variants and compare the length of the plateau.</p>`,
         mount: function (el, ctx) {
           var w = wrap(el);
@@ -565,7 +565,7 @@
                 }
               } else {
                 var age = want.indexOf(sv);
-                ctx.wrong('This gradient is ' + age + ' step' + (age === 1 ? '' : 's') + ' old, so it has been multiplied by β = 0.8 exactly ' + age + ' time' + (age === 1 ? '' : 's') + '. ' + tv + ' is not that weight.');
+                ctx.wrong('This gradient is ' + age + ' step' + (age === 1 ? '' : 's') + ' old, so it has been multiplied by β = 0.8 a total of ' + age + ' time' + (age === 1 ? '' : 's') + '. ' + tv + ' is not that weight.');
               }
             },
             onMiss: function () {}

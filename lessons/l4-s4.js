@@ -85,7 +85,7 @@
         bars[l - 1].setAttribute('fill', f > 1.0001 ? C.orange : (f < 0.9999 ? C.pink : C.green));
       }
       ro.textContent = 'gradient at layer 1 = ' + f.toFixed(2) + sup(50) + ' ≈ ' + fmtSci(Math.pow(f, 50));
-      verdict.textContent = Math.abs(f - 1) < 0.005 ? 'survives' : (f < 1 ? 'vanishes' : 'explodes');
+      verdict.textContent = Math.abs(f - 1) < 0.005 ? 'stays stable' : (f < 1 ? 'vanishes' : 'explodes');
     }
     var sl = M4.slider(wrap, {
       min: 0.7, max: 1.3, step: 0.01, value: f, label: 'factor per layer',
@@ -316,7 +316,7 @@
       ks.forEach(function (v, i) { hs[i].set(sample(v, true)); vs[i].set(sample(v, false)); });
       var o = T(H0[0], H0[1]);
       img.set(o[0], o[1]); link.set(H0[0], H0[1], o[0], o[1]);
-      r1.textContent = 'h = (1.50, 1.00)  →  (' + o[0].toFixed(2) + ', ' + o[1].toFixed(2) + ')';
+      r1.innerHTML = M4.tex(M4.col(['1.50', '1.00']) + ' \\;\\mapsto\\; ' + M4.col([o[0].toFixed(2), o[1].toFixed(2)]));
       r2.textContent = 'distance moved = ' + Math.hypot(o[0] - H0[0], o[1] - H0[1]).toFixed(2);
     }
     function tweenTo(target) {
@@ -463,20 +463,20 @@
     id: 'l4-s4',
     module: 'l4',
     title: 'Gradient flow in deep networks',
-    summary: 'Why gradients vanish or explode in deep networks, how Kaiming initialization, residual connections and normalization prevent it, and a first look at sequence models.',
+    summary: 'Gradients can vanish or explode in deep networks. Kaiming initialization, residual connections and normalization prevent this, and the session ends with a first look at models for sequences.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: R`<p>Backpropagation multiplies one factor per layer on the way from the loss back to the first weights. In a deep network this product decides whether training works at all.</p>
-<p>In this lesson you will predict whether a gradient vanishes or explodes from its per-layer factor, derive the weight variance \(2/n\) of Kaiming initialization, and explain what residual connections and normalization layers do to the signal. The session closes with a preview of four ways to let the tokens of a sequence exchange information.</p>`
+<p>The goals are to predict whether a gradient vanishes or explodes from its per-layer factor, derive the weight variance \(2/n\) of Kaiming initialization, and explain what residual connections and normalization layers do to the signal. The session closes with a preview of four ways to let the tokens of a sequence exchange information.</p>`
       },
       {
         kind: 'explore',
         title: 'Products of fifty factors',
         html: R`<p>Consider a chain of \(50\) layers in which the backward pass multiplies the gradient by the same factor \(f\) at every layer. The gradient that reaches layer \(1\) is \(f^{50}\) times the gradient at the loss.</p>
-<p>The bars show the size of the gradient at each layer on a logarithmic scale. A factor of \(0.8\) gives \(0.8^{50}\approx 10^{-5}\) (the gradient vanishes), a factor of \(1.2\) gives \(1.2^{50}\approx 9000\) (it explodes), and only a factor of \(1\) survives.</p>`,
+<p>The bars show the size of the gradient at each layer on a logarithmic scale. A factor of \(0.8\) gives \(0.8^{50}\approx 10^{-5}\) (the gradient vanishes), a factor of \(1.2\) gives \(1.2^{50}\approx 9000\) (it explodes), and only a factor of \(1\) keeps the gradient at its size.</p>`,
         mount: mountChain
       },
       {
@@ -484,13 +484,13 @@
         title: 'Factors from slopes',
         html: R`<p>On a logarithmic axis the gradient along the chain is a straight line: every layer adds \(\log_{10} f\). The black point is the gradient \(1\) at layer \(50\). The pink handle is the gradient that arrives at layer \(1\).</p>
 <p>Drag the handle so that the factor per layer is \(0.80\) (between \(0.79\) and \(0.81\)).</p>`,
-        hint: R`Fifty factors of \(0.8\) give \(0.8^{50}\approx 1.4\times 10^{-5}\), so the handle belongs just above \(10^{-5}\), a little below the midpoint between the lines \(10^{-6}\) and \(10^{-3}\).`,
+        hint: R`Fifty factors of \(0.8\) give \(0.8^{50}\approx 1.4\times 10^{-5}\), so the handle belongs slightly above \(10^{-5}\), a little below the midpoint between the lines \(10^{-6}\) and \(10^{-3}\).`,
         mount: mountFactorHandle
       },
       {
         kind: 'exercise',
         title: 'Sigmoid layers',
-        html: R`<p>The local derivative of the sigmoid \(\sigma(z)=1/(1+e^{-z})\) is \(\sigma'(z)=\sigma(z)\,(1-\sigma(z))\), which is at most \(0.25\). For ReLU the local derivative is exactly \(1\) for every active unit, which is one reason ReLU replaced the sigmoid.</p>
+        html: R`<p>The local derivative of the sigmoid \(\sigma(z)=1/(1+e^{-z})\) is \(\sigma'(z)=\sigma(z)\,(1-\sigma(z))\), which is at most \(0.25\). For ReLU the local derivative is \(1\) for every active unit, which is one reason ReLU replaced the sigmoid.</p>
 <p>A gradient passes backwards through ten sigmoid layers. Which value is the best estimate of the largest factor it can keep from the sigmoid derivatives alone?</p>`,
         hint: R`Each layer contributes at most \(0.25\), so ten layers contribute at most \(0.25^{10}=1/4^{10}=1/1048576\).`,
         mount: function (el, ctx) {

@@ -490,7 +490,7 @@
         jh: 'P(\\text{pos} \\cap \\text{ill})', jn: 'P(\\text{pos} \\cap \\text{healthy})',
         d: 'P(\\text{pos})', post: 'P(\\text{ill} \\mid \\text{pos})'
       },
-      barNote: 'The dashed mark is one half. Move the prior until the yellow share ends exactly there.'
+      barNote: 'The dashed mark is one half. Move the prior until the yellow share ends there.'
     });
     M4.slider(el, {
       min: 0.01, max: 0.5, step: 0.01, value: 0.01, label: 'Prior P(ill)', format: function (v) { return (+v).toFixed(2); },
@@ -552,14 +552,14 @@
     id: 'probability-s3',
     module: 'probability',
     title: 'Conditional probability and Bayes rule',
-    summary: 'How observed data change a probability: the unit-square picture, prior, likelihood and posterior, and why base rates matter.',
+    summary: 'Bayes rule describes how observed data change a probability. Prior, likelihood and posterior appear as areas in the unit square, which also shows why base rates matter.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Updating a probability',
         html: '<p>A probability describes uncertainty given what is currently known. When new information arrives, the probability should change, and conditional probability states how.</p>' +
-          '<p>In this lesson you will compute a conditional probability from counts or areas, name the four terms of Bayes rule, and explain why a positive result from an accurate test can still leave the tested condition unlikely.</p>'
+          '<p>The goals are to compute a conditional probability from counts or areas, name the four terms of Bayes rule, and explain why a positive result from an accurate test can still leave the tested condition unlikely.</p>'
       },
       {
         kind: 'text',
@@ -615,7 +615,7 @@
       {
         kind: 'exercise',
         title: 'Size of the prior',
-        html: '<p>A test has \\(P(\\text{pos} \\mid \\text{ill}) = 0.9\\) and \\(P(\\text{pos} \\mid \\text{healthy}) = 0.1\\). Move the prior until a positive result makes illness exactly as probable as health, that is \\(P(\\text{ill} \\mid \\text{pos}) = 0.5\\), then press Check.</p>',
+        html: '<p>A test has \\(P(\\text{pos} \\mid \\text{ill}) = 0.9\\) and \\(P(\\text{pos} \\mid \\text{healthy}) = 0.1\\). Move the prior until a positive result makes illness as probable as health, that is \\(P(\\text{ill} \\mid \\text{pos}) = 0.5\\), then press Check.</p>',
         hint: 'The posterior is one half when the two coloured areas are equal: 0.9 \u00d7 p = 0.1 \u00d7 (1 \u2212 p), where p is the prior.',
         mount: mountSlide
       },

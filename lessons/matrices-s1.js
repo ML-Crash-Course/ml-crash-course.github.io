@@ -53,7 +53,7 @@
     return Math.abs(u[0] - v[0]) < 1e-6 && Math.abs(u[1] - v[1]) < 1e-6;
   }
   function vecTex(v) {
-    return '(' + fmt(v[0]).replace('−', '-') + ',\\,' + fmt(v[1]).replace('−', '-') + ')';
+    return M4.col([fmt(v[0]), fmt(v[1])]);
   }
 
   // Live 2x2 matrix display with coloured columns.
@@ -252,7 +252,7 @@
     title: 'Learning goals',
     html:
       '<p>A matrix can be read as an instruction for moving every point of the plane at once.</p>' +
-      '<p>In this lesson you will read a \\(2 \\times 2\\) matrix as a picture of a deformed grid, ' +
+      '<p>You will learn to read a \\(2 \\times 2\\) matrix as a picture of a deformed grid, ' +
       'and write down the matrix of a transformation from such a picture.</p>' +
       '<p>Both rest on one idea: the columns of the matrix record where the two basis vectors land.</p>'
   });
@@ -261,7 +261,7 @@
     kind: 'text',
     title: 'Basis vectors and their images',
     html:
-      '<p>The standard basis vectors of the plane are \\(\\mathbf{e}_1 = (1, 0)\\), one step to the right, and \\(\\mathbf{e}_2 = (0, 1)\\), one step up. ' +
+      '<p>The standard basis vectors of the plane are \\(\\mathbf{e}_1 = \\begin{pmatrix}1\\\\0\\end{pmatrix}\\), one step to the right, and \\(\\mathbf{e}_2 = \\begin{pmatrix}0\\\\1\\end{pmatrix}\\), one step up. ' +
       'A <em>linear map</em> is a transformation of the plane that keeps the origin fixed and keeps grid lines straight, parallel and evenly spaced.</p>' +
       '<p>Such a map is fully determined by two vectors: \\(\\mathbf{a}_1\\), the image of \\(\\mathbf{e}_1\\), and \\(\\mathbf{a}_2\\), the image of \\(\\mathbf{e}_2\\). ' +
       'Writing their coordinates as columns gives the matrix \\(A\\) of the map:</p>' +
@@ -293,7 +293,7 @@
         } else if (eq(a, [1, 0]) && eq(b, [0, 1])) {
           info.textContent = 'identity: the grid is unchanged';
         } else {
-          info.textContent = 'a₁ = (' + fmt(a[0]) + ', ' + fmt(a[1]) + ')   a₂ = (' + fmt(b[0]) + ', ' + fmt(b[1]) + ')';
+          info.innerHTML = M4.tex('\\mathbf{a}_1 = ' + M4.col([fmt(a[0]), fmt(a[1])]) + ' \\qquad \\mathbf{a}_2 = ' + M4.col([fmt(b[0]), fmt(b[1])]));
         }
       }
       M4.button(row, 'Reset', function () { g.set([1, 0], [0, 1]); show([1, 0], [0, 1]); });
@@ -308,7 +308,7 @@
       '<p>Drag the two arrow tips so that the map has the matrix</p>' +
       '\\[ A = \\begin{pmatrix} 3 & -1 \\\\ 1 & 2 \\end{pmatrix}. \\]' +
       '<p>The faint rings mark the two positions that have to be found. Tips snap to whole numbers.</p>',
-    hint: 'Read the matrix column by column. The first column \\((3, 1)\\) is where the orange tip belongs: 3 to the right and 1 up. The second column \\((-1, 2)\\) is where the green tip belongs.',
+    hint: 'Read the matrix column by column. The first column \\(\\begin{pmatrix}3\\\\1\\end{pmatrix}\\) is where the orange tip belongs: 3 to the right and 1 up. The second column \\(\\begin{pmatrix}-1\\\\2\\end{pmatrix}\\) is where the green tip belongs.',
     mount: function (el, ctx) {
       var w = wrap(el);
       var TA = [3, 1], TB = [-1, 2], done = false, mv;
@@ -327,9 +327,9 @@
           } else if (eq(a, [3, -1]) || eq(b, [1, 2])) {
             ctx.note('That uses a row of the matrix. The coordinates of each image are read down a column.');
           } else if (okA) {
-            ctx.note('The first column is correct. The green tip should be at \\((-1, 2)\\). It is at \\(' + vecTex(b) + '\\).');
+            ctx.note('The first column is correct. The green tip should be at \\(\\begin{pmatrix}-1\\\\2\\end{pmatrix}\\). It is at \\(' + vecTex(b) + '\\).');
           } else if (okB) {
-            ctx.note('The second column is correct. The orange tip should be at \\((3, 1)\\). It is at \\(' + vecTex(a) + '\\).');
+            ctx.note('The second column is correct. The orange tip should be at \\(\\begin{pmatrix}3\\\\1\\end{pmatrix}\\). It is at \\(' + vecTex(a) + '\\).');
           } else {
             ctx.note('Current columns: \\(' + vecTex(a) + '\\) and \\(' + vecTex(b) + '\\). Neither matches a column of \\(A\\) yet.');
           }
@@ -347,7 +347,7 @@
     html:
       '<p>The picture shows the grid after a linear map. The orange arrow is \\(\\mathbf{a}_1\\), the image of \\(\\mathbf{e}_1\\), and the green arrow is \\(\\mathbf{a}_2\\), the image of \\(\\mathbf{e}_2\\).</p>' +
       '<p>Which matrix describes this map?</p>',
-    hint: 'Read off the tip of the orange arrow, \\((2, 1)\\), and write it downwards as the first column. Do the same with the green tip for the second column.',
+    hint: 'Read off the tip of the orange arrow, \\(\\begin{pmatrix}2\\\\1\\end{pmatrix}\\), and write it downwards as the first column. Do the same with the green tip for the second column.',
     mount: function (el, ctx) {
       var w = wrap(el);
       gridWidget(w, { handles: false, a: [2, 1], b: [-1, 1] });
@@ -355,7 +355,7 @@
       var msgs = [
         '',
         'This matrix has the images written along the rows. Each image must be written down a column.',
-        'The columns of this matrix are \\((1, 1)\\) and \\((2, -1)\\). Neither is the tip of an arrow in the picture.',
+        'The columns of this matrix are \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(\\begin{pmatrix}2\\\\-1\\end{pmatrix}\\). Neither is the tip of an arrow in the picture.',
         'The two columns are in the wrong order: the image of \\(\\mathbf{e}_1\\) comes first.'
       ];
       var box = M4.el('div', { style: 'width:100%' }, w);
@@ -368,7 +368,7 @@
         ],
         correct: 0,
         onCorrect: function () {
-          ctx.note('The columns are \\(\\mathbf{a}_1 = (2, 1)\\) and \\(\\mathbf{a}_2 = (-1, 1)\\).');
+          ctx.note('The columns are \\(\\mathbf{a}_1 = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) and \\(\\mathbf{a}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\).');
           ctx.solved();
         },
         onWrong: function (i) { ctx.wrong(msgs[i] || 'Read each arrow tip and write it as a column.'); }
@@ -446,7 +446,7 @@
     html:
       '<p>The picture shows a quarter turn anticlockwise. Drag number tiles into the four positions so that the matrix describes this map.</p>' +
       '<p>The left column belongs to \\(\\mathbf{a}_1\\) (orange) and the right column to \\(\\mathbf{a}_2\\) (green). One tile is not needed.</p>',
-    hint: 'The orange tip is at \\((0, 1)\\): write 0 above 1 in the left column. The green tip is at \\((-1, 0)\\): write −1 above 0 in the right column.',
+    hint: 'The orange tip is at \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\): write 0 above 1 in the left column. The green tip is at \\(\\begin{pmatrix}-1\\\\0\\end{pmatrix}\\): write −1 above 0 in the right column.',
     mount: function (el, ctx) {
       var w = wrap(el);
       gridWidget(w, { handles: false, range: 3, a: [0, 1], b: [-1, 0] });
@@ -485,7 +485,7 @@
           if (!done) {
             done = true;
             mat.classList.add('m4-pop');
-            ctx.note('The columns are \\(\\mathbf{a}_1 = (0, 1)\\) and \\(\\mathbf{a}_2 = (-1, 0)\\).');
+            ctx.note('The columns are \\(\\mathbf{a}_1 = \\begin{pmatrix}0\\\\1\\end{pmatrix}\\) and \\(\\mathbf{a}_2 = \\begin{pmatrix}-1\\\\0\\end{pmatrix}\\).');
             ctx.solved();
           }
           return;
@@ -496,11 +496,11 @@
         } else if (got[0] === -1 && got[2] === 0 && got[1] === 0 && got[3] === 1) {
           ctx.wrong('The two columns are swapped: the image of \\(\\mathbf{e}_1\\) (orange) goes in the left column.');
         } else if (ok[0] && ok[2]) {
-          ctx.wrong('The left column is correct. The right column must hold the green tip \\((-1, 0)\\), read from top to bottom.');
+          ctx.wrong('The left column is correct. The right column must hold the green tip \\(\\begin{pmatrix}-1\\\\0\\end{pmatrix}\\), read from top to bottom.');
         } else if (ok[1] && ok[3]) {
-          ctx.wrong('The right column is correct. The left column must hold the orange tip \\((0, 1)\\), read from top to bottom.');
+          ctx.wrong('The right column is correct. The left column must hold the orange tip \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\), read from top to bottom.');
         } else {
-          ctx.wrong('The highlighted entries do not match the picture. The orange tip is at \\((0, 1)\\) and the green tip at \\((-1, 0)\\).');
+          ctx.wrong('The highlighted entries do not match the picture. The orange tip is at \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\) and the green tip at \\(\\begin{pmatrix}-1\\\\0\\end{pmatrix}\\).');
         }
       }
       M4.dragDrop({
@@ -531,10 +531,10 @@
     kind: 'exercise',
     title: 'A half turn',
     html:
-      '<p>A rotation by the angle \\(\\theta\\) sends \\(\\mathbf{e}_1\\) to \\((\\cos\\theta, \\sin\\theta)\\) and \\(\\mathbf{e}_2\\) to \\((-\\sin\\theta, \\cos\\theta)\\), so its matrix is</p>' +
+      '<p>A rotation by the angle \\(\\theta\\) sends \\(\\mathbf{e}_1\\) to \\(\\begin{pmatrix}\\cos\\theta\\\\\\sin\\theta\\end{pmatrix}\\) and \\(\\mathbf{e}_2\\) to \\(\\begin{pmatrix}-\\sin\\theta\\\\\\cos\\theta\\end{pmatrix}\\), so its matrix is</p>' +
       '\\[ R(\\theta) = \\begin{pmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{pmatrix}. \\]' +
       '<p>Move the slider until the matrix equals \\(\\begin{pmatrix} -1 & 0 \\\\ 0 & -1 \\end{pmatrix}\\).</p>',
-    hint: 'The first column \\((-1, 0)\\) says that the orange arrow must point exactly to the left. That is half of a full turn.',
+    hint: 'The first column \\(\\begin{pmatrix}-1\\\\0\\end{pmatrix}\\) says that the orange arrow must point to the left. That is half of a full turn.',
     mount: function (el, ctx) {
       var w = wrap(el);
       var done = false, moved = false;
@@ -554,13 +554,13 @@
           }
         } else if (moved && !done) {
           if (Math.abs(deg - 90) <= 2.5) {
-            ctx.note('At \\(90^\\circ\\) the first column is \\((0, 1)\\): the orange arrow points up, not left.');
+            ctx.note('At \\(90^\\circ\\) the first column is \\(\\begin{pmatrix}0\\\\1\\end{pmatrix}\\): the orange arrow points up, not left.');
           } else if (Math.abs(deg - 270) <= 2.5) {
-            ctx.note('At \\(270^\\circ\\) the first column is \\((0, -1)\\): the orange arrow points down, not left.');
+            ctx.note('At \\(270^\\circ\\) the first column is \\(\\begin{pmatrix}0\\\\-1\\end{pmatrix}\\): the orange arrow points down, not left.');
           } else if (deg >= 357.5 || deg <= 2.5) {
             ctx.note('This is the identity matrix: nothing has moved.');
           } else {
-            ctx.note('The first column is \\(' + vecTex(a) + '\\). The target first column is \\((-1, 0)\\).');
+            ctx.note('The first column is \\(' + vecTex(a) + '\\). The target first column is \\(\\begin{pmatrix}-1\\\\0\\end{pmatrix}\\).');
           }
         }
       }
@@ -589,8 +589,8 @@
     title: 'Transformed shapes',
     html:
       '<p>The dashed pink outline is the image of the letter F under an unknown linear map. No target arrows are shown this time.</p>' +
-      '<p>Drag the tips of \\(\\mathbf{a}_1\\) and \\(\\mathbf{a}_2\\) until the purple F covers the outline exactly. Tips snap to whole numbers. The resulting matrix is the matrix of the unknown map.</p>',
-    hint: 'In the original F the bottom edge runs along \\(\\mathbf{e}_1\\) and the long stem runs along \\(\\mathbf{e}_2\\) for 2 units. The stem of the outline ends at \\((-2, 2)\\), which is twice \\(\\mathbf{a}_2\\). Its bottom edge points along the diagonal towards \\((1, 1)\\).',
+      '<p>Drag the tips of \\(\\mathbf{a}_1\\) and \\(\\mathbf{a}_2\\) until the purple F covers the outline. Tips snap to whole numbers. The resulting matrix is the matrix of the unknown map.</p>',
+    hint: 'In the original F the bottom edge runs along \\(\\mathbf{e}_1\\) and the long stem runs along \\(\\mathbf{e}_2\\) for 2 units. The stem of the outline ends at \\((-2, 2)\\), which is twice \\(\\mathbf{a}_2\\). Its bottom edge points along the diagonal towards \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\).',
     mount: function (el, ctx) {
       var w = wrap(el);
       var TA = [1, 1], TB = [-1, 1], done = false, mv;
@@ -612,9 +612,9 @@
           if (eq(a, TB) && eq(b, TA)) {
             ctx.note('The purple F is a mirror image of the outline: the two images are swapped.');
           } else if (okA) {
-            ctx.note('The bottom edge of the F is in place, so \\(\\mathbf{a}_1 = (1, 1)\\) is correct. The stem still points the wrong way. Adjust the green tip.');
+            ctx.note('The bottom edge of the F is in place, so \\(\\mathbf{a}_1 = \\begin{pmatrix}1\\\\1\\end{pmatrix}\\) is correct. The stem still points the wrong way. Adjust the green tip.');
           } else if (okB) {
-            ctx.note('The stem of the F is in place, so \\(\\mathbf{a}_2 = (-1, 1)\\) is correct. The bars still point the wrong way. Adjust the orange tip.');
+            ctx.note('The stem of the F is in place, so \\(\\mathbf{a}_2 = \\begin{pmatrix}-1\\\\1\\end{pmatrix}\\) is correct. The bars still point the wrong way. Adjust the orange tip.');
           } else if (a[0] * b[1] - a[1] * b[0] === 0) {
             ctx.note('The two images are parallel, so the F is flattened onto a line. The outline is not flat.');
           } else {
@@ -644,7 +644,7 @@
     id: 'matrices-s1',
     module: 'matrices',
     title: 'A matrix moves the grid',
-    summary: 'The columns of a matrix are the images of the basis vectors. Moving them moves the whole grid.',
+    summary: 'The columns of a matrix are the images of the basis vectors. Moving these columns transforms the whole grid of the plane.',
     minutes: 10,
     steps: steps
   });

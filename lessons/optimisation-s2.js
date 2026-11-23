@@ -80,7 +80,7 @@
     id: 'optimisation-s2',
     module: 'optimisation',
     title: 'Gradient descent',
-    summary: 'Reduce a loss by repeatedly taking a small step against the gradient, first on a curve and then on a contour map.',
+    summary: 'Gradient descent reduces a loss by repeatedly taking a small step against the gradient, first on a curve and then on a contour map.',
     minutes: 10,
     steps: [
       // 1
@@ -89,7 +89,7 @@
         title: 'A rule for descent',
         html:
           '<p>A loss can be pictured as a landscape whose lowest point is the minimum. <b>Gradient descent</b> is a procedure for reaching that point without seeing the whole landscape.</p>' +
-          '<p>In this lesson you will state the update rule, compute one step on paper for a function of one variable, and predict where a step lands on a contour map of a function of two variables.</p>'
+          '<p>By the end you can state the update rule, compute one step on paper for a function of one variable, and predict where a step lands on a contour map of a function of two variables.</p>'
       },
       // 2
       {
@@ -263,7 +263,7 @@
               } else if (Math.abs(x + 7) < 0.01 || Math.abs(x - 2) < 0.01) {
                 ctx.wrong('Check the arithmetic: the step is -1.5 x (-2) = +3, measured from -4.');
               } else {
-                ctx.wrong('The step should be exactly -eta f\'(-4). The current step is ' + fmt(x + 4, 1) + '.');
+                ctx.wrong('The step should be -eta f\'(-4). The current step is ' + fmt(x + 4, 1) + '.');
               }
             }
           });
@@ -275,7 +275,7 @@
         kind: 'explore',
         title: 'Two variables',
         html:
-          '<p>For a function of two variables, \\(L(x,y)\\), the <b>gradient</b> \\(\\nabla L\\) is the vector of the two partial slopes. It points in the direction of steepest increase and is perpendicular to the contour lines, the curves of equal \\(L\\). Here \\(L(x,y)=\\tfrac12(x^2+2y^2)\\) and \\(\\nabla L=(x,\\,2y)\\).</p>' +
+          '<p>For a function of two variables, \\(L(x,y)\\), the <b>gradient</b> \\(\\nabla L\\) is the vector of the two partial slopes. It points in the direction of steepest increase and is perpendicular to the contour lines, the curves of equal \\(L\\). Here \\(L(x,y)=\\tfrac12(x^2+2y^2)\\) and \\(\\nabla L=\\begin{pmatrix}x\\\\2y\\end{pmatrix}\\).</p>' +
           '<p>Drag the ball to choose a start. The red arrow is the next step \\(-\\eta\\nabla L\\) with \\(\\eta=0.2\\). Step and Run apply it.</p>',
         mount: function (el, ctx) {
           injectStyle();
@@ -297,7 +297,7 @@
             arr.el.style.opacity = Math.hypot(gx, gy) * eta < 0.12 ? '0' : '1';
             tr.set(trail.concat([[x, y]]));
             rp.textContent = '(x, y) = (' + fmt(x) + ', ' + fmt(y) + ')';
-            rg.textContent = '\u2207L = (' + fmt(gx) + ', ' + fmt(gy) + ')';
+            rg.innerHTML = M4.tex('\\nabla L = ' + M4.col([fmt(gx), fmt(gy)]));
             rl.textContent = 'L = ' + fmt(L2(x, y));
             rn.textContent = 'steps: ' + n;
           }
@@ -465,8 +465,8 @@
         kind: 'exercise',
         title: 'One step on the contour map',
         html:
-          '<p>The loss is \\(L(x,y)=\\tfrac12(x^2+2y^2)\\) with gradient \\(\\nabla L=(x,\\,2y)\\). The current parameters are \\(\\theta=(2,2)\\), shown in grey, and the learning rate is \\(\\eta=0.25\\). Drag the red ball to \\(\\theta_{\\text{new}}=\\theta-\\eta\\nabla L(\\theta)\\) and release it.</p>',
-        hint: 'The gradient at \\((2,2)\\) is \\((2,4)\\). Scale it by \\(0.25\\) and subtract it from \\((2,2)\\) component by component.',
+          '<p>The loss is \\(L(x,y)=\\tfrac12(x^2+2y^2)\\) with gradient \\(\\nabla L=\\begin{pmatrix}x\\\\2y\\end{pmatrix}\\). The current parameters are \\(\\theta=\\begin{pmatrix}2\\\\2\\end{pmatrix}\\), shown in grey, and the learning rate is \\(\\eta=0.25\\). Drag the red ball to \\(\\theta_{\\text{new}}=\\theta-\\eta\\nabla L(\\theta)\\) and release it.</p>',
+        hint: 'The gradient at \\((2,2)\\) is \\(\\begin{pmatrix}2\\\\4\\end{pmatrix}\\). Scale it by \\(0.25\\) and subtract it from \\(\\begin{pmatrix}2\\\\2\\end{pmatrix}\\) component by component.',
         mount: function (el, ctx) {
           injectStyle();
           var wrap = M4.el('div', { class: P + 'wrap' }, el);
@@ -485,7 +485,7 @@
           function draw() {
             h.set(x, y);
             arr.set(2, 2, x, y);
-            rp.textContent = '\u03b8 new = (' + fmt(x, 1) + ', ' + fmt(y, 1) + ')';
+            rp.innerHTML = M4.tex('\\theta_{\\text{new}} = ' + M4.col([fmt(x, 1), fmt(y, 1)]));
             rl.textContent = 'L = ' + fmt(L2(x, y), 3) + '   (was 6.000)';
           }
           var h = p.handle(x, y, {
@@ -507,14 +507,14 @@
                 ring.el.setAttribute('fill', C.green);
                 ring.el.setAttribute('fill-opacity', '0.25');
                 arr.el.setAttribute('stroke', C.green);
-                ctx.note('\\((2,2)-0.25\\cdot(2,4)=(1.5,\\,1)\\). The loss falls from \\(6\\) to \\(2.125\\).');
+                ctx.note('\\(\\begin{pmatrix}2\\\\2\\end{pmatrix}-0.25\\cdot(2,4)=\\begin{pmatrix}1.5\\\\1\\end{pmatrix}\\). The loss falls from \\(6\\) to \\(2.125\\).');
                 ctx.solved();
               } else if (dx === 0 && dy === 0) {
                 ctx.wrong('That is the current position. The gradient (2, 4) is not zero, so the step has non-zero length.');
               } else if (Math.abs(cross) < 0.01 && dot < 0) {
                 ctx.wrong('That step is along +gradient, the direction of steepest increase. The rule subtracts.');
               } else if (Math.abs(cross) < 0.01) {
-                ctx.wrong('The direction is correct. The length is not: the step is 0.25 x (2, 4) = (0.5, 1), and the current step is (' + fmt(dx, 1) + ', ' + fmt(dy, 1) + ').');
+                ctx.wrong('The direction is correct, but the length is not. The step should be \\(0.25 \\cdot ' + M4.col([2, 4]) + ' = ' + M4.col([0.5, 1]) + '\\), and the current step is \\(' + M4.col([fmt(dx, 1), fmt(dy, 1)]) + '\\).');
               } else if (L2(x, y) >= 6) {
                 ctx.wrong('The loss at that point is ' + L2(x, y).toFixed(3) + ', not lower than 6. A descent step must reduce it.');
               } else {

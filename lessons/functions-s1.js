@@ -128,7 +128,7 @@
     id: 'functions-s1',
     module: 'functions',
     title: 'Functions and graphs',
-    summary: 'Functions as input-output rules, straight lines with slope and intercept, and how shifting and scaling change a graph.',
+    summary: 'A function is a rule that maps inputs to outputs. A straight line is described by its slope and intercept, and shifting or scaling a formula moves and stretches its graph.',
     minutes: 10,
     steps: [
       // 1
@@ -137,7 +137,7 @@
         title: 'Learning goals',
         html:
           '<p>A function is a rule that assigns exactly one output to each input. Almost every formula in machine learning is a function. A system that predicts house prices, for example, is a function from the description of a house to a price.</p>' +
-          '<p>In this lesson you will evaluate a function, read the slope and intercept of a line \\(y = mx + b\\) from its graph, and predict how a graph moves when its formula is shifted or scaled.</p>'
+          '<p>Along the way you practise how to evaluate a function, read the slope and intercept of a line \\(y = mx + b\\) from its graph, and predict how a graph moves when its formula is shifted or scaled.</p>'
       },
 
       // 2

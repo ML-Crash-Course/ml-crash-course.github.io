@@ -178,19 +178,19 @@
     id: 'l4-s1',
     module: 'l4',
     title: 'Affine maps as moving grids',
-    summary: 'What wx + b, logistic regression and a layer Wx + b do geometrically, and why stacking affine layers gains nothing.',
+    summary: 'The functions wx + b, logistic regression and a layer Wx + b each have a geometric meaning. Stacking several affine layers gives another affine map and adds no expressive power.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: '<p>Gradient descent finds good weights once a model and its gradient are given. The model itself has a geometric reading: the map \\(x \\mapsto wx + b\\) on a number line, logistic regression \\(\\sigma(w^\\top x + b)\\) on the plane, and the affine map \\(z = Wx + b\\) that moves a whole grid.</p>' +
-          '<p>In this lesson you will read a weight matrix as a transformation of space, compute the single affine map that equals two affine maps applied in sequence, and state why affine maps alone cannot separate every data set.</p>'
+          '<p>Along the way you practise how to read a weight matrix as a transformation of space, compute the single affine map that equals two affine maps applied in sequence, and state why affine maps alone cannot separate every data set.</p>'
       },
       {
         kind: 'explore',
         title: 'Hand-picked and learned features',
-        html: '<p>Linear models so far used hand-picked features, for example \\(\\phi(x) = (1, x, x^2, x^3)\\) in \\(w^\\top \\phi(x)\\). Logistic regression \\(\\sigma(w^\\top x + b)\\) on raw two-dimensional inputs has a straight decision boundary. The data below form two rings, red inside and blue outside. Move the line and observe the best accuracy it can reach.</p>' +
+        html: '<p>Linear models so far used hand-picked features, for example \\(\\phi(x) = \\begin{pmatrix}1\\\\x\\\\x^2\\\\x^3\\end{pmatrix}\\) in \\(w^\\top \\phi(x)\\). Logistic regression \\(\\sigma(w^\\top x + b)\\) on raw two-dimensional inputs has a straight decision boundary. The data below form two rings, red inside and blue outside. Move the line and observe the best accuracy it can reach.</p>' +
           '<p>The hand-made feature \\(x_1^2 + x_2^2\\) would separate the rings, but for text or images nobody knows the right \\(\\phi\\). The idea of neural networks is to learn \\(\\phi\\).</p>',
         mount: function (el, ctx) {
           var box = wrap(el);
@@ -292,7 +292,7 @@
       {
         kind: 'explore',
         title: 'Two inputs',
-        html: '<p>For an input \\(x = (x_1, x_2)\\) and a weight vector \\(w = (w_1, w_2)\\), the number \\(z = w^\\top x + b = w_1 x_1 + w_2 x_2 + b\\) depends only on how far \\(x\\) lies along the direction of \\(w\\). The whole plane is therefore squashed onto one line along \\(w\\), and every line perpendicular to \\(w\\) collapses to a single point, because all its points receive the same \\(z\\).</p>' +
+        html: '<p>For an input \\(x = \\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}\\) and a weight vector \\(w = \\begin{pmatrix}w_1\\\\w_2\\end{pmatrix}\\), the number \\(z = w^\\top x + b = w_1 x_1 + w_2 x_2 + b\\) depends only on how far \\(x\\) lies along the direction of \\(w\\). The whole plane is therefore squashed onto one line along \\(w\\), and every line perpendicular to \\(w\\) collapses to a single point, because all its points receive the same \\(z\\).</p>' +
           '<p>Drag the arrow \\(w\\) and move the slider to collapse the plane (shown with \\(b = 0\\), since the bias only shifts all values of \\(z\\)). Then switch to the rings and rotate \\(w\\) through all directions.</p>',
         mount: function (el, ctx) {
           var box = wrap(el);
@@ -325,7 +325,7 @@
             var d0 = data[0], s0 = d0.x * u[0] + d0.y * u[1];
             perp.set(s0 * u[0] + 8 * u[1], s0 * u[1] - 8 * u[0], s0 * u[0] - 8 * u[1], s0 * u[1] + 8 * u[0]);
             var overlap = !(hi[0] < lo[1] || hi[1] < lo[0]);
-            out[0].textContent = 'w = (' + fmt(w[0]) + ', ' + fmt(w[1]) + ')';
+            out[0].innerHTML = M4.tex('\\mathbf{w} = ' + M4.col([fmt(w[0]), fmt(w[1])]));
             out[1].textContent = overlap ? 'classes overlap on the line' : 'classes separated on the line';
             out[1].style.color = overlap ? RED : GREEN;
           }
@@ -379,7 +379,7 @@
             if (!user || done) return;
             if (minM > 0.1) {
               done = true; bound.el.setAttribute('stroke', GREEN);
-              ctx.note('Separated: \\(w = (' + num(w[0]) + ', ' + num(w[1]) + ')\\) gives \\(z &gt; 0\\) for all blue points and \\(z &lt; 0\\) for all red points.');
+              ctx.note('Separated: \\(\\mathbf{w} = ' + M4.col([num(w[0]), num(w[1])]) + '\\) gives \\(z &gt; 0\\) for all blue points and \\(z &lt; 0\\) for all red points.');
               ctx.solved();
             } else if (okB === 0 && okR === 0) ctx.note('The boundary separates the clouds, but the signs are reversed: \\(w\\) must point towards the blue cloud.');
             else if (okB === nB && okR === 0) ctx.note('Both clouds lie on the positive side of the boundary. Rotate \\(w\\) so the dashed line passes between them.');
@@ -392,7 +392,7 @@
       {
         kind: 'exercise',
         title: 'A point on the decision boundary',
-        html: '<p>A logistic regression on the plane has \\(w = (1, 2)\\) and \\(b = -4\\). Its decision boundary is the set of points with \\(w^\\top x + b = 0\\), where \\(\\sigma(w^\\top x + b) = 0.5\\). Which of the following points lies on the boundary?</p>',
+        html: '<p>A logistic regression on the plane has \\(w = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(b = -4\\). Its decision boundary is the set of points with \\(w^\\top x + b = 0\\), where \\(\\sigma(w^\\top x + b) = 0.5\\). Which of the following points lies on the boundary?</p>',
         hint: 'Evaluate x₁ + 2x₂ − 4 for each candidate and look for the value 0.',
         mount: function (el, ctx) {
           var vals = ['\\(z = 1 + 4 - 4 = 1\\)', '', '\\(z = 4 + 2 - 4 = 2\\)', '\\(z = -4\\)'];
@@ -464,7 +464,7 @@
               if (v === answers[k]) {
                 filled[k] = true; slot.textContent = String(v); slot.classList.add('filled', 'm4-pop');
                 tok.style.visibility = 'hidden';
-                if (filled[0] && filled[1]) { ctx.note('\\(z = (5, 3)\\): the point \\((2, 1)\\) moves to \\((5, 3)\\).'); ctx.solved(); }
+                if (filled[0] && filled[1]) { ctx.note('\\(z = \\begin{pmatrix}5\\\\3\\end{pmatrix}\\), so the point \\((2, 1)\\) moves to \\((5, 3)\\).'); ctx.solved(); }
                 else ctx.note('Correct. One slot remains.');
               } else if (k === 0 && v === 4) ctx.wrong('4 is row 1 times x. The bias b₁ = 1 still has to be added.');
               else if (k === 1 && v === 5) ctx.wrong('5 is row 2 times x. The bias b₂ = −2 still has to be added.');
@@ -480,7 +480,7 @@
         title: 'Composition of affine maps',
         html: '<p>Applying \\(W_1, b_1\\) and then \\(W_2, b_2\\) gives \\[W_2(W_1 x + b_1) + b_2 = (W_2 W_1)\\,x + (W_2 b_1 + b_2),\\] a single affine map. Here \\[W_1 = \\begin{pmatrix} 1 &amp; 1 \\\\ 0 &amp; 1 \\end{pmatrix},\\; b_1 = \\begin{pmatrix} 1 \\\\ 0 \\end{pmatrix},\\qquad W_2 = \\begin{pmatrix} 0 &amp; -1 \\\\ 1 &amp; 0 \\end{pmatrix},\\; b_2 = \\begin{pmatrix} 0 \\\\ 1 \\end{pmatrix}.\\]</p>' +
           '<p>The faint blue grid is the result of the two maps in sequence. Build the single equivalent map: drag the orange handle to \\(W_2 b_1 + b_2\\) and the pink and green handles so that the columns of \\(W\\) equal those of \\(W_2 W_1\\).</p>',
-        hint: 'W₂W₁ has rows (0, −1) and (1, 1), so its columns are (0, 1) and (−1, 1). W₂b₁ + b₂ = (0, 1) + (0, 1) = (0, 2). Place the orange handle first. The pink handle then sits at b plus the first column.',
+        hint: '\\(W_2W_1 = \\begin{pmatrix}0 & -1\\\\1 & 1\\end{pmatrix}\\) and \\(W_2\\mathbf{b}_1 + \\mathbf{b}_2 = \\begin{pmatrix}0\\\\1\\end{pmatrix} + \\begin{pmatrix}0\\\\1\\end{pmatrix} = \\begin{pmatrix}0\\\\2\\end{pmatrix}\\). Place the orange handle first. The pink handle then sits at b plus the first column.',
         mount: function (el, ctx) {
           var box = wrap(el);
           var T = { W: [[0, -1], [1, 1]], b: [0, 2] }, done = false;
@@ -493,18 +493,18 @@
             var c1 = eqm(W[0][0], 0) && eqm(W[1][0], 1), c2 = eqm(W[0][1], -1) && eqm(W[1][1], 1);
             if (bOk && c1 && c2) {
               done = true;
-              ctx.note('The single map \\(W_2 W_1 = \\begin{pmatrix} 0 &amp; -1 \\\\ 1 &amp; 1 \\end{pmatrix}\\), \\(W_2 b_1 + b_2 = (0, 2)\\) produces the same grid as the two maps in sequence.');
+              ctx.note('The single map \\(W_2 W_1 = \\begin{pmatrix} 0 &amp; -1 \\\\ 1 &amp; 1 \\end{pmatrix}\\), \\(W_2 b_1 + b_2 = \\begin{pmatrix}0\\\\2\\end{pmatrix}\\) produces the same grid as the two maps in sequence.');
               ctx.solved(); return;
             }
             if (!final) return;
             if (!bOk) ctx.note('The origin is sent to \\(b\\). Compute \\(W_2 b_1 + b_2\\) and place the orange handle there. The faint blue dot marks the image of the origin.');
             else if (!c1 && !c2) ctx.note('The shift is correct. Now set the columns: the first column of \\(W_2 W_1\\) is \\(W_2\\) applied to the first column of \\(W_1\\).');
-            else if (!c1) ctx.note('The second column is correct. The first column (pink) should equal \\(W_2 (1, 0)^\\top\\).');
-            else ctx.note('The first column is correct. The second column (green) should equal \\(W_2 (1, 1)^\\top\\).');
+            else if (!c1) ctx.note('The second column is correct. The first column (pink) should equal \\(W_2 \\begin{pmatrix}1\\\\0\\end{pmatrix}\\).');
+            else ctx.note('The first column is correct. The second column (green) should equal \\(W_2 \\begin{pmatrix}1\\\\1\\end{pmatrix}\\).');
           }
           var aw = affineWidget(box, ctx, { range: 6, half: 2, snap: 1, ghost: T, onChange: function (st) { check(st, false); }, onEnd: function (st) { check(st, true); } });
           box.appendChild(eq);
-          M4.el('div', { class: 'm4-note', text: 'Handles snap to whole numbers. Pink: image of (1, 0). Green: image of (0, 1). Orange: image of the origin.' }, box);
+          M4.el('div', { class: 'm4-note', text: 'Handles snap to whole numbers. Pink is the image of the first basis vector, green the image of the second basis vector and orange the image of the origin.' }, box);
           eq.innerHTML = M4.tex(matTex(aw.state), true);
         }
       },

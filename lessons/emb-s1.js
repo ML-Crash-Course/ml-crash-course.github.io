@@ -182,7 +182,7 @@
     id: 'emb-s1',
     module: 'language',
     title: 'Words as vectors',
-    summary: 'A neural network needs numbers. Embeddings give every word a vector, and similar words get similar vectors.',
+    summary: 'Neural networks operate on numbers. Embeddings assign a vector to every word so that words with similar meanings receive similar vectors.',
     minutes: 15,
     steps: [
       {
@@ -197,7 +197,7 @@
         kind: 'text',
         title: 'One-hot vectors',
         html: '<p>Fix a vocabulary of \\(V\\) words and number them from 1 to \\(V\\). The simplest vector for word number \\(i\\) is the <b>one-hot vector</b> \\(e_i\\), with a 1 in position \\(i\\) and 0 everywhere else.</p>' +
-          '\\[ e_{\\text{cat}} = (1, 0, 0, \\dots, 0), \\qquad e_{\\text{dog}} = (0, 1, 0, \\dots, 0). \\]' +
+          '\\[ e_{\\text{cat}} = \\begin{pmatrix}1\\\\0\\\\0\\\\\\vdots\\\\0\\end{pmatrix}, \\qquad e_{\\text{dog}} = \\begin{pmatrix}0\\\\1\\\\0\\\\\\vdots\\\\0\\end{pmatrix}. \\]' +
           '<p>Two different one-hot vectors always have dot product 0. To a model that sees only one-hot vectors, cat is as different from dog as it is from bread. A real vocabulary has \\(V \\approx 50{,}000\\) words, so these vectors are also very long.</p>'
       },
       {
@@ -226,7 +226,7 @@
               var dot = a[0] * b[0] + a[1] * b[1], na = Math.hypot(a[0], a[1]), nb = Math.hypot(b[0], b[1]);
               var c = dot / (na * nb);
               return {
-                q: '\\(a = (' + a.join(', ') + ')\\) and \\(b = (' + b.join(', ') + ')\\). What is \\(\\cos(a, b)\\)?',
+                q: '\\(a = ' + M4.col(a) + '\\) and \\(b = ' + M4.col(b) + '\\). What is \\(\\cos(a, b)\\)?',
                 answer: c, tol: 0.011,
                 hint: 'Divide the dot product by the product of the two lengths.',
                 explain: '\\(a \\cdot b = ' + dot + '\\), \\(\\lVert a \\rVert \\lVert b \\rVert = \\sqrt{' + (a[0] * a[0] + a[1] * a[1]) + '}\\sqrt{' + (b[0] * b[0] + b[1] * b[1]) + '} \\approx ' + (na * nb).toFixed(2) + '\\), so the cosine is about \\(' + c.toFixed(2) + '\\).'

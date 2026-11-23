@@ -136,7 +136,7 @@
     return {
       q: '<p>' + q + '</p>', hint: hint,
       fields: [{ label: 'Derivative', answer: ans, tol: 0.005 }],
-      solution: lines(sol) + '<p>Later in the course, neural networks use these functions and multiply by exactly this derivative on their way back. See <a href="#/l/calculus-s3">The chain rule</a>.</p>'
+      solution: lines(sol) + '<p>Later in the course, neural networks use these functions and multiply by this derivative on their way back. See <a href="#/l/calculus-s3">The chain rule</a>.</p>'
     };
   }
 
@@ -238,5 +238,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'calc-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'calc-drill', module: 'calculus', title: 'Derivative practice', summary: 'Nine levels of endless problems on derivative rules, sigmoid and ReLU, and gradient descent steps.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'calc-drill', module: 'calculus', title: 'Derivative practice', summary: 'Practice problems on derivative rules, the sigmoid and ReLU functions, and gradient descent steps, arranged in nine levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

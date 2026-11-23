@@ -134,7 +134,7 @@
     id: 'info-s2',
     module: 'info',
     title: 'KL divergence',
-    summary: 'Cross-entropy splits into the entropy of the data and a divergence between two distributions. Minimizing the classification loss drives that divergence to zero.',
+    summary: 'Cross-entropy is the sum of the entropy of the data and the KL divergence between two distributions. Minimizing the classification loss therefore drives this divergence towards zero.',
     minutes: 19,
     steps: [
       {

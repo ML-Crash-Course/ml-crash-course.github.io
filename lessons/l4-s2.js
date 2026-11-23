@@ -85,8 +85,8 @@
       var q = img(pt.x, pt.y);
       imgPt.set(q[0], q[1]);
       link.set(pt.x, pt.y, q[0], q[1]);
-      rIn.textContent = 'z = (' + fmt(pt.x, 1) + ', ' + fmt(pt.y, 1) + ')';
-      rOut.textContent = (mode === 'relu' ? 'ReLU(z)' : 'σ(z)') + ' = (' + fmt(act(pt.x), 2) + ', ' + fmt(act(pt.y), 2) + ')';
+      rIn.innerHTML = M4.tex('\\mathbf{z} = ' + M4.col([fmt(pt.x, 1), fmt(pt.y, 1)]));
+      rOut.innerHTML = M4.tex((mode === 'relu' ? '\\mathrm{ReLU}(\\mathbf{z})' : '\\sigma(\\mathbf{z})') + ' = ' + M4.col([fmt(act(pt.x), 2), fmt(act(pt.y), 2)]));
     }
 
     handle = p.handle(pt.x, pt.y, {
@@ -148,8 +148,8 @@
     function upd(x, y) {
       var a = relu(x), b = relu(y);
       imgPt.set(a, b); link.set(x, y, a, b);
-      rIn.textContent = 'z = (' + fmt(x, 1) + ', ' + fmt(y, 1) + ')';
-      rOut.textContent = 'ReLU(z) = (' + fmt(a, 1) + ', ' + fmt(b, 1) + ')';
+      rIn.innerHTML = M4.tex('\\mathbf{z} = ' + M4.col([fmt(x, 1), fmt(y, 1)]));
+      rOut.innerHTML = M4.tex('\\mathrm{ReLU}(\\mathbf{z}) = ' + M4.col([fmt(a, 1), fmt(b, 1)]));
     }
     function ok(x, y) { return x <= -2 + 0.05 && Math.abs(y - 3) < 0.13; }
     function win() {
@@ -478,26 +478,26 @@
     id: 'l4-s2',
     module: 'l4',
     title: 'Nonlinearities and hidden units',
-    summary: 'How ReLU and sigmoid bend space, why a hidden layer untangles data that no affine map can, and why training needs backpropagation.',
+    summary: 'Activation functions such as ReLU and sigmoid bend space. A hidden layer can then separate data that no affine map can separate, and training such a network requires backpropagation.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: '<p>Stacked affine maps \\(z = Wx + b\\) collapse into a single affine map, so depth alone adds nothing. A nonlinearity applied to each coordinate changes this.</p>' +
-          '<p>In this lesson you will describe how ReLU and sigmoid deform the plane, read a hidden unit as one logistic regression, explain why a ReLU network is piecewise linear, and state why gradient descent on a network needs backpropagation.</p>'
+          '<p>This session trains you to describe how ReLU and sigmoid deform the plane, read a hidden unit as one logistic regression, explain why a ReLU network is piecewise linear, and state why gradient descent on a network needs backpropagation.</p>'
       },
       {
         kind: 'explore',
         title: 'Nonlinearities and the grid',
-        html: '<p>The rectified linear unit is \\(\\mathrm{ReLU}(z) = \\max(0, z)\\): slope 0 for negative \\(z\\), slope 1 for positive \\(z\\). The sigmoid is \\(\\sigma(z) = \\dfrac{1}{1 + e^{-z}}\\), which maps every real number into \\((0, 1)\\). Both are applied to each coordinate of \\(z = (z_1, z_2)\\) separately.</p>' +
+        html: '<p>The rectified linear unit is \\(\\mathrm{ReLU}(z) = \\max(0, z)\\): slope 0 for negative \\(z\\), slope 1 for positive \\(z\\). The sigmoid is \\(\\sigma(z) = \\dfrac{1}{1 + e^{-z}}\\), which maps every real number into \\((0, 1)\\). Both are applied to each coordinate of \\(z = \\begin{pmatrix}z_1\\\\z_2\\end{pmatrix}\\) separately.</p>' +
           '<p>Under ReLU the first quadrant stays in place and everything else is folded onto the axes. Under the sigmoid the whole plane is squashed smoothly into the unit square \\((0,1)^2\\), and straight lines bend.</p>',
         mount: mountGrid
       },
       {
         kind: 'exercise',
         title: 'Folding',
-        html: '<p>The black handle is a point \\(z = (z_1, z_2)\\). The orange point is \\(\\mathrm{ReLU}(z) = (\\max(0, z_1), \\max(0, z_2))\\). Place \\(z\\) inside the shaded region \\(z_1 \\le -2\\) so that \\(\\mathrm{ReLU}(z)\\) lands on the target \\((0, 3)\\).</p>',
+        html: '<p>The black handle is a point \\(z = \\begin{pmatrix}z_1\\\\z_2\\end{pmatrix}\\). The orange point is \\(\\mathrm{ReLU}(z) = \\begin{pmatrix}\\max(0, z_1)\\\\\\max(0, z_2)\\end{pmatrix}\\). Place \\(z\\) inside the shaded region \\(z_1 \\le -2\\) so that \\(\\mathrm{ReLU}(z)\\) lands on the target \\((0, 3)\\).</p>',
         hint: 'A negative first coordinate becomes 0. A positive second coordinate is left unchanged, so it must already equal 3.',
         mount: mountReluTarget
       },

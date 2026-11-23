@@ -98,7 +98,7 @@
       cols: 1,
       solution: lines(['\\underbrace{X}_{' + B + '\\times ' + n + '}\\;\\underbrace{W^\\top}_{' + n + '\\times ' + m + '} = \\underbrace{XW^\\top}_{' + B + '\\times ' + m + '}',
         B + '\\cdot ' + m + '\\ \\text{entries, each a dot product of length } ' + n + ' \\;\\Rightarrow\\; ' + B + '\\cdot ' + m + '\\cdot ' + n + ' = ' + (B * m * n)]) +
-        '<p>Row ' + T('k') + ' of ' + T('H') + ' is exactly ' + T('\\mathrm{ReLU}(W\\mathbf x_k + \\mathbf b)^\\top') + ', the hidden vector of example ' + T('k') + '. The same ' + (m * n + m) + ' parameters are shared by every example. The batch size changes the work, never the parameter count.</p>'
+        '<p>Row ' + T('k') + ' of ' + T('H') + ' is ' + T('\\mathrm{ReLU}(W\\mathbf x_k + \\mathbf b)^\\top') + ', the hidden vector of example ' + T('k') + '. The same ' + (m * n + m) + ' parameters are shared by every example. The batch size changes the work, never the parameter count.</p>'
     };
   }
 
@@ -175,7 +175,7 @@
     return {
       q: '<p>Two layers with no activation in between:</p>' + TT('\\hat{\\mathbf y} = W_2(W_1\\mathbf x + \\mathbf b_1) + \\mathbf b_2') +
         TT('W_1 = ' + D.mat(W1) + ',\\; \\mathbf b_1 = ' + D.vec(b1) + ',\\; W_2 = ' + D.mat(W2) + ',\\; \\mathbf b_2 = ' + D.vec(b2)) +
-        '<p>Find the single layer ' + T('\\hat{\\mathbf y} = W\\mathbf x + \\mathbf b') + ' that computes exactly the same function.</p>',
+        '<p>Find the single layer ' + T('\\hat{\\mathbf y} = W\\mathbf x + \\mathbf b') + ' that computes the same function.</p>',
       fields: [{ label: T('W'), answer: W }, { label: T('\\mathbf b'), answer: b }],
       solution: lines(['W_2(W_1\\mathbf x + \\mathbf b_1) + \\mathbf b_2 = (W_2 W_1)\\mathbf x + (W_2\\mathbf b_1 + \\mathbf b_2)',
         'W = W_2W_1 = ' + D.mat(W2) + D.mat(W1) + ' = ' + D.mat(W),
@@ -206,5 +206,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: l[2], n: l[3], key: 'nn-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'nn-drill', module: 'nn', title: 'Neural network practice', summary: 'Nine levels of endless problems on shapes, parameter counts, batches and forward passes.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'nn-drill', module: 'nn', title: 'Neural network practice', summary: 'Practice problems on shapes, parameter counts, batches and forward passes, arranged in nine levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

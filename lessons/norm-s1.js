@@ -199,7 +199,7 @@
     return mix({
       q: 'A model was trained on standardized features. Which mean and standard deviation should be used to standardize a new test example?',
       options: ['Those of the training set', 'Those of the test set', 'Those of the single test example'], answer: 0,
-      explain: 'The model learned weights for features standardized with the training statistics, so every later input must go through exactly the same map. A single example has standard deviation 0.'
+      explain: 'The model learned weights for features standardized with the training statistics, so every later input must go through the same map. A single example has standard deviation 0.'
     });
   }
 
@@ -207,7 +207,7 @@
     id: 'norm-s1',
     module: 'norm',
     title: 'Standardizing features',
-    summary: 'Subtract the mean, divide by the standard deviation, and watch a narrow ravine in the loss turn into a round bowl.',
+    summary: 'Standardizing the inputs means subtracting the mean and dividing by the standard deviation. It turns a narrow valley in the loss into a round bowl that is easier to descend.',
     minutes: 15,
     steps: [
       {

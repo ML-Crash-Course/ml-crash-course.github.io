@@ -39,7 +39,7 @@
       fields: [{ label: 'Weight of column 1', answer: x[0], tol: 0 }, { label: 'Weight of column 3', answer: x[2], tol: 0 }, { label: T('A\\mathbf x'), answer: y, tol: 0 }],
       solution: lines(['A\\mathbf x = ' + C.map(function (c, j) { return D.pt(x[j]) + D.vec(c); }).join(' + '),
         '= ' + C.map(function (c, j) { return D.vec(D.scale(c, x[j])); }).join(' + ') + ' = ' + D.vec(y)]) +
-        '<p>Both views give the same vector. The columns view explains why the outputs of ' + T('A') + ' are exactly the span of its columns.</p>'
+        '<p>Both views give the same vector. The columns view explains why the outputs of ' + T('A') + ' are the span of its columns.</p>'
     };
   }
 
@@ -172,5 +172,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'mat-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'mat-drill', module: 'matrices', title: 'Matrix practice', summary: 'Nine levels of endless problems on products, shapes, determinants and inverses.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'mat-drill', module: 'matrices', title: 'Matrix practice', summary: 'Practice problems on matrix products, shapes, determinants and inverses, arranged in nine levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

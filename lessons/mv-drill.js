@@ -40,7 +40,7 @@
     var a = M4.randNZ(-3, 3), b = M4.randNZ(-3, 3), c = M4.randNZ(-3, 3), d = M4.randNZ(-3, 3), x = D.randVec(2, -2, 2, true);
     var J = [[2 * a * x[0] + b * x[1], b * x[0]], [d, 2 * c * x[1]]];
     return {
-      q: '<p>Compute the Jacobian of ' + T('\\mathbf f : \\mathbb R^2 \\to \\mathbb R^2') + ' at ' + T('\\mathbf x = (' + x.join(', ') + ')') + '.</p>' +
+      q: '<p>Compute the Jacobian of ' + T('\\mathbf f : \\mathbb R^2 \\to \\mathbb R^2') + ' at ' + T('\\mathbf x = ' + M4.col(x) + '') + '.</p>' +
         TT('f_1(x_1, x_2) = ' + coef(a, 'x_1^2') + signed(b, 'x_1x_2') + ',\\qquad f_2(x_1, x_2) = ' + coef(c, 'x_2^2') + signed(d, 'x_1')),
       hint: 'Row ' + T('i') + ' of the Jacobian is the gradient of ' + T('f_i') + '. Entry ' + T('(i, j)') + ' is ' + T('\\partial f_i/\\partial x_j') + '.',
       fields: [{ label: T('J'), answer: J, tol: 0 }],
@@ -64,7 +64,7 @@
       cols: 2,
       solution: '<p>A Jacobian has one row per output and one column per input. The chain rule multiplies them:</p>' +
         TT('\\underbrace{\\frac{\\partial\\mathbf y}{\\partial\\mathbf x}}_{' + k + '\\times ' + n + '} = \\underbrace{' + b + '}_{' + k + '\\times ' + m + '}\\;\\underbrace{' + a + '}_{' + m + '\\times ' + n + '}') +
-        (lay ? '<p>Here ' + T('\\partial\\mathbf h/\\partial\\mathbf x = A') + ' itself, since the Jacobian of a linear map is its matrix.</p>' : '<p>The inner dimension ' + m + ' must match, just as in any matrix product.</p>')
+        (lay ? '<p>Here ' + T('\\partial\\mathbf h/\\partial\\mathbf x = A') + ' itself, since the Jacobian of a linear map is its matrix.</p>' : '<p>The inner dimension ' + m + ' must match, as in any matrix product.</p>')
     };
   }
 
@@ -157,7 +157,7 @@
       cols: 3,
       solution: lines(['f = ' + c11 + 'x_1^2 + (' + A[0][1] + sg(A[1][0]) + ')\\,x_1x_2' + sg(c22) + 'x_2^2',
         '\\frac{\\partial f}{\\partial x_1} = ' + 2 * c11 + 'x_1' + sg(c12) + 'x_2', '\\frac{\\partial f}{\\partial x_2} = ' + c12 + 'x_1' + sg(2 * c22) + 'x_2']) +
-        '<p>Compare with the rule: the matrix of coefficients is exactly ' + T('A + A^\\top = ' + D.mat([[2 * c11, c12], [c12, 2 * c22]])) + ', so ' + T('\\nabla f = (A + A^\\top)\\mathbf x') + '.</p>'
+        '<p>Compare with the rule: the matrix of coefficients is ' + T('A + A^\\top = ' + D.mat([[2 * c11, c12], [c12, 2 * c22]])) + ', so ' + T('\\nabla f = (A + A^\\top)\\mathbf x') + '.</p>'
     };
   }
 
@@ -256,11 +256,11 @@
     kind: 'text', title: 'Matrix calculus practice',
     html: '<p>The first levels practise the sums route from <a href="#/l/mv-s6">Two ways to differentiate</a>, the later ones the rules from <a href="#/l/mv-s5">Vector and matrix derivatives</a>. Several levels ask for both. Each level generates fresh problems for as long as you like.</p>' +
       D.levelList('mv-drill', LEVELS.map(function (l) { return l[0]; })) +
-      '<p class="m4-note">Enter vectors and matrices entry by entry. All answers are whole numbers. Later in the course, exactly these rules compute the gradients of neural networks.</p>'
+      '<p class="m4-note">Enter vectors and matrices entry by entry. All answers are whole numbers. Later in the course, these rules compute the gradients of neural networks.</p>'
   }];
   LEVELS.forEach(function (l, i) {
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'mv-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'mv-drill', module: 'multivariable', title: 'Matrix calculus practice', summary: 'Thirteen levels of endless problems: index sums, gradients by sums and by rules, Jacobians and gradients with respect to a matrix.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'mv-drill', module: 'multivariable', title: 'Matrix calculus practice', summary: 'Practice problems on index notation, gradients, Jacobians and derivatives with respect to a matrix, arranged in thirteen levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

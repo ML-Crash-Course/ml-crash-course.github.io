@@ -51,7 +51,7 @@
   }
   function readout(parent, label) {
     var r = M4.el('span', { class: 'm4-readout' }, parent);
-    return { el: r, set: function (v) { r.textContent = label + ' ' + v; } };
+    return { el: r, set: function (v) { r.textContent = label + ' ' + v; }, vec: function (a) { r.textContent = label + ' '; r.insertAdjacentHTML('beforeend', M4.tex(M4.col(a))); } };
   }
   function bar(parent) { return M4.el('div', { class: 'm4-row l3-s1-bar' }, parent); }
   function panel(parent, caption) {
@@ -206,7 +206,7 @@
     title: 'Iterative optimization',
     html:
       '<p>For some models an exact equation gives the best weights directly from the training data. Logistic regression and neural networks have no such equation, so their weights are found by <b>iterative optimization</b>: the optimum is approached in many small steps.</p>' +
-      '<p>In this lesson you will read a loss landscape, interpret the gradient \\(\\nabla f\\) as the direction of steepest ascent, describe curvature through the second derivative and the eigenvalues of the Hessian \\(H\\), and carry out a gradient descent step \\(\\theta \\leftarrow \\theta - \\eta\\,\\nabla L(\\theta)\\) on paper.</p>'
+      '<p>The goals are to read a loss landscape, interpret the gradient \\(\\nabla f\\) as the direction of steepest ascent, describe curvature through the second derivative and the eigenvalues of the Hessian \\(H\\), and carry out a gradient descent step \\(\\theta \\leftarrow \\theta - \\eta\\,\\nabla L(\\theta)\\) on paper.</p>'
   });
 
   /* 2 ---------------------------------------------------------------- */
@@ -312,7 +312,7 @@
       var up = p.arrow(0, 0, 1, 1, { stroke: ORANGE, width: 5 });
       var down = p.arrow(0, 0, -1, -1, { stroke: INK, width: 5 });
       var row = bar(el);
-      var rP = readout(row, '(x\u2081, x\u2082) =');
+      var rP = readout(row, 'x =');
       var r1 = readout(row, '\u2202f/\u2202x\u2081 ='); r1.el.style.color = BLUE;
       var r2 = readout(row, '\u2202f/\u2202x\u2082 ='); r2.el.style.color = PURPLE;
       var rf = readout(row, 'f =');
@@ -327,7 +327,7 @@
         c2.set(x + gx, y, x + gx, y + gy);
         var tiny = Math.sqrt(gx * gx + gy * gy) < 0.12;
         up.el.style.display = down.el.style.display = tiny ? 'none' : '';
-        rP.set('(' + fmt(x, 1) + ', ' + fmt(y, 1) + ')');
+        rP.vec([fmt(x, 1), fmt(y, 1)]);
         r1.set(fmt(gx, 2)); r2.set(fmt(gy, 2)); rf.set(fmt(0.25 * x * x + 0.5 * y * y, 2));
       }
       p.handle(3, 1.5, {
@@ -358,7 +358,7 @@
       var rV = readout(row, 'arrow =');
       var done = false;
       function vec(x, y) { return [x - P[0], y - P[1]]; }
-      function show(x, y) { arr.set(P[0], P[1], x, y); var v = vec(x, y); rV.set('(' + fmt(v[0], 1) + ', ' + fmt(v[1], 1) + ')'); }
+      function show(x, y) { arr.set(P[0], P[1], x, y); var v = vec(x, y); rV.vec([fmt(v[0], 1), fmt(v[1], 1)]); }
       var h = p.handle(3.5, -1, {
         color: INK, r: 13, snap: 0.5,
         onDrag: function (x, y) { if (!done) show(x, y); },
@@ -368,14 +368,14 @@
           if (Math.abs(v[0] + 1) < 0.01 && Math.abs(v[1] - 2) < 0.01) {
             done = true;
             ring(p, x, y, GREEN);
-            ctx.note('\\(\\nabla f(2,-2) = (1, -2)\\), so \\(-\\nabla f = (-1, 2)\\). The arrow crosses the contour lines towards lower values.');
+            ctx.note('\\(\\nabla f(2,-2) = \\begin{pmatrix}1\\\\-2\\end{pmatrix}\\), so \\(-\\nabla f = \\begin{pmatrix}-1\\\\2\\end{pmatrix}\\). The arrow crosses the contour lines towards lower values.');
             ctx.solved();
           } else if (Math.abs(v[0] - 1) < 0.01 && Math.abs(v[1] + 2) < 0.01) {
-            ctx.wrong('This arrow is the gradient \\((1, -2)\\) itself, the direction of steepest ascent. Flip both signs.');
+            ctx.wrong('This arrow is the gradient \\(\\begin{pmatrix}1\\\\-2\\end{pmatrix}\\) itself, the direction of steepest ascent. Flip both signs.');
           } else if (Math.abs(v[0] + 2) < 0.01 && Math.abs(v[1] - 2) < 0.01) {
             ctx.wrong('This arrow points straight at the minimum, but the slope along \\(x_1\\) is \\(\\tfrac12 x_1 = 1\\), not \\(2\\).');
           } else {
-            ctx.wrong('The arrow is \\((' + fmt(v[0], 1) + ', ' + fmt(v[1], 1) + ')\\). Compute both partial derivatives at \\((2,-2)\\) and negate them.');
+            ctx.wrong('The arrow is \\(' + M4.col([fmt(v[0], 1), fmt(v[1], 1)]) + '\\). Compute both partial derivatives at \\((2,-2)\\) and negate them.');
           }
         }
       });
@@ -632,9 +632,9 @@
     kind: 'exercise',
     title: 'One step on paper',
     html:
-      '<p>Consider the loss \\(L(\\theta) = \\tfrac12\\left(3\\,\\theta_1^2 + 0.8\\,\\theta_2^2\\right)\\), whose Hessian has the eigenvalues \\(3\\) and \\(0.8\\). The current parameters are \\(\\theta = (1,\\ 2.5)\\) and the learning rate is \\(\\eta = 0.5\\).</p>' +
+      '<p>Consider the loss \\(L(\\theta) = \\tfrac12\\left(3\\,\\theta_1^2 + 0.8\\,\\theta_2^2\\right)\\), whose Hessian has the eigenvalues \\(3\\) and \\(0.8\\). The current parameters are \\(\\theta = \\begin{pmatrix}1\\\\2.5\\end{pmatrix}\\) and the learning rate is \\(\\eta = 0.5\\).</p>' +
       '<p>Drag the orange point from \\(\\theta\\) to the position after one gradient descent step, \\(\\theta - \\eta\\,\\nabla L(\\theta)\\). The point snaps to steps of \\(0.5\\).</p>',
-    hint: 'The gradient is \\(\\nabla L(\\theta) = (3\\,\\theta_1,\\ 0.8\\,\\theta_2)\\). Evaluate it at \\((1, 2.5)\\), multiply by \\(0.5\\), and subtract the result from \\(\\theta\\).',
+    hint: 'The gradient is \\(\\nabla L(\\theta) = \\begin{pmatrix}3\\,\\theta_1\\\\0.8\\,\\theta_2\\end{pmatrix}\\). Evaluate it at \\(\\begin{pmatrix}1\\\\2.5\\end{pmatrix}\\), multiply by \\(0.5\\), and subtract the result from \\(\\theta\\).',
     mount: function (el, ctx) {
       ensureStyle();
       var wrap = M4.el('div', { class: 'l3-s1-center' }, el);
@@ -644,7 +644,7 @@
       var arr = p.arrow(T[0], T[1], T[0], T[1], { stroke: INK, width: 5 });
       arr.el.style.display = 'none';
       p.point(T[0], T[1], { r: 8, fill: GREEN });
-      p.text(T[0] + 0.3, T[1] + 0.3, '\u03b8 = (1, 2.5)', { fill: INK, size: 16, weight: 700, anchor: 'start' });
+      p.text(T[0] + 0.3, T[1] + 0.3, '\u03b8', { fill: INK, size: 16, weight: 700, anchor: 'start' });
       var row = bar(el);
       var rT = readout(row, 'new \u03b8 ='), rD = readout(row, 'step ='), rL = readout(row, 'L =');
       var done = false;
@@ -653,8 +653,8 @@
         var moved = Math.abs(x - T[0]) + Math.abs(y - T[1]) > 0.01;
         arr.el.style.display = moved ? '' : 'none';
         if (moved) arr.set(T[0], T[1], x, y);
-        rT.set('(' + fmt(x, 1) + ', ' + fmt(y, 1) + ')');
-        rD.set('(' + fmt(x - T[0], 1) + ', ' + fmt(y - T[1], 1) + ')');
+        rT.vec([fmt(x, 1), fmt(y, 1)]);
+        rD.vec([fmt(x - T[0], 1), fmt(y - T[1], 1)]);
         rL.set(fmt(Lf(x, y), 2));
       }
       function near(x, y, a, b) { return Math.abs(x - a) < 0.01 && Math.abs(y - b) < 0.01; }
@@ -666,7 +666,7 @@
           if (near(x, y, ANS[0], ANS[1])) {
             done = true;
             ring(p, x, y, GREEN);
-            ctx.note('\\(\\nabla L = (3, 2)\\), so \\(\\theta \\leftarrow (1, 2.5) - 0.5\\,(3, 2) = (-0.5,\\ 1.5)\\). The loss falls from \\(4\\) to \\(1.275\\).');
+            ctx.note('\\(\\nabla L = \\begin{pmatrix}3\\\\2\\end{pmatrix}\\), so \\(\\theta \\leftarrow \\begin{pmatrix}1\\\\2.5\\end{pmatrix} - 0.5\\,\\begin{pmatrix}3\\\\2\\end{pmatrix} = \\begin{pmatrix}-0.5\\\\1.5\\end{pmatrix}\\). The loss falls from \\(4\\) to \\(1.275\\).');
             ctx.solved();
           } else if (near(x, y, T[0], T[1])) {
             ctx.note('The point is still at the starting position \\(\\theta\\).');
@@ -677,7 +677,7 @@
           } else if (near(x, y, 0.5, 2) || near(x, y, 0.5, 1.5) || near(x, y, 0, 1.5)) {
             ctx.wrong('The two components of the gradient differ: \\(3\\,\\theta_1 = 3\\) and \\(0.8\\,\\theta_2 = 2\\). Scale each by \\(\\eta\\) separately.');
           } else {
-            ctx.wrong('The step drawn is \\((' + fmt(x - T[0], 1) + ', ' + fmt(y - T[1], 1) + ')\\). It should equal \\(-\\eta\\,\\nabla L(\\theta)\\) with \\(\\nabla L = (3\\,\\theta_1,\\ 0.8\\,\\theta_2)\\).');
+            ctx.wrong('The step drawn is \\(' + M4.col([fmt(x - T[0], 1), fmt(y - T[1], 1)]) + '\\). It should equal \\(-\\eta\\,\\nabla L(\\theta)\\) with \\(\\nabla L = \\begin{pmatrix}3\\,\\theta_1\\\\0.8\\,\\theta_2\\end{pmatrix}\\).');
           }
         }
       });
@@ -743,7 +743,7 @@
     id: 'l3-s1',
     module: 'l3',
     title: 'Loss landscapes and the descent step',
-    summary: 'Read a loss landscape, interpret gradient and curvature, and take gradient descent steps on a small classifier.',
+    summary: 'The gradient and the curvature describe the shape of a loss landscape. With them, gradient descent is run on a small classifier.',
     minutes: 14,
     steps: steps
   });

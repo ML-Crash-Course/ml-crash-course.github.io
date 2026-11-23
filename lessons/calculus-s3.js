@@ -456,7 +456,7 @@
     id: 'calculus-s3',
     module: 'calculus',
     title: 'The chain rule',
-    summary: 'When functions are composed, their local slopes multiply. A computation graph applies this fact one edge at a time.',
+    summary: 'When functions are composed, their slopes multiply. The chain rule states this precisely, and a computation graph applies it one edge at a time.',
     minutes: 10,
     steps: [
       {
@@ -464,7 +464,7 @@
         title: 'Learning goals',
         html:
           '<p>Many functions are built by feeding the output of one function into another. The derivative of such a composition follows from the derivatives of its parts.</p>' +
-          '<p>In this lesson you will state the chain rule, apply it to a composite function, and carry out a forward pass and a backward pass on a small computation graph.</p>'
+          '<p>The aim is to state the chain rule, apply it to a composite function, and carry out a forward pass and a backward pass on a small computation graph.</p>'
       },
       {
         kind: 'text',

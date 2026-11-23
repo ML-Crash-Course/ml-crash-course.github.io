@@ -158,7 +158,7 @@
     id: 'optimisation-s4',
     module: 'optimisation',
     title: 'Stochastic gradients and momentum',
-    summary: 'Why minibatch gradients are noisy, what that noise does to the descent path, and how momentum smooths and accelerates it.',
+    summary: 'Gradients computed on minibatches are noisy. The noise shakes the path of gradient descent, and momentum smooths and accelerates it.',
     minutes: 10,
     steps: [
       // 1
@@ -167,7 +167,7 @@
         title: 'Minibatches',
         html:
           '<p>Gradient descent, as described so far, uses the exact gradient of the loss at every step. For large data sets the exact gradient is too expensive, so practical training uses an estimate computed from a small random sample of the data.</p>' +
-          '<p>In this lesson you will explain where the noise in such an estimate comes from, predict how it depends on the sample size, read a noisy descent path on a contour map, and state and apply the momentum update, which behaves like a heavy ball rolling on the loss surface.</p>'
+          '<p>Along the way you practise how to explain where the noise in such an estimate comes from, predict how it depends on the sample size, read a noisy descent path on a contour map, and state and apply the momentum update, which behaves like a heavy ball rolling on the loss surface.</p>'
       },
       // 2
       {
@@ -304,7 +304,7 @@
           });
           M4.button(M4.el('div', { class: 'm4-row' }, root), 'Run SGD', run, { primary: true });
           reset();
-          ctx.note('With a small batch the path wanders and never settles exactly at the minimum. With a large batch it follows the exact path closely.');
+          ctx.note('With a small batch the path wanders and never settles at the minimum. With a large batch it follows the exact path closely.');
         }
       },
       // 6
@@ -324,7 +324,7 @@
           ];
           M4.choices(root, {
             options: [
-              'It converges exactly to the minimum and then stops moving.',
+              'It converges to the minimum and then stops moving.',
               'It keeps jittering in a region around the minimum. The region shrinks if \\(\\eta\\) is reduced or \\(B\\) is increased.',
               'It drifts steadily away from the minimum, because the noise accumulates.',
               'It behaves like a random walk and the loss never decreases.'

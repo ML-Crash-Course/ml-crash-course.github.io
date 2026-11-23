@@ -489,13 +489,13 @@
     id: 'probability-s4',
     module: 'probability',
     title: 'The Gaussian',
-    summary: 'The bell curve: its two parameters, the 68-95-99.7 rule, its parabolic log-density, and why sums of small effects produce it.',
+    summary: 'The Gaussian distribution has two parameters, follows the 68-95-99.7 rule and has a quadratic log-density. Sums of many small effects are approximately Gaussian.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>The Gaussian, or normal distribution, is the most widely used continuous distribution in statistics and machine learning.</p><p>In this lesson you will read its two parameters off a plot, state how much probability lies within one, two and three standard deviations of the mean, explain why its logarithm is a parabola, and say why sums of many small independent effects are approximately Gaussian.</p>'
+        html: '<p>The Gaussian, or normal distribution, is the most widely used continuous distribution in statistics and machine learning.</p><p>You will learn to read its two parameters off a plot, state how much probability lies within one, two and three standard deviations of the mean, explain why its logarithm is a parabola, and say why sums of many small independent effects are approximately Gaussian.</p>'
       },
       {
         kind: 'text',
@@ -507,13 +507,13 @@
       {
         kind: 'explore',
         title: 'Mean and standard deviation',
-        html: '<p>The mean \\(\\mu\\) slides the curve along the axis without changing its shape. The standard deviation \\(\\sigma\\) stretches it horizontally. The peak height \\(1/(\\sigma\\sqrt{2\\pi})\\) falls in proportion so that the area stays 1. The purple arrow runs from the mean to the point where the curve changes from bending downwards to bending upwards, which lies exactly \\(\\sigma\\) away.</p>',
+        html: '<p>The mean \\(\\mu\\) slides the curve along the axis without changing its shape. The standard deviation \\(\\sigma\\) stretches it horizontally. The peak height \\(1/(\\sigma\\sqrt{2\\pi})\\) falls in proportion so that the area stays 1. The purple arrow runs from the mean to the point where the curve changes from bending downwards to bending upwards, which lies \\(\\sigma\\) away.</p>',
         mount: mountParams
       },
       {
         kind: 'exercise',
         title: 'Matching a curve',
-        html: '<p>The dashed purple curve is a Gaussian with unknown parameters. Drag the two handles until the solid curve lies exactly on top of it.</p>',
+        html: '<p>The dashed purple curve is a Gaussian with unknown parameters. Drag the two handles until the solid curve lies on top of it.</p>',
         hint: 'First place the yellow handle under the peak of the dashed curve, at \\(x = 1\\). Then widen the curve with the blue handle until the peaks have the same height. The blue handle then sits at \\(x = \\mu + \\sigma = 2.5\\).',
         mount: mountMatch
       },
@@ -532,7 +532,7 @@
       },
       {
         kind: 'exercise',
-        title: 'The rule in practice',
+        title: 'Applying the rule',
         html: '<p>Test scores are modelled as Gaussian with mean \\(\\mu = 100\\) and standard deviation \\(\\sigma = 15\\). About 95 % of scores lie between 70 and which value?</p>',
         hint: 'The 95 % interval is \\(\\mu \\pm 2\\sigma\\). The lower end is \\(100 - 2 \\cdot 15 = 70\\).',
         mount: mountScores
@@ -561,7 +561,7 @@
       {
         kind: 'exercise',
         title: 'Number of effects',
-        html: '<p>Each of \\(n\\) independent effects is \\(+1\\) or \\(-1\\) with probability \\(\\tfrac12\\), so each has mean 0 and variance 1. Variances of independent variables add, so the sum \\(S\\) has variance \\(n\\) and standard deviation \\(\\sqrt{n}\\), and it is approximately Gaussian. Set \\(n\\) so that the band \\(\\pm 2\\sigma\\), which holds about 95 % of the sums, is exactly \\(\\pm 20\\), then press Check.</p>',
+        html: '<p>Each of \\(n\\) independent effects is \\(+1\\) or \\(-1\\) with probability \\(\\tfrac12\\), so each has mean 0 and variance 1. Variances of independent variables add, so the sum \\(S\\) has variance \\(n\\) and standard deviation \\(\\sqrt{n}\\), and it is approximately Gaussian. Set \\(n\\) so that the band \\(\\pm 2\\sigma\\), which holds about 95 % of the sums, is \\(\\pm 20\\), then press Check.</p>',
         hint: 'The condition is \\(2\\sqrt{n} = 20\\), so \\(\\sqrt{n} = 10\\).',
         mount: mountBand
       },

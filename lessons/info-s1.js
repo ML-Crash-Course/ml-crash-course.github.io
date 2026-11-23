@@ -153,7 +153,7 @@
     id: 'info-s1',
     module: 'info',
     title: 'Surprise and bits',
-    summary: 'How much information a single outcome carries, why it is measured in bits, and how the average over a distribution gives the entropy.',
+    summary: 'The information carried by a single outcome is measured in bits. Its average over a distribution is the entropy.',
     minutes: 18,
     steps: [
       {
@@ -167,7 +167,7 @@
       {
         kind: 'explore',
         title: 'The surprise curve',
-        html: '<p>Drag the point along the curve \\(-\\log_2 p\\). Each halving of the probability adds exactly one bit. As \\(p\\) approaches \\(0\\), the surprise grows without bound.</p>',
+        html: '<p>Drag the point along the curve \\(-\\log_2 p\\). Each halving of the probability adds one bit. As \\(p\\) approaches \\(0\\), the surprise grows without bound.</p>',
         mount: function (el) { surpriseScene(el); }
       },
       {

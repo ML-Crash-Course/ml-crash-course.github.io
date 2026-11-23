@@ -164,7 +164,7 @@
     html:
       '<p>A model that predicts under uncertainty does not output a single answer. It outputs a probability for every possible answer. ' +
       'The object that holds those probabilities is the <em>distribution</em> of a random variable.</p>' +
-      '<p>In this lesson you will read and construct a probability mass function, compute the probability of an event from it, ' +
+      '<p>This session trains you to read and construct a probability mass function, compute the probability of an event from it, ' +
       'and explain why a histogram of many samples takes the shape of the distribution that produced them.</p>'
   });
 
@@ -263,7 +263,7 @@
     html:
       '<p>Each option lists candidate values \\(\\big(p(1),\\, p(2),\\, p(3)\\big)\\) for a random variable with three outcomes. ' +
       'Exactly one of them satisfies both conditions of a probability mass function. Select it.</p>',
-    hint: 'Check two things for each option: every entry is at least zero, and the three entries add up to exactly one.',
+    hint: 'Check two things for each option: every entry is at least zero, and the three entries add up to one.',
     mount: function (el, ctx) {
       var reasons = [
         'These values sum to 1.1, which is more than one.',
@@ -273,10 +273,10 @@
       ];
       M4.choices(el, {
         options: [
-          '\\( (0.5,\\; 0.3,\\; 0.3) \\)',
-          '\\( (0.6,\\; 0.5,\\; -0.1) \\)',
-          '\\( (0.2,\\; 0.5,\\; 0.3) \\)',
-          '\\( (0.25,\\; 0.25,\\; 0.25) \\)'
+          '\\( \\begin{pmatrix}0.5\\\\0.3\\\\0.3\\end{pmatrix} \\)',
+          '\\( \\begin{pmatrix}0.6\\\\0.5\\\\-0.1\\end{pmatrix} \\)',
+          '\\( \\begin{pmatrix}0.2\\\\0.5\\\\0.3\\end{pmatrix} \\)',
+          '\\( \\begin{pmatrix}0.25\\\\0.25\\\\0.25\\end{pmatrix} \\)'
         ],
         correct: 2,
         onCorrect: function () {
@@ -385,7 +385,7 @@
     html:
       '<p>An <em>event</em> \\(A\\) is a set of outcomes, and its probability is the sum of the PMF over the outcomes it contains: ' +
       '\\(P(A) = \\sum_{x \\in A} p(x)\\). Tap bars to add outcomes to \\(A\\) or remove them. ' +
-      'Build an event with probability exactly \\(0.6\\).</p>',
+      'Build an event with probability \\(0.6\\).</p>',
     hint: 'Look for bars whose heights add up to 0.6. There are two such sets: one with two outcomes and one with three.',
     mount: function (el, ctx) {
       injectStyle();
@@ -604,7 +604,7 @@
     id: 'probability-s1',
     module: 'probability',
     title: 'Random variables and distributions',
-    summary: 'Probability mass functions as bars that sum to one, sampling, and histograms that converge to the distribution.',
+    summary: 'A probability mass function can be drawn as a bar chart whose heights sum to one. Histograms of many samples approach this underlying distribution.',
     minutes: 10,
     steps: steps
   });

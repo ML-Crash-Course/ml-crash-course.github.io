@@ -54,26 +54,28 @@
     id: 'vectors-s2',
     module: 'vectors',
     title: 'The dot product',
-    summary: 'One number that measures how strongly two vectors point in the same direction.',
+    summary: 'The dot product is a single number that measures how much two vectors point in the same direction.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>The dot product takes two vectors and returns a single number.</p><p>In this lesson you will compute it from components, read it geometrically as a projection, use it to find the angle between two vectors, and recognise when two vectors are orthogonal (perpendicular).</p>' +
+        html: '<p>The dot product takes two vectors and returns a single number.</p><p>After this lesson you should be able to compute it from components, read it geometrically as a projection, use it to find the angle between two vectors, and recognise when two vectors are orthogonal (perpendicular).</p>' +
           '<p>The same operation turns up throughout machine learning whenever things are scored or compared, for example when a search engine ranks documents for a query.</p>'
       },
       {
         kind: 'text',
         title: 'Definition from components',
-        html: '<p>Let \\(\\mathbf{a} = (a_1, a_2)\\) and \\(\\mathbf{b} = (b_1, b_2)\\) be two vectors in the plane. Their dot product is the sum of the products of matching components:</p>' +
-          '\\[ \\mathbf{a} \\cdot \\mathbf{b} = a_1 b_1 + a_2 b_2 . \\]' +
-          '<p>The result is a number, not a vector. For example, \\((1, 2) \\cdot (4, -1) = 1 \\cdot 4 + 2 \\cdot (-1) = 2\\). The order does not matter: \\(\\mathbf{a} \\cdot \\mathbf{b} = \\mathbf{b} \\cdot \\mathbf{a}\\).</p>'
+        html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}a_1\\\\a_2\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix}\\) be two vectors in the plane. Their dot product is the sum of the products of matching components:</p>' +
+          '\\[ \\mathbf{a} \\cdot \\mathbf{b} = \\begin{pmatrix}a_1\\\\a_2\\end{pmatrix} \\cdot \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix} = a_1 b_1 + a_2 b_2 \\]' +
+          '<p>The result is a number, not a vector. For example,</p>' +
+          '\\[ \\begin{pmatrix}1\\\\2\\end{pmatrix} \\cdot \\begin{pmatrix}4\\\\-1\\end{pmatrix} = 1 \\cdot 4 + 2 \\cdot (-1) = 2 \\]' +
+          '<p>The order does not matter: \\(\\mathbf{a} \\cdot \\mathbf{b} = \\mathbf{b} \\cdot \\mathbf{a}\\).</p>'
       },
       {
         kind: 'exercise',
         title: 'Dot product practice',
-        html: '<p>Let \\(\\mathbf{a} = (3, 1)\\) and \\(\\mathbf{b} = (2, 4)\\). Compute \\(\\mathbf{a} \\cdot \\mathbf{b}\\).</p>',
+        html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}3\\\\1\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}2\\\\4\\end{pmatrix}\\). Compute \\(\\mathbf{a} \\cdot \\mathbf{b}\\).</p>',
         hint: 'Multiply the first components, multiply the second components, then add: \\(3 \\cdot 2 + 1 \\cdot 4\\).',
         mount: function (el, ctx) {
           var w = wrap(el);
@@ -139,8 +141,8 @@
       {
         kind: 'exercise',
         title: 'A target dot product',
-        html: '<p>The vector \\(\\mathbf{a} = (3, 1)\\) is fixed. Drag the tip of \\(\\mathbf{b}\\) until \\(\\mathbf{a} \\cdot \\mathbf{b} = 6\\). The tip snaps to half-integer coordinates.</p>',
-        hint: 'With \\(\\mathbf{b} = (b_1, b_2)\\) the condition is \\(3 b_1 + b_2 = 6\\). One solution is \\(\\mathbf{b} = (2, 0)\\). Another is \\((1, 3)\\).',
+        html: '<p>The vector \\(\\mathbf{a} = \\begin{pmatrix}3\\\\1\\end{pmatrix}\\) is fixed. Drag the tip of \\(\\mathbf{b}\\) until \\(\\mathbf{a} \\cdot \\mathbf{b} = 6\\). The tip snaps to half-integer coordinates.</p>',
+        hint: 'With \\(\\mathbf{b} = \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix}\\) the condition is \\(3 b_1 + b_2 = 6\\). One solution is \\(\\mathbf{b} = \\begin{pmatrix}2\\\\0\\end{pmatrix}\\). Another is \\(\\begin{pmatrix}1\\\\3\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           var w = wrap(el);
           var p = M4.plane(w, { xmin: -5, xmax: 5, ymin: -5, ymax: 5 });
@@ -161,7 +163,7 @@
             var tb = tipPos(b, 0.7);
             bT.set(tb[0], tb[1], 'b');
             var d = dot(a, b);
-            rb.textContent = 'b = (' + fmt(b[0]) + ', ' + fmt(b[1]) + ')';
+            rb.innerHTML = M4.tex('\\mathbf{b} = ' + M4.col([fmt(b[0]), fmt(b[1])]));
             rd.textContent = 'a · b = ' + fmt(d);
             setOk(rd, Math.abs(d - 6) < 0.01);
           }
@@ -270,8 +272,8 @@
         kind: 'exercise',
         title: 'Orthogonal vectors',
         html: '<p>Two non-zero vectors are called orthogonal when the angle between them is \\(90^\\circ\\). Since \\(\\cos 90^\\circ = 0\\), this happens exactly when their dot product is zero.</p>' +
-          '<p>The vector \\(\\mathbf{a} = (2, 3)\\) is fixed. Drag \\(\\mathbf{b}\\) to a non-zero vector that is orthogonal to \\(\\mathbf{a}\\).</p>',
-        hint: 'Solve \\(2 b_1 + 3 b_2 = 0\\). Swapping the components of \\(\\mathbf{a}\\) and negating one of them works: \\((3, -2)\\) or \\((-3, 2)\\).',
+          '<p>The vector \\(\\mathbf{a} = \\begin{pmatrix}2\\\\3\\end{pmatrix}\\) is fixed. Drag \\(\\mathbf{b}\\) to a non-zero vector that is orthogonal to \\(\\mathbf{a}\\).</p>',
+        hint: 'Solve \\(2 b_1 + 3 b_2 = 0\\). Swapping the components of \\(\\mathbf{a}\\) and negating one of them works: \\(\\begin{pmatrix}3\\\\-2\\end{pmatrix}\\) or \\(\\begin{pmatrix}-3\\\\2\\end{pmatrix}\\).',
         mount: function (el, ctx) {
           var w = wrap(el);
           var p = M4.plane(w, { xmin: -5, xmax: 5, ymin: -5, ymax: 5 });
@@ -330,7 +332,7 @@
       {
         kind: 'exercise',
         title: 'Projection practice',
-        html: '<p>Let \\(\\mathbf{a} = (4, 2)\\) and \\(\\mathbf{b} = (1, 3)\\). The orange point is \\(t\\,\\mathbf{a}\\) for a number \\(t\\). It is the projection of \\(\\mathbf{b}\\) onto \\(\\mathbf{a}\\) when the remainder \\(\\mathbf{b} - t\\,\\mathbf{a}\\) (dashed) is orthogonal to \\(\\mathbf{a}\\).</p>' +
+        html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}4\\\\2\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}1\\\\3\\end{pmatrix}\\). The orange point is \\(t\\,\\mathbf{a}\\) for a number \\(t\\). It is the projection of \\(\\mathbf{b}\\) onto \\(\\mathbf{a}\\) when the remainder \\(\\mathbf{b} - t\\,\\mathbf{a}\\) (dashed) is orthogonal to \\(\\mathbf{a}\\).</p>' +
           '<p>Move the slider until that condition holds, then release.</p>',
         hint: 'Setting \\((\\mathbf{b} - t\\,\\mathbf{a}) \\cdot \\mathbf{a} = 0\\) gives \\(t = \\dfrac{\\mathbf{a} \\cdot \\mathbf{b}}{\\mathbf{a} \\cdot \\mathbf{a}} = \\dfrac{10}{20}\\).',
         mount: function (el, ctx) {
@@ -355,7 +357,7 @@
             if (Math.abs(d) < 1e-9) { d = 0; }
             pt.set(f[0], f[1]); sh.set(0, 0, f[0], f[1]); rem.set(f[0], f[1], b[0], b[1]);
             pl.set(f[0] + 0.3, f[1] - 0.5, 't a');
-            r1.textContent = 't a = (' + fmt(f[0]) + ', ' + fmt(f[1]) + ')';
+            r1.innerHTML = M4.tex('t\\,\\mathbf{a} = ' + M4.col([fmt(f[0]), fmt(f[1])]));
             r2.textContent = '(b − t a) · a = ' + fmt(d);
             var ok = d === 0;
             setOk(r2, ok);
@@ -369,7 +371,7 @@
             if (done) { return; }
             if (Math.abs(t - 0.5) < 0.001) {
               done = true;
-              ctx.note('Correct. The projection of \\(\\mathbf{b}\\) onto \\(\\mathbf{a}\\) is \\(\\tfrac{\\mathbf{a} \\cdot \\mathbf{b}}{\\mathbf{a} \\cdot \\mathbf{a}}\\,\\mathbf{a} = \\tfrac{10}{20}(4, 2) = (2, 1)\\).');
+              ctx.note('Correct. The projection of \\(\\mathbf{b}\\) onto \\(\\mathbf{a}\\) is \\(\\tfrac{\\mathbf{a} \\cdot \\mathbf{b}}{\\mathbf{a} \\cdot \\mathbf{a}}\\,\\mathbf{a} = \\tfrac{10}{20}(4, 2) = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\).');
               ctx.solved();
             } else {
               ctx.note(t < 0.5
@@ -396,7 +398,7 @@
         title: 'Sign of the dot product',
         html: '<p>The sign of the dot product classifies the angle \\(\\theta\\) between two non-zero vectors: positive for an acute angle (\\(\\theta < 90^\\circ\\)), zero for a right angle, negative for an obtuse angle (\\(\\theta > 90^\\circ\\)).</p>' +
           '<p>Drag each pair of vectors into the matching box.</p>',
-        hint: 'Compute each dot product from components. For example, \\((2, -1) \\cdot (1, 2) = 2 - 2\\).',
+        hint: 'Compute each dot product from components. For example, \\(\\begin{pmatrix}2\\\\-1\\end{pmatrix} \\cdot \\begin{pmatrix}1\\\\2\\end{pmatrix} = 2 - 2\\).',
         mount: function (el, ctx) {
           var w = wrap(el);
           var pairs = [
@@ -459,7 +461,7 @@
         title: 'Dot products in machine learning',
         html: '<p>A search system turns every text into a vector of numbers, for example one number per keyword saying how strongly the text is about it. A document \\(\\mathbf{d}\\) is then ranked by its dot product with the query vector: the larger \\(\\mathbf{q} \\cdot \\mathbf{d}\\), the better the match.</p>' +
           '<p>Written out, \\(\\mathbf{w} \\cdot \\mathbf{x} = w_1 x_1 + w_2 x_2\\) is a weighted sum of the entries of \\(\\mathbf{x}\\). Weighted sums like this come back in almost every later module.</p>' +
-          '<p>The query is \\(\\mathbf{q} = (2, 1)\\). Which document vector receives the highest score \\(\\mathbf{q} \\cdot \\mathbf{d}\\)?</p>',
+          '<p>The query is \\(\\mathbf{q} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\). Which document vector receives the highest score \\(\\mathbf{q} \\cdot \\mathbf{d}\\)?</p>',
         hint: 'Compute all three scores: \\(2 \\cdot 1 + 1 \\cdot 3\\), \\(2 \\cdot 3 + 1 \\cdot 0\\) and \\(2 \\cdot (-1) + 1 \\cdot 4\\).',
         mount: function (el, ctx) {
           var w = wrap(el);
@@ -474,7 +476,7 @@
           p.arrow(0, 0, 2, 1, { stroke: BLUE, width: 5 });
           p.text(2.45, 1.45, 'q', { fill: BLUE, size: 20, weight: 700 });
           M4.choices(w, {
-            options: ['\\(\\mathbf{d}_1 = (1, 3)\\)', '\\(\\mathbf{d}_2 = (3, 0)\\)', '\\(\\mathbf{d}_3 = (-1, 4)\\)'],
+            options: ['\\(\\mathbf{d}_1 = \\begin{pmatrix}1\\\\3\\end{pmatrix}\\)', '\\(\\mathbf{d}_2 = \\begin{pmatrix}3\\\\0\\end{pmatrix}\\)', '\\(\\mathbf{d}_3 = \\begin{pmatrix}-1\\\\4\\end{pmatrix}\\)'],
             correct: 1,
             onCorrect: function () {
               ctx.note('Correct. The scores are \\(5\\), \\(6\\) and \\(2\\). The vector \\(\\mathbf{d}_2\\) has the longest shadow on \\(\\mathbf{q}\\), although \\(\\mathbf{d}_3\\) is the longest vector.');
@@ -491,10 +493,10 @@
       {
         kind: 'exercise',
         title: 'Combined conditions',
-        html: '<p>Let \\(\\mathbf{a} = (1, 2)\\) and \\(\\mathbf{c} = (3, -1)\\). Drag \\(\\mathbf{b}\\) until both conditions hold at the same time:</p>' +
+        html: '<p>Let \\(\\mathbf{a} = \\begin{pmatrix}1\\\\2\\end{pmatrix}\\) and \\(\\mathbf{c} = \\begin{pmatrix}3\\\\-1\\end{pmatrix}\\). Drag \\(\\mathbf{b}\\) until both conditions hold at the same time:</p>' +
           '\\[ \\mathbf{a} \\cdot \\mathbf{b} = 4 \\qquad \\text{and} \\qquad \\mathbf{c} \\cdot \\mathbf{b} = 5 . \\]' +
           '<p>Each condition fixes the shadow of \\(\\mathbf{b}\\) on one of the two vectors.</p>',
-        hint: 'With \\(\\mathbf{b} = (b_1, b_2)\\) the conditions are \\(b_1 + 2 b_2 = 4\\) and \\(3 b_1 - b_2 = 5\\). Satisfy one of them first, then slide \\(\\mathbf{b}\\) perpendicular to that vector, which leaves its dot product unchanged.',
+        hint: 'With \\(\\mathbf{b} = \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix}\\) the conditions are \\(b_1 + 2 b_2 = 4\\) and \\(3 b_1 - b_2 = 5\\). Satisfy one of them first, then slide \\(\\mathbf{b}\\) perpendicular to that vector, which leaves its dot product unchanged.',
         mount: function (el, ctx) {
           var w = wrap(el);
           var p = M4.plane(w, { xmin: -5, xmax: 5, ymin: -5, ymax: 5 });
@@ -516,7 +518,7 @@
             bT.set(tb[0], tb[1], 'b');
             var da = dot(a, b), dc = dot(c, b);
             var oa = Math.abs(da - 4) < 0.01, oc = Math.abs(dc - 5) < 0.01;
-            rb.textContent = 'b = (' + fmt(b[0]) + ', ' + fmt(b[1]) + ')';
+            rb.innerHTML = M4.tex('\\mathbf{b} = ' + M4.col([fmt(b[0]), fmt(b[1])]));
             ra.textContent = 'a · b = ' + fmt(da) + '  (target 4)';
             rc.textContent = 'c · b = ' + fmt(dc) + '  (target 5)';
             setOk(ra, oa); setOk(rc, oc);
@@ -529,7 +531,7 @@
             if (ok[0] && ok[1]) {
               if (!done) {
                 done = true;
-                ctx.note('Correct: \\(\\mathbf{b} = (2, 1)\\) gives \\(1 \\cdot 2 + 2 \\cdot 1 = 4\\) and \\(3 \\cdot 2 - 1 \\cdot 1 = 5\\). The two dashed lines of constant dot product cross in exactly one point.');
+                ctx.note('Correct: \\(\\mathbf{b} = \\begin{pmatrix}2\\\\1\\end{pmatrix}\\) gives \\(1 \\cdot 2 + 2 \\cdot 1 = 4\\) and \\(3 \\cdot 2 - 1 \\cdot 1 = 5\\). The two dashed lines of constant dot product cross in exactly one point.');
                 ctx.solved();
               }
             } else if (!done) {
@@ -550,7 +552,7 @@
         kind: 'text',
         title: 'Recap',
         html: '<ul>' +
-          '<li>The dot product of \\(\\mathbf{a} = (a_1, a_2)\\) and \\(\\mathbf{b} = (b_1, b_2)\\) is the number \\(\\mathbf{a} \\cdot \\mathbf{b} = a_1 b_1 + a_2 b_2\\), and it equals \\(|\\mathbf{a}|\\,|\\mathbf{b}| \\cos\\theta\\), where \\(\\theta\\) is the angle between the vectors.</li>' +
+          '<li>The dot product of \\(\\mathbf{a} = \\begin{pmatrix}a_1\\\\a_2\\end{pmatrix}\\) and \\(\\mathbf{b} = \\begin{pmatrix}b_1\\\\b_2\\end{pmatrix}\\) is the number \\(\\mathbf{a} \\cdot \\mathbf{b} = a_1 b_1 + a_2 b_2\\), and it equals \\(|\\mathbf{a}|\\,|\\mathbf{b}| \\cos\\theta\\), where \\(\\theta\\) is the angle between the vectors.</li>' +
           '<li>Geometrically it is the signed length of the projection of \\(\\mathbf{b}\\) on \\(\\mathbf{a}\\) multiplied by \\(|\\mathbf{a}|\\). The projection itself is the vector \\(\\dfrac{\\mathbf{a} \\cdot \\mathbf{b}}{\\mathbf{a} \\cdot \\mathbf{a}}\\,\\mathbf{a}\\).</li>' +
           '<li>The sign classifies the angle: positive for acute, zero for orthogonal, negative for obtuse. A dot product \\(\\mathbf{w} \\cdot \\mathbf{x}\\) is a weighted sum of the entries of \\(\\mathbf{x}\\), and search systems rank documents by the dot product of their vectors with the query vector.</li>' +
           '</ul>'

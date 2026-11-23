@@ -370,7 +370,7 @@
     id: 'net-s1',
     module: 'training',
     title: 'Training a network',
-    summary: 'A small network learns to separate two classes in the plane, and every setting can be changed while it trains.',
+    summary: 'A small neural network learns to separate two classes of points in the plane. The width, depth, learning rate and other settings can be changed while it trains.',
     minutes: 20,
     steps: [
       {
@@ -474,7 +474,7 @@
         kind: 'text',
         title: 'Why wider networks train more reliably',
         html: '<p>With 3 hidden units the network has few lines to spare, and they all have to end up in useful places. Some starts get stuck with a line in a useless position, a <b>local minimum</b> of the loss. With 8 units there are many ways to solve the task, so almost every start finds one.</p>' +
-          '<p>This is one reason why large networks are used in practice even when a smaller one could in principle fit the data. The extra width makes the optimization easier. Overfitting is then controlled by the methods of the generalization module.</p>'
+          '<p>This is one reason why large networks are used even when a smaller one could in principle fit the data. The extra width makes the optimization easier. Overfitting is then controlled by the methods of the generalization module.</p>'
       },
       {
         kind: 'text',

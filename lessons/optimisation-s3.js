@@ -125,7 +125,7 @@
     }
     function describe(b) {
       var m = 1 - 2 * eta, n = ws.length - 1, msg;
-      if (Math.abs(m) < 1e-9) msg = 'The multiplier is 0: a single step lands exactly on the minimum.';
+      if (Math.abs(m) < 1e-9) msg = 'The multiplier is 0: a single step lands on the minimum.';
       else if (m > 0) msg = 'Each step keeps the sign of \\(w\\) and multiplies it by ' + fmt(m, 2) + '. After ' + n + ' steps \\(w = ' + b.toFixed(3) + '\\).';
       else if (m > -1 + 1e-9) msg = 'Each step jumps across the minimum (multiplier ' + fmt(m, 2) + '), but the jumps shrink. After ' + n + ' steps \\(w = ' + b.toFixed(3) + '\\).';
       else if (Math.abs(m + 1) < 1e-9) msg = 'The multiplier is −1: the point jumps between \\(w = 4\\) and \\(w = -4\\) and the loss never changes.';
@@ -144,7 +144,7 @@
     title: 'Learning rate and stability',
     html:
       '<p>Gradient descent updates a parameter \\(w\\) by the rule \\(w \\leftarrow w - \\eta\\, L\'(w)\\), where \\(L\\) is the loss, \\(L\'(w)\\) is its slope at \\(w\\), and \\(\\eta\\) (eta) is a positive number called the <b>learning rate</b>.</p>' +
-      '<p>In this lesson you will predict, for a quadratic loss, whether a given learning rate makes descent crawl, converge quickly, oscillate, or diverge, and compute the exact range of learning rates that is stable.</p>'
+      '<p>The aim is to predict, for a quadratic loss, whether a given learning rate makes descent crawl, converge quickly, oscillate, or diverge, and compute the exact range of learning rates that is stable.</p>'
   });
 
   steps.push({
@@ -171,7 +171,7 @@
     kind: 'exercise',
     title: 'The one step learning rate',
     html:
-      '<p>Descent on \\(L(w) = w^2\\) starts at \\(w_0 = 4\\). Choose the learning rate \\(\\eta\\) for which a single step lands exactly on the minimum \\(w = 0\\), then take the step.</p>',
+      '<p>Descent on \\(L(w) = w^2\\) starts at \\(w_0 = 4\\). Choose the learning rate \\(\\eta\\) for which a single step lands on the minimum \\(w = 0\\), then take the step.</p>',
     hint: 'One step gives \\(w_1 = (1 - 2\\eta)\\, w_0\\). This is zero when the multiplier \\(1 - 2\\eta\\) is zero.',
     mount: function (el, ctx) {
       descent(el, ctx, {
@@ -508,7 +508,7 @@
     id: 'optimisation-s3',
     module: 'optimisation',
     title: 'The learning rate',
-    summary: 'Why a small learning rate crawls, a large one oscillates or diverges, and how to find the stable range on a quadratic.',
+    summary: 'A small learning rate makes slow progress, while a large one causes oscillation or divergence. For a quadratic loss the range of stable learning rates can be computed.',
     minutes: 10,
     steps: steps
   });

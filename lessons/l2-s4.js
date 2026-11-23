@@ -379,7 +379,7 @@
         done = true;
         slots.forEach(function (s) { s.classList.add('l2-s4-ok'); });
         eq.classList.add('m4-pop');
-        ctx.note('Only the dog term survives: \\(H(p,q) = -\\log 0.15 \\approx 1.90\\), the negative log-likelihood of the true class.');
+        ctx.note('Only the dog term remains: \\(H(p,q) = -\\log 0.15 \\approx 1.90\\), the negative log-likelihood of the true class.');
         ctx.solved();
         return;
       }
@@ -583,14 +583,14 @@
     id: 'l2-s4',
     module: 'l2',
     title: 'Entropy and cross-entropy',
-    summary: 'Entropy as average surprise, cross-entropy as the classification loss, the table linking distributions to losses, and why minimizing needs gradient descent.',
+    summary: 'Entropy is average surprise, and cross-entropy is the loss used for classification. Each common output distribution comes with its own loss, and most of these losses can only be minimized by gradient descent.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'From surprise to entropy',
         html: '<p>The surprise of an outcome with probability \\(p\\) is \\(-\\log p\\), where \\(\\log\\) denotes the natural logarithm: certain outcomes have surprise \\(0\\), rare outcomes have large surprise. Surprise can be averaged in two ways, which gives entropy and cross-entropy. The first average is the <b>entropy</b> of a distribution. The second is the <b>cross-entropy</b> between a true distribution and a model.</p>' +
-          '<p>In this lesson you will compute both quantities, explain why the classification loss \\(-\\log q_y\\) is called cross-entropy, match each output type to its distribution and loss, and state why most losses cannot be minimized by a formula.</p>'
+          '<p>After this lesson you should be able to compute both quantities, explain why the classification loss \\(-\\log q_y\\) is called cross-entropy, match each output type to its distribution and loss, and state why most losses cannot be minimized by a formula.</p>'
       },
       {
         kind: 'text',

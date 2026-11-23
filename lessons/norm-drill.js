@@ -200,5 +200,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'norm-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'norm-drill', module: 'norm', title: 'Normalization and residual practice', summary: 'Eight levels of endless problems on standardizing, normalization layers and residual gradients.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'norm-drill', module: 'norm', title: 'Normalization and residual practice', summary: 'Practice problems on standardization, normalization layers and gradients through residual connections, arranged in eight levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

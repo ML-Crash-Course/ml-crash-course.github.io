@@ -735,7 +735,7 @@
       if (ok === 3) {
         if (!done) {
           done = true;
-          ctx.note('With \\(w = (1.5,\\ 0.5,\\ 0.5)\\) all three predictions equal the true values: \\(4\\), \\(2.5\\) and \\(1.5\\).');
+          ctx.note('With \\(w = \\begin{pmatrix}1.5\\\\0.5\\\\0.5\\end{pmatrix}\\) all three predictions equal the true values: \\(4\\), \\(2.5\\) and \\(1.5\\).');
           ctx.solved();
         }
       } else if (!done) {
@@ -762,7 +762,7 @@
     id: 'l1-s3',
     module: 'l1',
     title: 'Types of learning and data splits',
-    summary: 'Supervised, unsupervised and reinforcement learning, how a supervised model is trained and used, the train, validation and test split, and regression as prediction of a number.',
+    summary: 'Machine learning comes in three forms, supervised, unsupervised and reinforcement learning. A supervised model is trained and evaluated on separate training, validation and test data, and regression is the case where it predicts a number.',
     minutes: 12,
     steps: [
       {
@@ -825,8 +825,8 @@
       {
         kind: 'exercise',
         title: 'Regression',
-        html: '<p>In regression the label is a number. The input is a vector of chosen features, here \\(x = (x_1, x_2, x_3)\\): the stock price yesterday, the oil price, and \\(1\\) or \\(0\\) depending on whether a famous person recently tweeted about the company. The model is written \\(f_w(x)\\), where \\(w\\) denotes its adjustable numbers, the <b>weights</b>.</p>' +
-          '<p>Take the model \\(f_w(x) = w_1 x_1 + w_2 x_2 + w_3 x_3\\) with \\(w = (1.5,\\ -0.5,\\ 2.5)\\) and features, in rescaled units, \\(x = (2,\\ 3,\\ 1)\\). Compute the prediction.</p>',
+        html: '<p>In regression the label is a number. The input is a vector of chosen features, here \\(x = \\begin{pmatrix}x_1\\\\x_2\\\\x_3\\end{pmatrix}\\): the stock price yesterday, the oil price, and \\(1\\) or \\(0\\) depending on whether a famous person recently tweeted about the company. The model is written \\(f_w(x)\\), where \\(w\\) denotes its adjustable numbers, the <b>weights</b>.</p>' +
+          '<p>Take the model \\(f_w(x) = w_1 x_1 + w_2 x_2 + w_3 x_3\\) with \\(w = \\begin{pmatrix}1.5\\\\-0.5\\\\2.5\\end{pmatrix}\\) and features, in rescaled units, \\(x = \\begin{pmatrix}2\\\\3\\\\1\\end{pmatrix}\\). Compute the prediction.</p>',
         hint: 'Multiply each weight by the feature in the same position, then add the three products.',
         mount: mountPredict
       },

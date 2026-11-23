@@ -66,7 +66,7 @@
     id: 'mv-s4',
     module: 'multivariable',
     title: 'Gradients of loss functions',
-    summary: 'The loss of a model is a surface over its parameters. Its gradient tells every parameter which way to move, and it has the same shape for every model: error times input.',
+    summary: 'The loss of a model is a surface over its parameters. For common models its gradient always has the form of an error multiplied by an input.',
     minutes: 20,
     steps: [
       {

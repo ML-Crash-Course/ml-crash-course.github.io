@@ -579,7 +579,7 @@
     id: 'l3-s2',
     module: 'l3',
     title: 'Learning rate and noisy gradients',
-    summary: 'How the learning rate and the curvature of the loss decide whether gradient descent creeps, bounces or diverges, why narrow valleys are slow, and how normalization and minibatches help.',
+    summary: 'The learning rate and the curvature of the loss together determine whether gradient descent converges slowly, oscillates or diverges. Narrow valleys slow training down, and normalization and minibatches help.',
     minutes: 14,
     steps: [
       {
@@ -587,7 +587,7 @@
         title: 'Learning goals',
         html:
           '<p>Gradient descent updates the parameters by \\(\\theta \\leftarrow \\theta - \\eta\\,\\nabla L(\\theta)\\), where \\(L\\) is the loss and \\(\\eta\\) is the learning rate. The choice of \\(\\eta\\) decides whether descent converges.</p>' +
-          '<p>In this lesson you will predict from the curvature whether a given learning rate converges, explain the zigzag of gradient descent in a narrow valley, compute a condition number, state why inputs are standardized, and describe how the noise of a minibatch gradient depends on the batch size.</p>'
+          '<p>You will learn to predict from the curvature whether a given learning rate converges, explain the zigzag of gradient descent in a narrow valley, compute a condition number, state why inputs are standardized, and describe how the noise of a minibatch gradient depends on the batch size.</p>'
       },
       {
         kind: 'text',

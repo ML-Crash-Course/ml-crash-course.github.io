@@ -230,7 +230,7 @@
     id: 'bp-s1',
     module: 'backprop',
     title: 'The chain rule on a graph',
-    summary: 'Any expression can be split into small gates. The gradient of the output flows backwards through them, one multiplication per gate.',
+    summary: 'Any expression can be split into small operations called gates. The gradient of the output flows backwards through these gates, with one multiplication at each gate.',
     minutes: 19,
     steps: [
       {
@@ -278,7 +278,7 @@
       {
         kind: 'exercise',
         title: 'Gradient routing',
-        html: '<p>Set the multiply gate so that the gradient reaching \\(a\\) is exactly \\(6\\).</p>',
+        html: '<p>Set the multiply gate so that the gradient reaching \\(a\\) is \\(6\\).</p>',
         hint: 'The gradient reaching \\(a\\) is \\(b\\) times the upstream gradient.',
         mount: function (el, ctx) {
           var done = false;

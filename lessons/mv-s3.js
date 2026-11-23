@@ -97,7 +97,7 @@
     id: 'mv-s3',
     module: 'multivariable',
     title: 'The Hessian and curvature',
-    summary: 'Second derivatives collect into a matrix. Its eigenvalues say how the surface bends in each direction and decide between minimum, maximum and saddle.',
+    summary: 'The second derivatives of a function of several variables form a matrix, the Hessian. Its eigenvalues describe how the surface bends in each direction and distinguish minima, maxima and saddle points.',
     minutes: 22,
     steps: [
       {
@@ -164,7 +164,7 @@
         kind: 'exercise',
         title: 'A saddle point',
         html: '<p>The surface is \\(f(x, y) = x^3 - 3x + y^2\\). The dark wire patch under the ball is the quadratic approximation at the ball\'s position. The function has two critical points. Drag the ball to the saddle point. The values below show the Hessian eigenvalues as you move.</p>',
-        hint: '\\(\\nabla f = (3x^2 - 3,\\ 2y)\\) vanishes at \\((\\pm 1, 0)\\). The Hessian is \\(\\mathrm{diag}(6x, 2)\\). Which of the two points has a negative eigenvalue?',
+        hint: '\\(\\nabla f = \\begin{pmatrix}3x^2 - 3\\\\2y\\end{pmatrix}\\) vanishes at \\((\\pm 1, 0)\\). The Hessian is \\(\\mathrm{diag}(6x, 2)\\). Which of the two points has a negative eigenvalue?',
         mount: function (el, ctx) {
           function f(x, y) { return x * x * x - 3 * x + y * y; }
           var s = M4.surface3d(el, { f: f, r: 2, n: 26, color: C.red, contours: [-1.5, -1, 0, 1, 2, 3] });
@@ -278,9 +278,9 @@
               var a = M4.pick([2, 3, 4, 5]), c = M4.pick([1, 2]) * (Math.random() < 0.5 ? -1 : 1);
               var top = a + Math.abs(c);
               return {
-                q: '<p>\\(H = \\begin{pmatrix} ' + a + ' & ' + c + ' \\\\ ' + c + ' & ' + a + ' \\end{pmatrix}\\). Its eigenvectors are \\((1, 1)\\) and \\((1, -1)\\). What is the bound \\(2/\\lambda_{\\max}\\)?</p>',
+                q: '<p>\\(H = \\begin{pmatrix} ' + a + ' & ' + c + ' \\\\ ' + c + ' & ' + a + ' \\end{pmatrix}\\). Its eigenvectors are \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\). What is the bound \\(2/\\lambda_{\\max}\\)?</p>',
                 answer: 2 / top, tol: 0.01,
-                explain: 'Multiplying \\((1, 1)\\) by \\(H\\) gives \\(' + (a + c) + '(1, 1)\\), and \\((1, -1)\\) gives \\(' + (a - c) + '(1, -1)\\). So \\(\\lambda_{\\max} = ' + top + '\\) and the bound is \\(' + M4.fmt(2 / top, 3) + '\\).'
+                explain: 'Multiplying \\(\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) by \\(H\\) gives \\(' + (a + c) + '\\begin{pmatrix}1\\\\1\\end{pmatrix}\\), and \\(\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) gives \\(' + (a - c) + '\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\). So \\(\\lambda_{\\max} = ' + top + '\\) and the bound is \\(' + M4.fmt(2 / top, 3) + '\\).'
               };
             }
           });

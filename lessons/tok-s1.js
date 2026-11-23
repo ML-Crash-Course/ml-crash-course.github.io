@@ -173,7 +173,7 @@
     id: 'tok-s1',
     module: 'language',
     title: 'Tokens',
-    summary: 'How text becomes a sequence of numbers, and how byte pair encoding learns its pieces.',
+    summary: 'Text has to be converted into a sequence of numbers before a model can use it. Byte pair encoding learns which pieces of text to use as tokens.',
     minutes: 12,
     steps: [
       {

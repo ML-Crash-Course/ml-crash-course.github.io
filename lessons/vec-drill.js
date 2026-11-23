@@ -68,7 +68,7 @@
       hint: 'First form the difference ' + T('\\mathbf b - \\mathbf a') + '. Its length is the distance, and dividing it by that length gives a unit vector.',
       fields: [{ label: T('\\|\\mathbf b - \\mathbf a\\|'), answer: L, tol: 0 }, { label: 'Unit vector', answer: u, tol: 0.006 }],
       solution: lines(['\\mathbf b - \\mathbf a = ' + D.vec(d), '\\|\\mathbf b - \\mathbf a\\| = \\sqrt{' + sq(d) + '} = ' + L, '\\frac{\\mathbf b - \\mathbf a}{' + L + '} = ' + D.mat(d.map(function (x) { return [frac(x, L)]; }))]) +
-        '<p>A unit vector keeps only the direction. Its own length is exactly 1.</p>'
+        '<p>A unit vector keeps only the direction. Its length is 1.</p>'
     };
   }
 
@@ -161,5 +161,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'vec-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'vec-drill', module: 'vectors', title: 'Vector practice', summary: 'Eight levels of endless problems on dot products, norms, projections and linear combinations.', minutes: 20, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'vec-drill', module: 'vectors', title: 'Vector practice', summary: 'Practice problems on dot products, norms, projections and linear combinations, arranged in eight levels. New problems are generated each time.', minutes: 20, free: true, drill: true, steps: steps });
 })();

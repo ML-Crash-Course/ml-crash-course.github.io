@@ -226,7 +226,7 @@
     id: 'l4-s3',
     module: 'l4',
     title: 'Backpropagation in numbers',
-    summary: 'A forward and a backward pass through a small network in numbers, the matrix form of backpropagation, and why gradients vanish or explode in deep chains.',
+    summary: 'A forward and a backward pass through a small network, computed with concrete numbers. Written in matrix form, the same computation shows why gradients vanish or explode in long chains.',
     minutes: 12,
     steps: [
       // 1 ---------------------------------------------------------------
@@ -235,7 +235,7 @@
         title: 'Learning goals',
         html:
           '<p>Gradient descent needs the derivative of the loss \\(L\\) with respect to every weight. Backpropagation delivers all of them for roughly the cost of two forward passes.</p>' +
-          '<p>In this lesson you will run a forward and a backward pass through a small network on paper, state the same computation in matrix form, and explain why the gradient can vanish or explode when many layers are chained.</p>'
+          '<p>After this lesson you should be able to run a forward and a backward pass through a small network on paper, state the same computation in matrix form, and explain why the gradient can vanish or explode when many layers are chained.</p>'
       },
       // 2 ---------------------------------------------------------------
       {
@@ -398,7 +398,7 @@
               ctx.note('With \\(z &lt; 0\\) the ReLU blocks the gradient: \\(\\partial L/\\partial w_1 = \\partial L/\\partial b_1 = 0\\). Since \\(h = 0\\), also \\(\\partial L/\\partial w_2 = \\frac{\\partial L}{\\partial \\hat y} \\cdot h = 0\\). No weight receives an update from this input.');
               ctx.solved();
             } else if (r.z === 0) {
-              ctx.note('Here \\(z\\) is exactly \\(0\\), the kink of the ReLU. Lower \\(b_1\\) one more step so that \\(z\\) is negative.');
+              ctx.note('Here \\(z\\) is \\(0\\), the kink of the ReLU. Lower \\(b_1\\) one more step so that \\(z\\) is negative.');
             } else {
               ctx.note('The unit is still active: \\(z = ' + String(Math.round(r.z * 100) / 100) + ' &gt; 0\\), so the gradient passes through unchanged.');
             }
@@ -492,7 +492,7 @@
         kind: 'exercise',
         title: 'The outer product',
         html:
-          '<p>Let the output layer have two units with \\(\\delta_2 = (2, -1)^\\top\\), and let the hidden layer have three units with \\(h = (1, 0, 3)^\\top\\). Then \\(W_2\\) is a \\(2 \\times 3\\) matrix, and so is \\(\\nabla W_2 = \\delta_2 h^\\top\\).</p>' +
+          '<p>Let the output layer have two units with \\(\\delta_2 = \\begin{pmatrix}2\\\\-1\\end{pmatrix}\\), and let the hidden layer have three units with \\(h = \\begin{pmatrix}1\\\\0\\\\3\\end{pmatrix}\\). Then \\(W_2\\) is a \\(2 \\times 3\\) matrix, and so is \\(\\nabla W_2 = \\delta_2 h^\\top\\).</p>' +
           '<p>The entry in row \\(i\\) and column \\(j\\) is \\(\\delta_{2,i} \\cdot h_j\\). Set all six entries with the plus and minus buttons, then check.</p>',
         hint: 'Multiply the row label by the column label. A hidden unit with h = 0 gives a whole column of zeros: its outgoing weights receive no gradient.',
         mount: function (el, ctx) {
@@ -563,7 +563,7 @@
             var p = Math.pow(f, 50);
             chart.set(f);
             rd.textContent = 'gradient at layer 1: ' + f.toFixed(2) + '\u2075\u2070 \u2248 ' + sci(p);
-            tag.textContent = p < 0.5 ? 'vanishes' : (p > 2 ? 'explodes' : 'survives');
+            tag.textContent = p < 0.5 ? 'vanishes' : (p > 2 ? 'explodes' : 'stays stable');
             tag.style.color = p < 0.5 || p > 2 ? RED : GREEN;
           }
           var sl = M4.slider(wrap, { min: 0.5, max: 1.5, step: 0.01, value: 0.8, label: 'factor per layer f', format: function (v) { return (+v).toFixed(2); }, onInput: function (v) { upd(+v); } });
@@ -644,7 +644,7 @@
           '<ul>' +
           '<li>The forward pass computes and stores every value from left to right. The backward pass moves from the loss to the left, and each node multiplies the incoming gradient by its local derivative. In the example, \\(2.2 \\to 3.52 \\to 3.52\\), and a ReLU with \\(z &lt; 0\\) sets everything to its left to \\(0\\).</li>' +
           '<li>A weight gradient is the incoming gradient times the input that weight saw, and gradients arriving along several paths are summed. In matrix form: \\(\\nabla W_2 = \\delta_2 h^\\top\\), \\(\\delta_1 = (W_2^\\top \\delta_2) \\odot \\varphi\'(z_1)\\), \\(\\nabla W_1 = \\delta_1 x^\\top\\), which is what <code>loss.backward()</code> executes.</li>' +
-          '<li>Depth multiplies one factor per layer: \\(0.8^{50} \\approx 10^{-5}\\) vanishes, \\(1.2^{50} \\approx 9000\\) explodes, and only a factor close to \\(1\\) survives. The forward pass has the same problem for the activations, which motivates careful initialization.</li>' +
+          '<li>Depth multiplies one factor per layer: \\(0.8^{50} \\approx 10^{-5}\\) vanishes, \\(1.2^{50} \\approx 9000\\) explodes, and only a factor close to \\(1\\) keeps the gradient at a usable size. The forward pass has the same problem for the activations, which motivates careful initialization.</li>' +
           '</ul>'
       }
     ]

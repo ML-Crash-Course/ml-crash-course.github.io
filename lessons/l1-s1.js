@@ -543,14 +543,14 @@
     id: 'l1-s1',
     module: 'l1',
     title: 'What deep learning produces',
-    summary: 'How current deep learning systems generate text token by token, generate images by removing noise, and find structure in data without labels.',
+    summary: 'An overview of current deep learning systems. Language models generate text one token at a time, image models generate pictures by removing noise, and other methods find structure in unlabelled data.',
     minutes: 10,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: '<p>Computer programs can now answer almost any question put to them, write most of a program, and produce images and video. The field that enabled this is called <b>deep learning</b>.</p>' +
-          '<p>In this lesson you will describe, with a small numerical model of each, three things such systems do: generating text one token at a time, generating an image by removing noise step by step, and grouping data without being told what the groups are.</p>'
+          '<p>Such systems do three things, each shown here with a small numerical model. They generate text one token at a time, generate an image by removing noise step by step, and group data without being told what the groups are.</p>'
       },
       {
         kind: 'explore',

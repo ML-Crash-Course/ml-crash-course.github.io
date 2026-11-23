@@ -103,7 +103,7 @@
       lax.set(clamp(Ax, -5.3, 5.3) - 0.6, clamp(Ay, -5.4, 5.4) + 0.5, 'Ax');
       r1.textContent = 'x = ' + lin(c1, c2);
       r2.textContent = 'Ax = ' + lin(3 * c1, c2);
-      r3.textContent = 'Ax = (' + fmt(Ax, 1) + ', ' + fmt(Ay, 1) + ')';
+      r3.innerHTML = M4.tex('A\\mathbf{x} = ' + M4.col([fmt(Ax, 1), fmt(Ay, 1)]));
     }
     var h = p.handle(1.5, 0.5, {
       color: INK, snap: 0,
@@ -210,7 +210,7 @@
     var r1 = readout(row), r2 = readout(row);
     function show(x, y) {
       setArrow(arr, 0, 0, x, y);
-      r1.textContent = 'handle = (' + fmt(x, 0) + ', ' + fmt(y, 0) + ')';
+      r1.innerHTML = M4.tex('\\text{handle} = ' + M4.col([fmt(x, 0), fmt(y, 0)]));
       r2.textContent = 'handle = ' + lin(c1of(x, y), c2of(x, y), 1);
     }
     var h = p.handle(-2, 3, {
@@ -224,12 +224,12 @@
           done = true;
           g1.el.style.display = ''; g2.el.style.display = '';
           if (h.el && h.el.classList) h.el.classList.add('m4-pop');
-          ctx.note('\\(Ax = 3\\cdot 1\\,v_1 + 1\\cdot 2\\,v_2 = (5,1)\\).');
+          ctx.note('\\(Ax = 3\\cdot 1\\,v_1 + 1\\cdot 2\\,v_2 = \\begin{pmatrix}5\\\\1\\end{pmatrix}\\).');
           ctx.solved();
         } else if (x === 3 && y === -1) {
           ctx.wrong('This is \\(x\\) itself. The component along \\(v_1\\) must be multiplied by 3.');
         } else {
-          ctx.wrong('The handle has eigen-coordinates \\((' + c1of(x, y).toFixed(1) + ',\\ ' + c2of(x, y).toFixed(1) + ')\\). The target has \\((3\\cdot 1,\\ 1\\cdot 2)\\).');
+          ctx.wrong('The handle has eigen-coordinates \\(' + M4.col([c1of(x, y).toFixed(1), c2of(x, y).toFixed(1)]) + '\\). The target has \\(\\begin{pmatrix}3\\cdot 1\\\\1\\cdot 2\\end{pmatrix}\\).');
         }
       }
     });
@@ -243,7 +243,7 @@
     M4.numberInput(w, {
       answer: 28, tolerance: 0.01, placeholder: 'first component', label: 'First component of A³x',
       onCorrect: function () {
-        ctx.note('\\(A^3x = 27\\,(1,1) + (1,-1) = (28,\\,26)\\).');
+        ctx.note('\\(A^3x = 27\\,\\begin{pmatrix}1\\\\1\\end{pmatrix} + \\begin{pmatrix}1\\\\-1\\end{pmatrix} = \\begin{pmatrix}28\\\\26\\end{pmatrix}\\).');
         ctx.solved();
       },
       onWrong: function (v) {
@@ -334,7 +334,7 @@
     function show(k) {
       var v = vecAt(k), n = Math.hypot(v[0], v[1]);
       setArrow(arr, 0, 0, 4 * v[0] / n, 4 * v[1] / n);
-      rv.textContent = 'A^' + k + ' x = (' + fmt(v[0]) + ', ' + fmt(v[1]) + ')';
+      rv.innerHTML = M4.tex('A^{' + k + '}\\mathbf{x} = ' + M4.col([fmt(v[0]), fmt(v[1])]));
       ra.textContent = 'angle to v₁ line = ' + fmt(angleToV1(v[0], v[1]), 2) + '°';
     }
     var sl = M4.slider(w, {
@@ -439,14 +439,14 @@
     id: 'eigen-s4',
     module: 'eigen',
     title: 'Diagonalisation and repeated maps',
-    summary: 'Write a matrix as P D P⁻¹, see that it only stretches in its eigenbasis, and predict what repeated application does.',
+    summary: 'A matrix with enough eigenvectors can be written as P D P⁻¹. In its eigenbasis it only stretches, so the effect of applying it many times is easy to predict.',
     minutes: 12,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
         html: '<p>A matrix with enough eigenvectors can be described completely by them. Such a matrix \\(A\\) can be written as a product \\(A = PDP^{-1}\\). In the basis of its eigenvectors \\(A\\) acts as a pure stretch, which makes the result of applying \\(A\\) many times easy to predict.</p>' +
-          '<p>In this lesson you will assemble \\(P\\) and \\(D\\) from eigenvectors and eigenvalues, compute \\(A^k x\\) without multiplying matrices, and identify the dominant eigenvector that repeated application converges to.</p>'
+          '<p>You will learn to assemble \\(P\\) and \\(D\\) from eigenvectors and eigenvalues, compute \\(A^k x\\) without multiplying matrices, and identify the dominant eigenvector that repeated application converges to.</p>'
       },
       {
         kind: 'text',
@@ -458,7 +458,7 @@
       {
         kind: 'explore',
         title: 'Stretching in the eigenbasis',
-        html: '<p>The matrix \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\) has eigenvectors \\(v_1=(1,1)\\) with \\(\\lambda_1=3\\) and \\(v_2=(1,-1)\\) with \\(\\lambda_2=1\\). Any vector can be written as \\(x = c_1v_1 + c_2v_2\\). The numbers \\(c_1, c_2\\) are its coordinates in the eigenbasis. Applying \\(A\\) gives \\(Ax = 3c_1v_1 + 1c_2v_2\\): the first coordinate is tripled and the second is unchanged.</p>',
+        html: '<p>The matrix \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\) has eigenvectors \\(v_1=\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) with \\(\\lambda_1=3\\) and \\(v_2=\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\) with \\(\\lambda_2=1\\). Any vector can be written as \\(x = c_1v_1 + c_2v_2\\). The numbers \\(c_1, c_2\\) are its coordinates in the eigenbasis. Applying \\(A\\) gives \\(Ax = 3c_1v_1 + 1c_2v_2\\): the first coordinate is tripled and the second is unchanged.</p>',
         mount: mountDecompose
       },
       {
@@ -471,7 +471,7 @@
       {
         kind: 'exercise',
         title: 'Applying A in the eigenbasis',
-        html: '<p>The vector \\(x = 1\\,v_1 + 2\\,v_2 = (3,-1)\\) is shown with its two components along the eigenvectors. For the same matrix \\(A\\) with \\(\\lambda_1 = 3\\) and \\(\\lambda_2 = 1\\), drag the orange handle to \\(Ax\\).</p>',
+        html: '<p>The vector \\(x = 1\\,v_1 + 2\\,v_2 = \\begin{pmatrix}3\\\\-1\\end{pmatrix}\\) is shown with its two components along the eigenvectors. For the same matrix \\(A\\) with \\(\\lambda_1 = 3\\) and \\(\\lambda_2 = 1\\), drag the orange handle to \\(Ax\\).</p>',
         hint: 'Multiply the coordinate along v₁ by 3 and leave the coordinate along v₂ as it is: Ax = 3·v₁ + 2·v₂. Add the two vectors.',
         mount: mountPlaceAx
       },
@@ -485,20 +485,20 @@
       {
         kind: 'exercise',
         title: 'Powers through eigenvalues',
-        html: '<p>Let \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\) as before and \\(x = v_1 + v_2 = (2,0)\\), so \\(c_1 = c_2 = 1\\). Compute the first component of \\(A^3x\\).</p>',
+        html: '<p>Let \\(A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}\\) as before and \\(x = v_1 + v_2 = \\begin{pmatrix}2\\\\0\\end{pmatrix}\\), so \\(c_1 = c_2 = 1\\). Compute the first component of \\(A^3x\\).</p>',
         hint: 'A³x = 3³·v₁ + 1³·v₂ = 27·(1,1) + (1,−1).',
         mount: mountPower
       },
       {
         kind: 'explore',
         title: 'Repeated application',
-        html: '<p>The matrix \\(A=\\begin{pmatrix}0.8&0.3\\\\0.3&0.8\\end{pmatrix}\\) has the same eigenvectors \\(v_1=(1,1)\\) and \\(v_2=(1,-1)\\), now with eigenvalues \\(1.1\\) and \\(0.5\\). Each application multiplies the \\(v_2\\) coordinate by \\(0.5\\) and the \\(v_1\\) coordinate by \\(1.1\\), so the vector turns towards the line through \\(v_1\\). The eigenvector whose eigenvalue has the largest absolute value is called the dominant eigenvector.</p>',
+        html: '<p>The matrix \\(A=\\begin{pmatrix}0.8&0.3\\\\0.3&0.8\\end{pmatrix}\\) has the same eigenvectors \\(v_1=\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(v_2=\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\), now with eigenvalues \\(1.1\\) and \\(0.5\\). Each application multiplies the \\(v_2\\) coordinate by \\(0.5\\) and the \\(v_1\\) coordinate by \\(1.1\\), so the vector turns towards the line through \\(v_1\\). The eigenvector whose eigenvalue has the largest absolute value is called the dominant eigenvector.</p>',
         mount: mountIterate
       },
       {
         kind: 'exercise',
         title: 'Rate of convergence',
-        html: '<p>For the same matrix with eigenvalues \\(1.1\\) and \\(0.5\\), start from \\(x = (3,-1) = 1\\,v_1 + 2\\,v_2\\). Find the smallest number of applications \\(k\\) for which the angle between \\(A^kx\\) and the line through the dominant eigenvector \\(v_1\\) is below \\(5^\\circ\\). Set \\(k\\) with the slider and press Check.</p>',
+        html: '<p>For the same matrix with eigenvalues \\(1.1\\) and \\(0.5\\), start from \\(x = \\begin{pmatrix}3\\\\-1\\end{pmatrix} = 1\\,v_1 + 2\\,v_2\\). Find the smallest number of applications \\(k\\) for which the angle between \\(A^kx\\) and the line through the dominant eigenvector \\(v_1\\) is below \\(5^\\circ\\). Set \\(k\\) with the slider and press Check.</p>',
         hint: 'The ratio of the two eigen-coordinates is 2·(0.5/1.1)^k, and this ratio is the tangent of the angle. It must fall below tan 5° ≈ 0.087.',
         mount: mountSmallestK
       },
@@ -512,7 +512,7 @@
       {
         kind: 'exercise',
         title: 'Exceptional start vectors',
-        html: '<p>For \\(A=\\begin{pmatrix}0.8&0.3\\\\0.3&0.8\\end{pmatrix}\\) with eigenvalues \\(1.1\\) on \\(v_1=(1,1)\\) and \\(0.5\\) on \\(v_2=(1,-1)\\), almost every start vector is pulled towards the dominant direction and grows. Drag the dark handle to a nonzero start vector \\(x_0\\) whose iterates \\(A^kx_0\\) shrink to zero instead.</p>',
+        html: '<p>For \\(A=\\begin{pmatrix}0.8&0.3\\\\0.3&0.8\\end{pmatrix}\\) with eigenvalues \\(1.1\\) on \\(v_1=\\begin{pmatrix}1\\\\1\\end{pmatrix}\\) and \\(0.5\\) on \\(v_2=\\begin{pmatrix}1\\\\-1\\end{pmatrix}\\), almost every start vector is pulled towards the dominant direction and grows. Drag the dark handle to a nonzero start vector \\(x_0\\) whose iterates \\(A^kx_0\\) shrink to zero instead.</p>',
         hint: 'The growth comes entirely from the coordinate c₁ along v₁. Choose a start vector with c₁ = 0, that is, a point on the purple dashed line.',
         mount: mountException
       },

@@ -233,13 +233,13 @@
     id: 'l1-s4',
     module: 'l1',
     title: 'Fitting, capacity and classification',
-    summary: 'Residuals and the train error of a fitted line, overfitting and underfitting, the notation w-transpose-phi and W phi for many inputs and outputs, and the sigmoid and softmax that turn regression into classification.',
+    summary: 'Fitting a line to data and measuring its error with residuals leads to the ideas of overfitting and underfitting. Vector notation handles many inputs and outputs, and the sigmoid and softmax functions turn regression into classification.',
     minutes: 14,
     steps: [
       {
         kind: 'text',
         title: 'Learning goals',
-        html: '<p>A regression model \\(f_w(x)\\) maps an input \\(x\\) to a number, and its parameters \\(w\\) (the weights) determine which function it is.</p><p>In this lesson you will measure how wrong a fitted line is, recognise underfitting and overfitting from train and test error, write a model with several inputs and outputs as \\(f(x) = W\\,\\phi(x)\\), and turn a regression function into a classifier with a squashing function.</p>'
+        html: '<p>A regression model \\(f_w(x)\\) maps an input \\(x\\) to a number, and its parameters \\(w\\) (the weights) determine which function it is.</p><p>By the end you can measure how wrong a fitted line is, recognise underfitting and overfitting from train and test error, write a model with several inputs and outputs as \\(f(x) = W\\,\\phi(x)\\), and turn a regression function into a classifier with a squashing function.</p>'
       },
       {
         kind: 'explore',
@@ -270,7 +270,7 @@
       {
         kind: 'exercise',
         title: 'The feature vector',
-        html: '<p>A polynomial can be written as a product of two vectors. The parameter vector \\(w = (w_0, w_1, w_2, w_3)\\) holds one weight per power, and the feature vector \\(\\phi(x) = (1, x, x^2, x^3)\\) holds the powers of the input, so that \\(f_w(x) = w^\\top \\phi(x)\\): each weight is multiplied by its own feature and the products are summed. For the input \\(x = 2\\), drag the correct numbers into the four entries of \\(\\phi(2)\\).</p>',
+        html: '<p>A polynomial can be written as a product of two vectors. The parameter vector \\(w = \\begin{pmatrix}w_0\\\\w_1\\\\w_2\\\\w_3\\end{pmatrix}\\) holds one weight per power, and the feature vector \\(\\phi(x) = \\begin{pmatrix}1\\\\x\\\\x^2\\\\x^3\\end{pmatrix}\\) holds the powers of the input, so that \\(f_w(x) = w^\\top \\phi(x)\\): each weight is multiplied by its own feature and the products are summed. For the input \\(x = 2\\), drag the correct numbers into the four entries of \\(\\phi(2)\\).</p>',
         hint: 'The entries are the powers of 2 in order: 2 to the power 0, 1, 2 and 3.',
         mount: function (el, ctx) {
           injectStyle();
@@ -326,7 +326,7 @@
       {
         kind: 'exercise',
         title: 'More inputs',
-        html: '<p>Instead of more powers of one variable, a model can take several variables: yesterday’s stock price \\(x_1\\), the oil price \\(x_2\\), and a news indicator \\(x_3\\). In the simplest case there is one weight per variable plus an offset \\(w_0\\), so \\(\\phi(x) = (1, x_1, x_2, x_3)\\) and \\(f_w(x) = w^\\top\\phi(x)\\) describes a plane instead of a line. For the inputs \\(x = (2, 3, 4)\\) and the weights shown, compute the prediction. Tapping a column reveals its product.</p>',
+        html: '<p>Instead of more powers of one variable, a model can take several variables: yesterday’s stock price \\(x_1\\), the oil price \\(x_2\\), and a news indicator \\(x_3\\). In the simplest case there is one weight per variable plus an offset \\(w_0\\), so \\(\\phi(x) = \\begin{pmatrix}1\\\\x_1\\\\x_2\\\\x_3\\end{pmatrix}\\) and \\(f_w(x) = w^\\top\\phi(x)\\) describes a plane instead of a line. For the inputs \\(x = \\begin{pmatrix}2\\\\3\\\\4\\end{pmatrix}\\) and the weights shown, compute the prediction. Tapping a column reveals its product.</p>',
         hint: 'Multiply each weight by the feature below it, then add the four products. The offset is multiplied by 1.',
         mount: function (el, ctx) {
           injectStyle();
@@ -365,7 +365,7 @@
       {
         kind: 'exercise',
         title: 'More outputs',
-        html: '<p>A model can also produce several outputs, and the only thing that changes is the shape of the weights. The weight matrix \\(W\\) has one row per output and one column per feature, and \\(f(x) = W\\,\\phi(x)\\) multiplies each row with the same feature vector independently. Here \\(\\phi(x) = (1, x, x^2)\\). The first row of \\(W\\) predicts the monthly rent and the second row predicts the heating cost. Compute both outputs for \\(x = 2\\).</p>',
+        html: '<p>A model can also produce several outputs, and the only thing that changes is the shape of the weights. The weight matrix \\(W\\) has one row per output and one column per feature, and \\(f(x) = W\\,\\phi(x)\\) multiplies each row with the same feature vector independently. Here \\(\\phi(x) = \\begin{pmatrix}1\\\\x\\\\x^2\\end{pmatrix}\\). The first row of \\(W\\) predicts the monthly rent and the second row predicts the heating cost. Compute both outputs for \\(x = 2\\).</p>',
         hint: 'For x = 2 the feature vector is (1, 2, 4). Treat each row of W as its own weight vector and compute its product with (1, 2, 4).',
         mount: function (el, ctx) {
           injectStyle();
@@ -392,7 +392,7 @@
                 ok[i] = true;
                 cells[i].forEach(function (c) { c.style.borderColor = C.green; c.style.background = '#e4f8ee'; });
                 if (ok[0] && ok[1]) {
-                  ctx.note('Row 1: ' + expl[0] + '. Row 2: ' + expl[1] + '. The output is the vector \\((6, 2)\\).');
+                  ctx.note('Row 1: ' + expl[0] + '. Row 2: ' + expl[1] + '. The output is the vector \\(\\begin{pmatrix}6\\\\2\\end{pmatrix}\\).');
                   ctx.solved();
                 } else {
                   ctx.note('Row ' + (i + 1) + ': ' + expl[i] + '. Now compute the other output.');
@@ -506,7 +506,7 @@
       {
         kind: 'exercise',
         title: 'Softmax and the final decision',
-        html: '<p>With the three classes cat, dog and bird the model has one output per class, \\(z = (z_1, z_2, z_3)\\). The <em>softmax</em> turns these numbers into probabilities \\(p_k = \\dfrac{e^{z_k}}{e^{z_1} + e^{z_2} + e^{z_3}}\\), each between 0 and 1 and all summing to 1. The classification is the class with the highest probability. Change the outputs so that the model classifies the image as a bird with probability at least \\(0.7\\), marked on the bird bar, then press Check.</p>',
+        html: '<p>With the three classes cat, dog and bird the model has one output per class, \\(z = \\begin{pmatrix}z_1\\\\z_2\\\\z_3\\end{pmatrix}\\). The <em>softmax</em> turns these numbers into probabilities \\(p_k = \\dfrac{e^{z_k}}{e^{z_1} + e^{z_2} + e^{z_3}}\\), each between 0 and 1 and all summing to 1. The classification is the class with the highest probability. Change the outputs so that the model classifies the image as a bird with probability at least \\(0.7\\), marked on the bird bar, then press Check.</p>',
         hint: 'Only differences between the outputs matter. Raise the bird output until it exceeds both other outputs by about 2, or lower the other two.',
         mount: function (el, ctx) {
           injectStyle();
