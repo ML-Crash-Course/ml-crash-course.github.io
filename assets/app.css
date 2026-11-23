@@ -425,5 +425,7 @@ h1,h2,.m4-hero h1,.m4-step h1,.m4-mhead h1,.m4-done h1,.m4-empty h1,.m4-track h2
 /* Module page: ink nodes, accent ring for the next lesson, like the home map */
 .m4-node-row.done .m4-node{color:var(--m4-bg)}
 .m4-node-row.next .m4-node{border-color:var(--m4-accent,#b6472b);color:var(--m4-accent,#b6472b);box-shadow:0 0 0 4px var(--m4-bg),0 0 0 5.5px var(--m4-accent,#b6472b)}
-.m4-top-in{height:59px;padding-top:0;padding-bottom:0}
+.m4-top-in{max-width:none;height:59px;padding:0 30px}
+@media(max-width:900px){.m4-top-in{padding:0 18px}}
+@media(max-width:520px){.m4-top-in{padding:0 14px}}
 .m4-lbl .m4-kick{white-space:nowrap}
