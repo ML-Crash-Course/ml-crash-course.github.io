@@ -837,10 +837,10 @@
   var REPO = 'ML-Crash-Course/ml-crash-course.github.io', REPO_URL = 'https://github.com/' + REPO;
   var MARK = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#1d1b17" stroke-width="1.4" stroke-linecap="round"><circle cx="14" cy="14" r="12.5"/><path d="M4 19 C9 19 10 8 14 8 S19 19 24 19" stroke="#b6472b" stroke-width="1.8"/><path d="M3 14h22M14 3v22" stroke-opacity=".25"/></svg>';
   function starCount(cb) {
-    var K = 'm4.stars.v1', now = Date.now();
+    var K = 'm4.stars.v2', now = Date.now();
     try {
       var c = JSON.parse(localStorage.getItem(K) || 'null');
-      if (c && now - c.t < 6 * 3600 * 1000) { cb(c.n); return; }
+      if (c && now - c.t < 10 * 60 * 1000) { cb(c.n); return; }
       if (c) cb(c.n);
     } catch (e) { /* storage blocked */ }
     if (!window.fetch) return;
