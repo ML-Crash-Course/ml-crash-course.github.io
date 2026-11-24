@@ -256,7 +256,7 @@
   M4.lesson({
     id: 'mv-s6',
     module: 'multivariable',
-    title: 'Two ways to differentiate',
+    title: 'Two ways to differentiate matrices',
     summary: 'Functions of vectors and matrices can be differentiated in two ways, by writing them as sums over indices or with a short table of matrix rules.',
     minutes: 30,
     steps: [

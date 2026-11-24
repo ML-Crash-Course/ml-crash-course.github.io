@@ -315,7 +315,7 @@
 
   var steps = [{
     kind: 'text', title: 'Matrix calculus practice',
-    html: '<p>The first levels practise the sums route from <a href="#/l/mv-s6">Two ways to differentiate</a>, the later ones the rules from <a href="#/l/mv-s5">Vector and matrix derivatives</a>. Several levels ask for both. Each level generates fresh problems for as long as you like.</p>' +
+    html: '<p>The first levels practise the sums route from <a href="#/l/mv-s6">Two ways to differentiate matrices</a>, the later ones the rules from <a href="#/l/mv-s5">Vector and matrix derivatives</a>. Several levels ask for both. Each level generates fresh problems for as long as you like.</p>' +
       D.levelList('mv-drill', LEVELS.map(function (l) { return l[0]; })) +
       '<p class="m4-note">Enter vectors and matrices entry by entry. All answers are whole numbers. Later in the course, these rules compute the gradients of neural networks.</p>'
   }];

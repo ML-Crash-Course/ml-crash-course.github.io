@@ -332,7 +332,7 @@
           '<p>The diagonal Jacobian of \\(\\phi\\) equals its own transpose. Read from right to left, this is the backward pass: start at \\(\\boldsymbol\\delta_2 = \\nabla_{\\mathbf z_2}L\\), multiply by \\(W_2^\\top\\), multiply entry by entry with \\(\\phi\'(\\mathbf z_1)\\) to get \\(\\boldsymbol\\delta_1\\), then multiply by \\(W_1^\\top\\). On the way, \\(\\partial L/\\partial W_2 = \\boldsymbol\\delta_2\\mathbf h^\\top\\) and \\(\\partial L/\\partial W_1 = \\boldsymbol\\delta_1\\mathbf x^\\top\\).</p>' +
           '<p>When the variable is itself a matrix, let the shapes decide. For \\(Y = XW\\) with known \\(G = \\partial L/\\partial Y\\), the gradient with respect to \\(X\\) contains \\(G\\) and \\(W\\) once each and has the shape of \\(X\\). Only one arrangement fits:</p>' +
           '\\[ \\underbrace{Y}_{p\\times r} = \\underbrace{X}_{p\\times q}\\,\\underbrace{W}_{q\\times r}, \\qquad \\frac{\\partial L}{\\partial X} = \\underbrace{G}_{p\\times r}\\,\\underbrace{W^\\top}_{r\\times q}, \\qquad \\frac{\\partial L}{\\partial W} = \\underbrace{X^\\top}_{q\\times p}\\,\\underbrace{G}_{p\\times r}. \\]' +
-          '<p>The pattern: \\(G\\) takes the place of \\(Y\\), the variable drops out, and every neighbour stays on its side with a transpose. So \\(Y = AXB\\) gives \\(\\partial L/\\partial X = A^\\top G B^\\top\\). Writing the product as a sum, as in <a href="#/l/mv-s6">Two ways to differentiate</a>, confirms each of these.</p>'
+          '<p>The pattern: \\(G\\) takes the place of \\(Y\\), the variable drops out, and every neighbour stays on its side with a transpose. So \\(Y = AXB\\) gives \\(\\partial L/\\partial X = A^\\top G B^\\top\\). Writing the product as a sum, as in <a href="#/l/mv-s6">Two ways to differentiate matrices</a>, confirms each of these.</p>'
       },
       {
         kind: 'text',
@@ -344,7 +344,7 @@
           '<li>For \\(\\mathbf z = W\\mathbf x + \\mathbf b\\): \\(\\partial L/\\partial W = \\boldsymbol\\delta\\mathbf x^\\top\\), \\(\\partial L/\\partial\\mathbf b = \\boldsymbol\\delta\\), \\(\\partial L/\\partial\\mathbf x = W^\\top\\boldsymbol\\delta\\).</li>' +
           '<li>Gradients chain backward through the transposed Jacobians, in reverse order. When the order or a transpose is unclear, match the shapes.</li>' +
           '</ul>' +
-          '<p class="m4-note">To make these rules automatic, work through <a href="#/l/mv-drill">Matrix calculus practice</a>. To see the same rules come out of plain sums, continue with <a href="#/l/mv-s6">Two ways to differentiate</a>.</p>'
+          '<p class="m4-note">To make these rules automatic, work through <a href="#/l/mv-drill">Matrix calculus practice</a>. To see the same rules come out of plain sums, continue with <a href="#/l/mv-s6">Two ways to differentiate matrices</a>.</p>'
       }
     ]
   });
