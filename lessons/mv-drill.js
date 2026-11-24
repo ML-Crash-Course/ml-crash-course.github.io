@@ -236,6 +236,65 @@
     };
   }
 
+  /* 14. two layers: the backward pass with numbers */
+  function lvTwo() {
+    var W1 = D.randMat(2, 2, -2, 2), x = D.randVec(2, -2, 2, true), W2 = D.randMat(2, 2, -2, 2), d2 = D.randVec(2, -2, 2, true);
+    var z1 = D.mv(W1, x);
+    if (z1[0] === 0 || z1[1] === 0 || (z1[0] < 0 && z1[1] < 0)) return null;
+    if (z1[0] > 0 && z1[1] > 0 && Math.random() < 0.6) return null;
+    var u = D.mv(D.tr(W2), d2), d1 = u.map(function (v, i) { return z1[i] > 0 ? v : 0; });
+    if (d1[0] === 0 && d1[1] === 0) return null;
+    var G = D.outer(d1, x);
+    return {
+      q: '<p>Forward: ' + T('\\mathbf z_1 = W_1\\mathbf x') + ', then ' + T('\\mathbf h = \\max(0, \\mathbf z_1)') + ' entry by entry, then ' + T('\\mathbf z_2 = W_2\\mathbf h') + '. A scalar ' + T('L') + ' of ' + T('\\mathbf z_2') + ' has known gradient ' + T('\\boldsymbol\\delta_2 = \\partial L/\\partial\\mathbf z_2') + '. Go backward to ' + T('\\partial L/\\partial W_1') + '.</p>' +
+        TT('W_1 = ' + D.mat(W1) + ',\\; \\mathbf x = ' + D.vec(x) + ',\\; W_2 = ' + D.mat(W2) + ',\\; \\boldsymbol\\delta_2 = ' + D.vec(d2)),
+      hint: 'Through ' + T('W_2') + ' the gradient is multiplied by ' + T('W_2^\\top') + '. Through the maximum it passes where ' + T('\\mathbf z_1') + ' is positive and becomes 0 elsewhere, which gives ' + T('\\boldsymbol\\delta_1 = \\partial L/\\partial\\mathbf z_1') + '. Then ' + T('\\partial L/\\partial W_1 = \\boldsymbol\\delta_1\\mathbf x^\\top') + '.',
+      fields: [{ label: T('W_2^\\top\\boldsymbol\\delta_2'), answer: u, tol: 0 }, { label: T('\\boldsymbol\\delta_1'), answer: d1, tol: 0 }, { label: T('\\partial L/\\partial W_1'), answer: G, tol: 0 }],
+      solution: lines(['\\mathbf z_1 = ' + D.mat(W1) + D.vec(x) + ' = ' + D.vec(z1),
+        'W_2^\\top\\boldsymbol\\delta_2 = ' + D.mat(D.tr(W2)) + D.vec(d2) + ' = ' + D.vec(u),
+        '\\boldsymbol\\delta_1 = W_2^\\top\\boldsymbol\\delta_2\\odot\\mathbb 1[\\mathbf z_1 > 0] = ' + D.vec(u) + '\\odot' + D.vec(z1.map(function (v) { return v > 0 ? 1 : 0; })) + ' = ' + D.vec(d1),
+        '\\frac{\\partial L}{\\partial W_1} = \\boldsymbol\\delta_1\\mathbf x^\\top = ' + D.vec(d1) + D.rowv(x) + ' = ' + D.mat(G)]) +
+        '<p>Each layer applies the same two rules: multiply by the transposed weight matrix to move the gradient back, and take the outer product with the layer input for the weights. ' + T('\\mathbf h') + ' and ' + T('\\mathbf z_2') + ' are not needed here.</p>'
+    };
+  }
+
+  /* 15. where does the transpose go: matrix products, by shapes */
+  function lvWhere() {
+    var ds = D.shuffle([2, 3, 4, 5, 6, 7]), p = ds[0], q = ds[1], r = ds[2], s = ds[3];
+    var cases = [
+      { y: 'Y = XW', dims: { X: [p, q], W: [q, r], G: [p, r] }, v: 'X', ok: 'G W^\\top', bad: ['W^\\top G', 'G^\\top W', 'X^\\top G'] },
+      { y: 'Y = XW', dims: { X: [p, q], W: [q, r], G: [p, r] }, v: 'W', ok: 'X^\\top G', bad: ['G X^\\top', 'G^\\top X', 'G W^\\top'] },
+      { y: 'Y = WX', dims: { W: [p, q], X: [q, r], G: [p, r] }, v: 'X', ok: 'W^\\top G', bad: ['G W^\\top', 'G^\\top W', 'G X^\\top'] },
+      { y: 'Y = WX', dims: { W: [p, q], X: [q, r], G: [p, r] }, v: 'W', ok: 'G X^\\top', bad: ['X^\\top G', 'X G^\\top', 'W^\\top G'] },
+      { y: 'Y = AXB', dims: { A: [p, q], X: [q, r], B: [r, s], G: [p, s] }, v: 'X', ok: 'A^\\top G B^\\top', bad: ['B^\\top G A^\\top', 'A G B', 'A^\\top G^\\top B^\\top'] }
+    ];
+    var c = pick(cases), dm = c.dims;
+    function shape(e) {
+      var ss = e.split(' ').map(function (t) { var d = dm[t[0]]; return t.indexOf('top') >= 0 ? [d[1], d[0]] : d; });
+      var cur = ss[0];
+      for (var i = 1; i < ss.length; i++) { if (cur[1] !== ss[i][0]) return null; cur = [cur[0], ss[i][1]]; }
+      return cur;
+    }
+    var want = dm[c.v];
+    function verdict(e) {
+      var sh = shape(e);
+      if (!sh) return 'undefined, the inner sizes do not match';
+      return T(sh[0] + '\\times ' + sh[1]) + (sh[0] === want[0] && sh[1] === want[1] ? '' : ', not the shape of ' + T(c.v));
+    }
+    var opts = D.shuffle([[c.ok, true]].concat(c.bad.map(function (b) { return [b, false]; })));
+    var given = Object.keys(dm).filter(function (k) { return k !== 'G'; }).map(function (k) { return T(k + ' \\in \\mathbb R^{' + dm[k][0] + '\\times ' + dm[k][1] + '}'); }).join(', ');
+    return {
+      q: '<p>Let ' + T(c.y) + ' with ' + given + '. A scalar ' + T('L') + ' of ' + T('Y') + ' has known gradient ' + T('G = \\partial L/\\partial Y \\in \\mathbb R^{' + dm.G[0] + '\\times ' + dm.G[1] + '}') + '. Which expression is ' + T('\\partial L/\\partial ' + c.v + '?') + '</p>',
+      hint: 'The answer has the shape of ' + T(c.v) + ', which is ' + T(want[0] + '\\times ' + want[1]) + '. It contains ' + T('G') + ' and the other factors of the product once each.',
+      options: opts.map(function (o) { return T(o[0]); }),
+      answer: opts.findIndex(function (o) { return o[1]; }),
+      optCols: 2,
+      solution: '<p>' + T('\\partial L/\\partial ' + c.v) + ' must have the shape ' + T(want[0] + '\\times ' + want[1]) + '. Check every candidate:</p>' +
+        '<ul>' + opts.map(function (o) { return '<li>' + T(o[0]) + ': ' + verdict(o[0]) + '</li>'; }).join('') + '</ul>' +
+        '<p>The answer is ' + T(c.ok) + '. In the product, ' + T('G') + ' takes the place of ' + T('Y') + ', the variable ' + T(c.v) + ' drops out, and each factor next to it stays on its side with a transpose.</p>'
+    };
+  }
+
   var LEVELS = [
     ['Index sums to matrices', 'Translate a sum over indices into matrix form.', lvIndex, 5],
     ['Expand a quadratic form', 'Write the function out as a polynomial and differentiate term by term.', lvExpand, 3],
@@ -249,7 +308,9 @@
     ['Squared error by a matrix', 'The gradient of the squared length of Wx minus y with respect to W.', lvWx, 3],
     ['The outer product rule', 'Gradients with respect to W and b when the gradient with respect to z = Wx + b is known.', lv5, 4],
     ['Through max(0, z)', 'The chain rule through Wx + b and an entrywise maximum.', lv6, 3],
-    ['Stacked inputs', 'Find the gradient with respect to W by matching shapes.', lv8, 4]
+    ['Stacked inputs', 'Find the gradient with respect to W by matching shapes.', lv8, 4],
+    ['Two layers', 'The chain rule backward through two matrix layers and a ReLU, with numbers.', lvTwo, 3],
+    ['Where does the transpose go', 'Gradients of matrix products, found by matching shapes.', lvWhere, 4]
   ];
 
   var steps = [{
@@ -262,5 +323,5 @@
     steps.push({ kind: 'exercise', title: 'Level ' + (i + 1) + ': ' + l[0], html: '<p>' + l[1] + '</p>', mount: function (el, ctx) { M4.drill(el, ctx, { gen: function () { for (var t = 0; t < 200; t++) { var p = l[2](); if (p) return p; } return l[2](); }, n: l[3], key: 'mv-drill:' + (i + 1) }); } });
   });
 
-  M4.lesson({ id: 'mv-drill', module: 'multivariable', title: 'Matrix calculus practice', summary: 'Practice problems on index notation, gradients, Jacobians and derivatives with respect to a matrix, arranged in thirteen levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
+  M4.lesson({ id: 'mv-drill', module: 'multivariable', title: 'Matrix calculus practice', summary: 'Practice problems on index notation, gradients, Jacobians and derivatives with respect to a matrix, arranged in fifteen levels. New problems are generated each time.', minutes: 25, free: true, drill: true, steps: steps });
 })();

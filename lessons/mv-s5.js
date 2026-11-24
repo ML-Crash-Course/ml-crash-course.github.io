@@ -321,12 +321,28 @@
       },
       {
         kind: 'text',
+        title: 'The chain rule with matrices',
+        html: '<p>For one input and one output the chain rule is a product of numbers, and the order of the factors does not matter. With vectors the factors are Jacobians, and matrix products do not commute. So the order and the transposes need care.</p>' +
+          '<p>Take \\(\\mathbf z = W\\mathbf x\\) followed by a scalar loss \\(L(\\mathbf z)\\). The Jacobian chain rule multiplies from the output back to the input:</p>' +
+          '\\[ \\frac{\\partial L}{\\partial \\mathbf x} = \\underbrace{\\frac{\\partial L}{\\partial \\mathbf z}}_{1\\times m}\\;\\underbrace{W}_{m\\times n}. \\]' +
+          '<p>This is a row with one entry per input. The gradient holds the same numbers as a column, so transpose the whole product. Since \\((AB)^\\top = B^\\top A^\\top\\), the factors swap places and each one gets a transpose:</p>' +
+          '\\[ \\nabla_{\\mathbf x} L = W^\\top \\boldsymbol\\delta, \\qquad \\boldsymbol\\delta = \\nabla_{\\mathbf z} L. \\]' +
+          '<p>This is where the transpose in \\(W^\\top\\boldsymbol\\delta\\) comes from. With two layers, \\(\\mathbf z_1 = W_1\\mathbf x\\), \\(\\mathbf h = \\phi(\\mathbf z_1)\\) and \\(\\mathbf z_2 = W_2\\mathbf h\\), the same steps give</p>' +
+          '\\[ \\nabla_{\\mathbf x} L = W_1^\\top\\, \\mathrm{diag}\\big(\\phi\'(\\mathbf z_1)\\big)\\, W_2^\\top\\, \\boldsymbol\\delta_2. \\]' +
+          '<p>The diagonal Jacobian of \\(\\phi\\) equals its own transpose. Read from right to left, this is the backward pass: start at \\(\\boldsymbol\\delta_2 = \\nabla_{\\mathbf z_2}L\\), multiply by \\(W_2^\\top\\), multiply entry by entry with \\(\\phi\'(\\mathbf z_1)\\) to get \\(\\boldsymbol\\delta_1\\), then multiply by \\(W_1^\\top\\). On the way, \\(\\partial L/\\partial W_2 = \\boldsymbol\\delta_2\\mathbf h^\\top\\) and \\(\\partial L/\\partial W_1 = \\boldsymbol\\delta_1\\mathbf x^\\top\\).</p>' +
+          '<p>When the variable is itself a matrix, let the shapes decide. For \\(Y = XW\\) with known \\(G = \\partial L/\\partial Y\\), the gradient with respect to \\(X\\) contains \\(G\\) and \\(W\\) once each and has the shape of \\(X\\). Only one arrangement fits:</p>' +
+          '\\[ \\underbrace{Y}_{p\\times r} = \\underbrace{X}_{p\\times q}\\,\\underbrace{W}_{q\\times r}, \\qquad \\frac{\\partial L}{\\partial X} = \\underbrace{G}_{p\\times r}\\,\\underbrace{W^\\top}_{r\\times q}, \\qquad \\frac{\\partial L}{\\partial W} = \\underbrace{X^\\top}_{q\\times p}\\,\\underbrace{G}_{p\\times r}. \\]' +
+          '<p>The pattern: \\(G\\) takes the place of \\(Y\\), the variable drops out, and every neighbour stays on its side with a transpose. So \\(Y = AXB\\) gives \\(\\partial L/\\partial X = A^\\top G B^\\top\\). Writing the product as a sum, as in <a href="#/l/mv-s6">Two ways to differentiate</a>, confirms each of these.</p>'
+      },
+      {
+        kind: 'text',
         title: 'Recap',
         html: '<ul>' +
           '<li>The gradient of a scalar has the shape of the variable: a vector for a vector, a matrix for a matrix.</li>' +
           '<li>\\(\\nabla(\\mathbf a^\\top\\mathbf x) = \\mathbf a\\), \\(\\nabla(\\mathbf x^\\top A\\mathbf x) = (A + A^\\top)\\mathbf x\\) and \\(\\nabla\\lVert\\mathbf x\\rVert^2 = 2\\mathbf x\\).</li>' +
           '<li>The Jacobian of \\(\\mathbf f : \\mathbb R^n \\to \\mathbb R^m\\) is \\(m \\times n\\) and is the best linear approximation of \\(\\mathbf f\\) near a point. Jacobians of a composition multiply.</li>' +
           '<li>For \\(\\mathbf z = W\\mathbf x + \\mathbf b\\): \\(\\partial L/\\partial W = \\boldsymbol\\delta\\mathbf x^\\top\\), \\(\\partial L/\\partial\\mathbf b = \\boldsymbol\\delta\\), \\(\\partial L/\\partial\\mathbf x = W^\\top\\boldsymbol\\delta\\).</li>' +
+          '<li>Gradients chain backward through the transposed Jacobians, in reverse order. When the order or a transpose is unclear, match the shapes.</li>' +
           '</ul>' +
           '<p class="m4-note">To make these rules automatic, work through <a href="#/l/mv-drill">Matrix calculus practice</a>. To see the same rules come out of plain sums, continue with <a href="#/l/mv-s6">Two ways to differentiate</a>.</p>'
       }
