@@ -234,6 +234,7 @@ h1,h2,h3{line-height:1.2;letter-spacing:0;margin:0;font-weight:400}
 .m4-done{text-align:center;padding:24px 0 10px;display:flex;flex-direction:column;align-items:center;gap:8px}
 .m4-done h1{font-size:clamp(32px,6vw,46px)}
 .m4-done p{color:var(--m4-muted);margin:0;font-size:20px}
+.m4-done .m4-star-ask{font-size:16px;margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;animation:m4fadeup .5s ease .8s both}
 .m4-trophy{width:min(240px,64vw);height:auto;overflow:visible}
 @keyframes m4draw{from{stroke-dashoffset:var(--len,600)}to{stroke-dashoffset:0}}
 .m4-trophy .draw{stroke-dasharray:var(--len,600);animation:m4draw 1.4s ease both}

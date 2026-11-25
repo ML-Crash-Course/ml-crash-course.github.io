@@ -836,6 +836,21 @@
 
   var REPO = 'ML-Crash-Course/ml-crash-course.github.io', REPO_URL = 'https://github.com/' + REPO;
   var MARK = '<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#1d1b17" stroke-width="1.4" stroke-linecap="round"><circle cx="14" cy="14" r="12.5"/><path d="M4 19 C9 19 10 8 14 8 S19 19 24 19" stroke="#b6472b" stroke-width="1.8"/><path d="M3 14h22M14 3v22" stroke-opacity=".25"/></svg>';
+  /* A quiet star prompt on the finish screen. Shown from the second finished
+     lesson on, and never again once the link was clicked. */
+  function starAsk(parent) {
+    var K = 'm4.starAsk';
+    try { if (localStorage.getItem(K)) return; } catch (e) { /* ignore */ }
+    if (Object.keys(S.done).length < 2) return;
+    var p = M4.el('p', { class: 'm4-star-ask' }, parent);
+    p.appendChild(document.createTextNode('Finding the course useful? A star helps other students find it. '));
+    var a = M4.el('a', { class: 'm4-star', href: REPO_URL, target: '_blank', rel: 'noopener', html: ICON.star + '<span style="color:inherit">Star on GitHub</span>' }, p);
+    a.addEventListener('click', function () {
+      try { localStorage.setItem(K, '1'); } catch (e) { /* ignore */ }
+      p.textContent = 'Thank you!';
+    });
+  }
+
   function starCount(cb) {
     var K = 'm4.stars.v2', now = Date.now();
     try {
@@ -1376,6 +1391,7 @@
         if (nx) M4.button(row, 'Next: ' + M4.lessons[nx].title, function () { location.hash = '#/l/' + nx; }, { primary: true });
         else M4.el('span', { class: 'm4-chip', text: 'Module complete: ' + m.title, style: 'border-color:' + c + ';color:' + c + ';font-size:16px;padding:8px 16px' }, row);
       }
+      starAsk(d);
       updateBar();
     }
 
