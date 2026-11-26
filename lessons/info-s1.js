@@ -224,7 +224,7 @@
       {
         kind: 'exercise',
         title: 'The guessing game',
-        html: '<p>Tomorrow\'s weather is drawn from the distribution below and kept secret. Find it by asking yes or no questions of the form "is it rain?". Play eight rounds and try to keep your average number of questions as low as possible. The best possible average equals the entropy, \\(1.75\\) bits.</p>',
+        html: '<p>Tomorrow\'s weather is drawn from the distribution below and kept secret. Find it by asking yes or no questions of the form "is it rain?". Play eight rounds and keep your average number of questions as low as possible. Asking about a rarer outcome while a likelier one is still open restarts the game. The best possible average equals the entropy, \\(1.75\\) bits.</p>',
         hint: 'Ask about the likeliest remaining outcome first. When only one outcome is left, you know the answer without asking.',
         mount: function (el, ctx) {
           var W = [{ n: 'rain', p: 1 / 8, c: C.blue }, { n: 'sun', p: 1 / 2, c: C.orange }, { n: 'snow', p: 1 / 8, c: C.purple }, { n: 'cloud', p: 1 / 4, c: C.green }];
@@ -239,7 +239,7 @@
           var btnRow = M4.el('div', { class: 'm4-row' }, el);
           var status = M4.el('p', { style: 'text-align:center;min-height:1.6em;margin:10px 0 4px' }, el);
           var score = M4.el('div', { class: 'm4-readout' }, el);
-          var secret, asked, left, round = 0, total = 0, optimal = true, done = false;
+          var secret, asked, left, round = 0, total = 0, done = false, timer = null;
           var btns = W.map(function (w, i) {
             var b = M4.button(btnRow, 'Is it ' + w.n + '?', function () { ask(i); });
             return b;
@@ -250,7 +250,7 @@
             return W.length - 1;
           }
           function newRound() {
-            secret = draw(); asked = 0; left = [0, 1, 2, 3];
+            timer = null; secret = draw(); asked = 0; left = [0, 1, 2, 3];
             btns.forEach(function (b) { b.disabled = false; });
             status.textContent = 'Round ' + (round + 1) + ' of ' + ROUNDS + '. Ask your first question.';
           }
@@ -261,18 +261,27 @@
             round++; total += asked; paintScore();
             btns.forEach(function (b) { b.disabled = true; });
             if (round >= ROUNDS) {
-              if (optimal) { done = true; ctx.solved('Every question went to the likeliest remaining outcome. On average this strategy needs \\(\\tfrac12 \\cdot 1 + \\tfrac14 \\cdot 2 + \\tfrac18 \\cdot 3 + \\tfrac18 \\cdot 3 = 1.75\\) questions, the entropy.'); }
-              else ctx.wrong('In some rounds you asked about a rarer outcome while a likelier one was still open. That costs questions on average. Press the button below to play again.');
+              done = true; ctx.solved('Every question went to the likeliest remaining outcome. On average this strategy needs \\(\\tfrac12 \\cdot 1 + \\tfrac14 \\cdot 2 + \\tfrac18 \\cdot 3 + \\tfrac18 \\cdot 3 = 1.75\\) questions, the entropy.');
               status.textContent = msg + ' Game over.';
               return;
             }
             status.textContent = msg + ' Starting the next round.';
-            setTimeout(newRound, 1100);
+            timer = setTimeout(newRound, 1100);
+          }
+          function restart() {
+            clearTimeout(timer); round = 0; total = 0; paintScore(); newRound();
           }
           function ask(i) {
-            if (done || left.indexOf(i) < 0) return;
+            if (done || timer || left.indexOf(i) < 0) return;
             var maxP = Math.max.apply(null, left.map(function (k) { return W[k].p; }));
-            if (W[i].p < maxP) optimal = false;
+            if (W[i].p < maxP) {
+              var best = W[left.filter(function (k) { return W[k].p === maxP; })[0]].n;
+              btns.forEach(function (b) { b.disabled = true; });
+              ctx.wrong('Asking about ' + W[i].n + ' costs questions on average, because ' + best + ' is likelier and still open. The game starts again from round 1.');
+              status.textContent = 'Restarting from round 1.';
+              timer = setTimeout(restart, 2200);
+              return;
+            }
             asked++;
             if (i === secret) { finish('Yes, it is ' + W[i].n + '. That took ' + asked + (asked === 1 ? ' question.' : ' questions.')); return; }
             left.splice(left.indexOf(i), 1);
@@ -281,9 +290,9 @@
             status.textContent = 'No, it is not ' + W[i].n + '. Ask again.';
           }
           var again = M4.el('div', { class: 'm4-row' }, el);
-          M4.button(again, 'Start over', function () { if (done) return; round = 0; total = 0; optimal = true; paintScore(); newRound(); }, { ghost: true });
+          M4.button(again, 'Start over', function () { if (!done) restart(); }, { ghost: true });
           paintScore(); newRound();
-          ctx.onCleanup && ctx.onCleanup(function () { done = true; });
+          ctx.onCleanup && ctx.onCleanup(function () { done = true; clearTimeout(timer); });
         }
       },
       {
